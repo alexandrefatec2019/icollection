@@ -21,13 +21,9 @@ class Principal extends StatelessWidget {
       ),
 
       //Menu Lateral !!!
-      drawer: Drawer(
-        child: MenuLateral(),
-      ),
+      drawer: MenuLateral(),
     );
 
     return scaffold;
   }
 }
-
-
