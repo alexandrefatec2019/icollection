@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "609236427758",
+    "firebase_url": "https://icollection-ads-2019.firebaseio.com",
+    "project_id": "icollection-ads-2019",
+    "storage_bucket": "icollection-ads-2019.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:609236427758:android:60e3a9b2612b52ae4564ff",
+        "android_client_info": {
+          "package_name": "com.example.icollection"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "609236427758-e264k96au2u6qnv8374k4th7junfpqrd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqd2Xv_LRzkX57J60pjoiKncqCPMZkFJw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "609236427758-e264k96au2u6qnv8374k4th7junfpqrd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
