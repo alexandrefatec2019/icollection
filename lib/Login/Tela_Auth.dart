@@ -32,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
 
 
 Widget _signInButton() {
-  return GoogleSignInButton(onPressed: () {
+  return GoogleSignInButton(darkMode: true, onPressed: () {
     auth.googleLogin().then((value) {
 
       //print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
