@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'Login/auth.dart';
+
 class MenuLateral extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,8 @@ class MenuLateral extends StatelessWidget {
         Divider(),
         _criarItemMenu(icon: Icons.bug_report, text: 'Report an issue'),
         Divider(),
-        _criarItemMenu(icon: Icons.exit_to_app, text: 'Sair'),
+        //ao clicar em sair chama a funçao logout do google e sai do app
+        _criarItemMenu(icon: Icons.exit_to_app, text: 'Sair', onTap: signOutGoogle),
         // ListTile(
         //   title: Text('0.0.1'),
         //   onTap: () {},

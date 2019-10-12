@@ -1,25 +1,49 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:icollection/Login/Google.dart';
 import 'package:icollection/Principal.dart';
 
+void main() async {
 
-void main() => runApp(Icollection());
+final VerificaAuth _auth = VerificaAuth();
+  final bool isLogged = await _auth.isLogged();
+  final Icollection icollection = Icollection(
+    initialRoute: isLogged ? '/' : '/Login',
+  );
+
+  runApp(icollection);
+}
 
 class Icollection extends StatelessWidget {
+  final String initialRoute;
+
+  Icollection({this.initialRoute});
+
   @override
   Widget build(BuildContext context) {
-    // Rotas do App
-    var routes = {
-      //Menu Principal - AppBar, Body
-      '/': (context) => Principal()
-      //      '/detalhe': (context) => Detalhe()
-    };
-
-    var materialApp = MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      routes: routes,
-      initialRoute: '/',
+      //Rota padrao que o app vai inicializar
+      initialRoute: initialRoute,
+      routes: {
+        //Tela principal onde vai listar os produtos anunciados
+        '/': (context) => Principal(),
+        //Tela de login ao clicar no botao menu
+        '/Login': (context) => LoginPage(),
+      },
     );
+  }
+}
 
-    return materialApp;
+class VerificaAuth {
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
+  Future<bool> isLogged() async {
+    try {
+      final FirebaseUser user = await _firebaseAuth.currentUser();
+      return user != null;
+    } catch (e) {
+      return false;
+    }
   }
 }
