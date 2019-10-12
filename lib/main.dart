@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:icollection/Login/Google.dart';
 import 'package:icollection/Principal.dart';
+
+import 'Login/Tela_Auth.dart';
 
 void main() async {
 

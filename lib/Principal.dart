@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:icollection/AppBar.dart';
-import 'package:icollection/Login/Google.dart';
 //Arquivo onde esta todos os items do menu Lateral
+import 'Login/Tela_Auth.dart';
 import 'MenuLateral.dart';
 
 class Principal extends StatelessWidget {
@@ -45,7 +45,7 @@ Widget _menuAuth() {
 Future<String> getCurrentUser() async {
   FirebaseUser user = await FirebaseAuth.instance.currentUser();
 
-  print("mail " + user.email);
+  //print("mail " + user.email);
   return null;
 }
 

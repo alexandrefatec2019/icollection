@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'auth.dart';
+
+Autentica auth = Autentica();
 
 class LoginPage extends StatefulWidget {
   @override
@@ -9,7 +10,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
- 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,11 +29,16 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-}
+
 
 Widget _signInButton() {
   return GoogleSignInButton(onPressed: () {
-    loginGoogle();
-    
+    auth.googleLogin().then((value) {
+
+      //print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+      Navigator.pushNamed(context, '/');
+    });
   });
+}
+
 }
