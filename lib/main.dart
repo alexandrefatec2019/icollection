@@ -24,8 +24,8 @@ class Icollection extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      //Rota padrao que o app vai inicializar
-      initialRoute: initialRoute,
+      //Rota padrao que o app vai inicializar (sem usar variavel)
+      initialRoute: '/',
       routes: {
         //Tela principal onde vai listar os produtos anunciados
         '/': (context) => Principal(),
