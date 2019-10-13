@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
-import 'auth.dart';
 
-Autentica auth = Autentica();
+import '../MenuLateral.dart';
+import '../Principal.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -17,28 +17,22 @@ class _LoginPageState extends State<LoginPage> {
         color: Colors.white,
         child: Center(
           child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              FlutterLogo(size: 150),
-              SizedBox(height: 50),
-              _signInButton(),
-            ],
-          ),
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                FlutterLogo(size: 150),
+                SizedBox(height: 50),
+                GoogleSignInButton(
+                    darkMode: true,
+                    onPressed: () {
+                      auth.googleLogin().whenComplete(() {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => Principal()));
+                      });
+                    })
+              ]),
         ),
       ),
     );
   }
-
-
-Widget _signInButton() {
-  return GoogleSignInButton(darkMode: true, onPressed: () {
-    auth.googleLogin().then((value) {
-
-      //print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
-      Navigator.pushNamed(context, '/');
-    });
-  });
-}
-
 }

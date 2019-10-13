@@ -1,10 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class Autentica {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  String name;
+  String email;
+  String imageUrl;
+
   //Login Google
   Future<bool> googleLogin() async {
     try {
@@ -26,7 +32,12 @@ class Autentica {
 
       final FirebaseUser currentUser = await _auth.currentUser();
       assert(user.uid == currentUser.uid);
+
+      assert(user.email != null);
       
+      assert(user.displayName != null);
+      assert(user.photoUrl != null);
+
       //TODO talvez fazer retornoar todos os dados do user apos o login
       return true;
     } catch (e) {
@@ -44,9 +55,6 @@ class Autentica {
     SystemNavigator.pop();
   }
 }
-
-
-
 
 // class GoogleSignInAccount implements GoogleIdentity {
 //   GoogleSignInAccount._(this._googleSignIn, Map<String, dynamic> data)
