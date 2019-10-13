@@ -10,6 +10,7 @@ class Autentica {
   String name;
   String email;
   String imageUrl;
+  
 
   //Login Google
   Future<bool> googleLogin() async {
@@ -33,8 +34,10 @@ class Autentica {
       final FirebaseUser currentUser = await _auth.currentUser();
       assert(user.uid == currentUser.uid);
 
+      name = user.email;
+
       assert(user.email != null);
-      
+
       assert(user.displayName != null);
       assert(user.photoUrl != null);
 
@@ -47,12 +50,14 @@ class Autentica {
 
   //Logout Google
   Future<void> googleLogout() async {
-    //print('ok');
-
     await _auth.signOut();
     await _googleSignIn.signOut();
     //Fecha app
     SystemNavigator.pop();
+  }
+
+  Future<String> googleUser() async {
+    return name;
   }
 }
 

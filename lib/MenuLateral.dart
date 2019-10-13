@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'Login/auth.dart';
 
 //Classe autenticação
@@ -16,7 +15,7 @@ class MenuLateral extends StatelessWidget {
         _criarItemMenu(
           icon: Icons.home,
           text: 'Página inicial',
-          ),
+        ),
         _criarItemMenu(
           icon: Icons.visibility,
           text: 'Visitados',
@@ -34,7 +33,8 @@ class MenuLateral extends StatelessWidget {
         _criarItemMenu(icon: Icons.bug_report, text: 'Report an issue'),
         Divider(),
         //ao clicar em sair chama a funçao logout do google e sai do app
-        _criarItemMenu(icon: Icons.exit_to_app, text: 'Sair', onTap: auth.googleLogout),
+        _criarItemMenu(
+            icon: Icons.exit_to_app, text: 'Sair', onTap: auth.googleLogout),
         // ListTile(
         //   title: Text('0.0.1'),
         //   onTap: () {},
@@ -100,6 +100,8 @@ Widget _criarItemMenu({IconData icon, String text, GestureTapCallback onTap}) {
     onTap: onTap,
   );
 }
+
+//Apenas para teste
 
 class Header extends StatelessWidget {
   @override
