@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:icollection/Principal.dart';
+import 'package:icollection/Usuario/Cadastro.dart';
 
 import 'Login/Tela_Auth.dart';
 
@@ -16,6 +17,8 @@ final VerificaAuth _auth = VerificaAuth();
 }
 
 class Icollection extends StatelessWidget {
+
+  
   final String initialRoute;
 
   Icollection({this.initialRoute});
@@ -31,6 +34,7 @@ class Icollection extends StatelessWidget {
         '/': (context) => Principal(),
         //Tela de login ao clicar no botao menu
         '/Login': (context) => LoginPage(),
+        '/CadastroUsuario': (context) => CadDados()
       },
     );
   }

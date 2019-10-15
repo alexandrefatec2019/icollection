@@ -1,10 +1,87 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'Login/auth.dart';
 
 //Classe autenticação
 Autentica auth = Autentica();
+String _email;
+String _imagemURL;
+String _nomeUsuario;
+String _telefone;
 
-class MenuLateral extends StatelessWidget {
+//Carrega apenas Imagem e nome do usuario dentro do menu lateral
+//Apenas essa parte vai ter alteração no estado
+class MenuLateral extends StatefulWidget {
+  final _email;
+  final _imagemURL;
+  final _nomeUsuario;
+  final _telefone;
+
+  MenuLateral(this._email, this._imagemURL, this._nomeUsuario, this._telefone);
+
+  @override
+  _Header createState() => new _Header();
+}
+
+class _Header extends State<MenuLateral> {
+  @override
+  initState() {
+    super.initState();
+    _atualizaDados();
+    //print('==== '+widget.currentUser);
+  }
+
+  _atualizaDados() {
+    setState(() {
+      _email = widget._email;
+      _imagemURL = widget._imagemURL;
+      _nomeUsuario = widget._nomeUsuario;
+      _telefone = widget._telefone;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+        child: ListView(
+      padding: EdgeInsets.zero,
+      children: <Widget>[
+        _criarCabecalhoMenu(),
+        _criarItemMenu(
+          icon: Icons.home,
+          text: 'Página inicial',
+        ),
+        _criarItemMenu(
+          icon: Icons.visibility,
+          text: 'Visitados',
+        ),
+        _criarItemMenu(
+          icon: Icons.shopping_cart,
+          text: 'Vendas',
+        ),
+        Divider(),
+        _criarItemMenu(icon: Icons.collections_bookmark, text: 'Categorias'),
+        _criarItemMenu(icon: Icons.face, text: 'Procurar'),
+        _criarItemMenu(icon: Icons.account_box, text: 'Minha Conta'),
+
+        Divider(),
+        _criarItemMenu(icon: Icons.bug_report, text: 'Report an issue'),
+        Divider(),
+        //ao clicar em sair chama a funçao logout do google e sai do app
+        _criarItemMenu(
+            icon: Icons.exit_to_app, text: 'Sair', onTap: auth.googleLogout),
+        // ListTile(
+        //   title: Text('0.0.1'),
+        //   onTap: () {},
+        // ),
+      ],
+    ));
+  }
+}
+
+//Fim
+
+class ItemsMenuLateral extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -49,7 +126,7 @@ Widget _buildStack() => Stack(
       alignment: const Alignment(0.6, 0.6),
       children: [
         CircleAvatar(
-          backgroundImage: AssetImage('images/smeagol.jpg'),
+          backgroundImage: NetworkImage(_imagemURL),
           radius: 100,
         ),
         Container(
@@ -57,7 +134,7 @@ Widget _buildStack() => Stack(
             color: Colors.black45,
           ),
           child: Text(
-            'Smeagol B',
+            _nomeUsuario,
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,

@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:icollection/AppBar.dart';
+import 'package:icollection/Firestore/Leitura.dart';
 import 'package:icollection/Login/auth.dart';
 //Arquivo onde esta todos os items do menu Lateral
 import 'Login/Tela_Auth.dart';
@@ -15,11 +18,37 @@ class Principal extends StatefulWidget {
   _Principal createState() => new _Principal();
 }
 
+
+Widget createListView(BuildContext context, AsyncSnapshot snapshot) {
+  List<String> values = snapshot.data;
+  return new ListView.builder(
+    itemCount: values.length,
+    itemBuilder: (BuildContext context, int index) {
+      return new Column(
+        children: <Widget>[
+          new ListTile(
+            title: new Text(values[index]),
+          ),
+          new Divider(
+            height: 2.0,
+          ),
+        ],
+      );
+    },
+  );
+}
+
 class _Principal extends State<Principal> {
+  //Por padrao escolhe a tela de login
   WidgetMarker selectedWidgetMarker = WidgetMarker.login;
 
-  String _currentUserName;
+  String _email;
+  String _imagemURL;
+  String _nomeUsuario;
+  String _telefone;
+  List items;
 
+  
   @override
   initState() {
     super.initState();
@@ -27,11 +56,15 @@ class _Principal extends State<Principal> {
   }
 
   doAsyncStuff() async {
-    var name = await FirebaseAuth.instance.currentUser();
+    var auth = await FirebaseAuth.instance.currentUser();
     try {
       setState(() {
         selectedWidgetMarker = WidgetMarker.menu;
-        this._currentUserName = name.email.toString();
+        print(auth.toString());
+        this._email = auth.email.toString();
+        this._imagemURL = auth.photoUrl.toString();
+        this._nomeUsuario = auth.displayName.toString();
+        this._telefone = auth.phoneNumber.toString();
       });
     } catch (e) {
       setState(() {
@@ -44,7 +77,7 @@ class _Principal extends State<Principal> {
   Widget build(BuildContext context) {
     // Scaffold:
     var scaffold = Scaffold(
-        body: null,
+        body: ListarProdutos(),
         appBar: BaseAppBar(
           appBar: AppBar(),
           widgets: <Widget>[
@@ -52,7 +85,7 @@ class _Principal extends State<Principal> {
             IconButton(
               icon: new Icon(Icons.search),
               onPressed: () {
-                print(_currentUserName);
+                //    print(_currentUserName);
               },
             ),
           ],
@@ -71,10 +104,11 @@ class _Principal extends State<Principal> {
       case WidgetMarker.login:
         return LoginPage();
       case WidgetMarker.menu:
-        return MenuLateral();
+        //Passa os dados do usuario autenticado para o menu lateral
+        return MenuLateral(_email, _imagemURL, _nomeUsuario, _telefone);
     }
 
-    return MenuLateral();
+    return MenuLateral(_email, _imagemURL, _nomeUsuario, _telefone);
   }
 }
 

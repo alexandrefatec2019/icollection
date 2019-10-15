@@ -1,9 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-class Autentica {
+ class Autentica {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
@@ -11,6 +12,8 @@ class Autentica {
   String email;
   String imageUrl;
   
+  
+
 
   //Login Google
   Future<bool> googleLogin() async {
