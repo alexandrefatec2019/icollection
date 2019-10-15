@@ -42,8 +42,16 @@ class _Header extends State<MenuLateral> {
 
   @override
   Widget build(BuildContext context) {
+    Widget _buildDrawerBack() => Container(
+      decoration: BoxDecoration(
+            color: Color(0xff1c2634),
+      ),
+    );
     return Drawer(
-        child: ListView(
+      child: Stack(
+        children: <Widget>[
+          _buildDrawerBack(),
+        ListView(
       padding: EdgeInsets.zero,
       children: <Widget>[
         _criarCabecalhoMenu(),
@@ -75,7 +83,7 @@ class _Header extends State<MenuLateral> {
         //   onTap: () {},
         // ),
       ],
-    ));
+    )]));
   }
 }
 
