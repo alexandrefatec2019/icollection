@@ -97,27 +97,25 @@ class ItemsMenuLateral extends StatelessWidget {
       padding: EdgeInsets.zero,
       children: <Widget>[
         _criarCabecalhoMenu(),
-        
         _criarItemMenu(
           icon: Icons.home,
           text: 'Página inicial',
         ),
-        _criarItemMenu(icon: Icons.account_box, text: 'Minha Conta'),
+        _criarItemMenu(
+          icon: Icons.visibility,
+          text: 'Visitados',
+        ),
         _criarItemMenu(
           icon: Icons.shopping_cart,
           text: 'Vendas',
         ),
         Divider(),
-        _criarItemMenu(
-          icon: Icons.visibility,
-          text: 'Produtos',
-        ),
         _criarItemMenu(icon: Icons.collections_bookmark, text: 'Categorias'),
-        _criarItemMenu(icon: Icons.search, text: 'Procurar'),
-
+        _criarItemMenu(icon: Icons.face, text: 'Procurar'),
+        _criarItemMenu(icon: Icons.account_box, text: 'Minha Conta'),
 
         Divider(),
-        _criarItemMenu(icon: Icons.bug_report, text: 'Sobre Nós'),
+        _criarItemMenu(icon: Icons.bug_report, text: 'Report an issue'),
         Divider(),
         //ao clicar em sair chama a funçao logout do google e sai do app
         _criarItemMenu(
@@ -135,32 +133,13 @@ class ItemsMenuLateral extends StatelessWidget {
 Widget _buildStack() => Stack(
       alignment: const Alignment(0.6, 0.6),
       children: [
-        // CircleAvatar(
-        //   backgroundImage: NetworkImage(_imagemURL),
-        //   radius: 100,
-        // ),
-        Stack(
-          alignment: Alignment.topCenter,
-          children: [
+        CircleAvatar(
+          backgroundImage: NetworkImage(_imagemURL),
+          radius: 100,
+        ),
         Container(
-          alignment: Alignment.center,
-              height: 120.0,
-              width: 120.0,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                  fit: BoxFit.fill,
-                  image: new NetworkImage(_imagemURL
-                  ),
-                ),
-              ),
-            ),
-        Container(
-          padding: EdgeInsets.only(top: 5),
-          alignment: Alignment.bottomCenter,
           decoration: BoxDecoration(
-            color: Colors.transparent,
-            
+            color: Colors.black45,
           ),
           child: Text(
             _nomeUsuario,
@@ -171,17 +150,14 @@ Widget _buildStack() => Stack(
             ),
           ),
         ),
-          ]
-        )
       ],
     );
-
 
 Widget _criarCabecalhoMenu() {
   return DrawerHeader(
       margin: EdgeInsets.zero,
-      padding: EdgeInsets.only(bottom: 15),
-      decoration: BoxDecoration(color: Color(0xff1c2634)),
+      padding: EdgeInsets.zero,
+      decoration: BoxDecoration(color: Colors.black87),
       child: Stack(children: <Widget>[
         Center(child: _buildStack()
             // Text("Flutter Step-by-Step",
@@ -199,12 +175,11 @@ Widget _criarItemMenu({IconData icon, String text, GestureTapCallback onTap}) {
   return ListTile(
     title: Row(
       children: <Widget>[
-        Icon(icon, color: Colors.white,),
+        Icon(icon),
         Padding(
-          padding: EdgeInsets.only(left: 17.0),
-          child: Text(text, style: TextStyle(color: Colors.white),),
-        ),
-        
+          padding: EdgeInsets.only(left: 8.0),
+          child: Text(text),
+        )
       ],
     ),
     onTap: onTap,
