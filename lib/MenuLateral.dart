@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:icollection/categoria.dart';
 import 'Login/auth.dart';
 
 //Classe autenticação
@@ -59,18 +60,29 @@ class _Header extends State<MenuLateral> {
           icon: Icons.home,
           text: 'Página inicial',
         ),
-        _criarItemMenu(
-          icon: Icons.visibility,
-          text: 'Visitados',
-        ),
+        _criarItemMenu(icon: Icons.account_box, text: 'Minha Conta'),
+       
         _criarItemMenu(
           icon: Icons.shopping_cart,
           text: 'Vendas',
         ),
         Divider(),
-        _criarItemMenu(icon: Icons.collections_bookmark, text: 'Categorias'),
-        _criarItemMenu(icon: Icons.face, text: 'Procurar'),
-        _criarItemMenu(icon: Icons.account_box, text: 'Minha Conta'),
+         _criarItemMenu(
+          icon: Icons.grade,
+          text: 'Produtos',
+        ),
+        _criarItemMenu(icon: Icons.collections_bookmark, 
+        text: 'Categorias', 
+        onTap: (){
+          Navigator.of(context).pop();
+          Navigator.push(context, MaterialPageRoute(
+            builder: (context) => Categoria(),
+          ),
+          );
+        }
+        ),
+        _criarItemMenu(icon: Icons.search, text: 'Procurar'),
+
 
         Divider(),
         _criarItemMenu(icon: Icons.bug_report, text: 'Report an issue'),
