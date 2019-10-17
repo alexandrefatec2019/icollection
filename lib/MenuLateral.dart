@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:icollection/Usuario/perfil.dart';
 import 'package:icollection/categoria.dart';
 import 'Login/auth.dart';
 
@@ -61,7 +62,15 @@ class _Header extends State<MenuLateral> {
           icon: Icons.home,
           text: 'Página inicial',
         ),
-        _criarItemMenu(icon: Icons.account_box, text: 'Minha Conta'),
+        _criarItemMenu(icon: Icons.account_box, text: 'Minha Conta',
+        onTap: (){
+          Navigator.of(context).pop();
+          Navigator.push(context, MaterialPageRoute(
+            builder: (context) => Perfil(_email, _imagemURL, _nomeUsuario, _telefone),
+          ),
+          );
+        }
+        ),
        
         _criarItemMenu(
           icon: Icons.shopping_cart,
@@ -125,7 +134,10 @@ class ItemsMenuLateral extends StatelessWidget {
           icon: Icons.visibility,
           text: 'Produtos',
         ),
-        _criarItemMenu(icon: Icons.collections_bookmark, text: 'Categorias'),
+        _criarItemMenu(
+          icon: Icons.collections_bookmark, 
+          text: 'Categorias',
+          ),
         _criarItemMenu(icon: Icons.search, text: 'Procurar'),
 
 
