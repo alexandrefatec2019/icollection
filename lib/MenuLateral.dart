@@ -56,6 +56,7 @@ class _Header extends State<MenuLateral> {
       padding: EdgeInsets.zero,
       children: <Widget>[
         _criarCabecalhoMenu(),
+        Divider(color: Colors.white12,),
         _criarItemMenu(
           icon: Icons.home,
           text: 'Página inicial',
@@ -66,7 +67,7 @@ class _Header extends State<MenuLateral> {
           icon: Icons.shopping_cart,
           text: 'Vendas',
         ),
-        Divider(),
+        Divider(color: Colors.white24, indent: 17, endIndent: 17,),
          _criarItemMenu(
           icon: Icons.grade,
           text: 'Produtos',
@@ -84,9 +85,9 @@ class _Header extends State<MenuLateral> {
         _criarItemMenu(icon: Icons.search, text: 'Procurar'),
 
 
-        Divider(),
-        _criarItemMenu(icon: Icons.bug_report, text: 'Report an issue'),
-        Divider(),
+        Divider(color: Colors.white24, indent: 17, endIndent: 17,),
+        _criarItemMenu(icon: Icons.bug_report, text: 'Sobre Nós'),
+        Divider(color: Colors.white24, indent: 17, endIndent: 17,),
         //ao clicar em sair chama a funçao logout do google e sai do app
         _criarItemMenu(
             icon: Icons.exit_to_app, text: 'Sair', onTap: auth.googleLogout),
