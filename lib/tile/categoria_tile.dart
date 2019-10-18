@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 //QuerySnapshot
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:icollection/Produto/produto.dart';
+
+import 'package:icollection/categoria.dart';
 
 class CategoriaTile extends StatelessWidget {
 
@@ -19,7 +22,9 @@ class CategoriaTile extends StatelessWidget {
       title: Text(snapshot.data["title"]),
       trailing: Icon(Icons.keyboard_arrow_right),
       onTap: (){
-        
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (context)=> Produto(snapshot))
+        );
       },
     );
   }

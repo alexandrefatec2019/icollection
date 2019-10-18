@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:icollection/Usuario/perfil.dart';
@@ -26,6 +27,8 @@ class MenuLateral extends StatefulWidget {
 }
 
 class _Header extends State<MenuLateral> {
+DocumentSnapshot snapshot;
+
   @override
   initState() {
     super.initState();
@@ -86,7 +89,7 @@ class _Header extends State<MenuLateral> {
         onTap: (){
           Navigator.of(context).pop();
           Navigator.push(context, MaterialPageRoute(
-            builder: (context) => Categoria(),
+            builder: (context) => Categoria(snapshot),
           ),
           );
         }
