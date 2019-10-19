@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:icollection/AppBar.dart';
 import 'package:icollection/Firestore/Leitura.dart';
 import 'package:icollection/Login/auth.dart';
 //Arquivo onde esta todos os items do menu Lateral
 import 'Login/Tela_Auth.dart';
 import 'MenuLateral.dart';
+import 'Produto/ListarProdutos.dart';
+import 'Produto/ListarProdutosTeste.dart';
 
 enum WidgetMarker { login, menu }
 
@@ -17,7 +17,6 @@ class Principal extends StatefulWidget {
   @override
   _Principal createState() => new _Principal();
 }
-
 
 Widget createListView(BuildContext context, AsyncSnapshot snapshot) {
   List<String> values = snapshot.data;
@@ -48,7 +47,6 @@ class _Principal extends State<Principal> {
   String _telefone;
   List items;
 
-  
   @override
   initState() {
     super.initState();
@@ -77,7 +75,9 @@ class _Principal extends State<Principal> {
   Widget build(BuildContext context) {
     // Scaffold:
     var scaffold = Scaffold(
-        body: ListarProdutos(),
+
+        //Lista todos os produtos nao importa se esta ou nao utenticado
+        body: ListViewNote(), //ListagemGeralProdutos(),
         appBar: BaseAppBar(
           appBar: AppBar(),
           widgets: <Widget>[
@@ -85,7 +85,7 @@ class _Principal extends State<Principal> {
             IconButton(
               icon: new Icon(Icons.search),
               onPressed: () {
-                //    print(_currentUserName);
+                
               },
             ),
           ],

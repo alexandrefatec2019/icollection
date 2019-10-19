@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:icollection/Login/auth.dart';
+import 'package:icollection/Usuario/Cadastro.dart';
 
 import '../Principal.dart';
 
@@ -11,15 +12,27 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: Center(
-        child: GoogleSignInButton(
-            darkMode: true,
-            onPressed: () {
-              auth.googleLogin().whenComplete(() {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => Principal()));
-              });
-            }),
-      ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          GoogleSignInButton(
+              darkMode: true,
+              onPressed: () {
+                auth.googleLogin().whenComplete(() {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => CadDados()));
+                });
+              }),
+              FacebookSignInButton(
+              
+              onPressed: () {
+                auth.facebookLogin().whenComplete(() {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => Principal()));
+                });
+              }),
+        ],
+      )),
     );
   }
 }

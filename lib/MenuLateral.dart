@@ -27,6 +27,7 @@ class MenuLateral extends StatefulWidget {
 }
 
 class _Header extends State<MenuLateral> {
+  
 DocumentSnapshot snapshot;
 
   @override
