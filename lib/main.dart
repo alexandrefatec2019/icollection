@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:icollection/Principal.dart';
 import 'package:icollection/Usuario/Cadastro.dart';
+import 'package:icollection/model/usuarioModel.dart';
 
 import 'Login/Tela_Auth.dart';
 
@@ -31,10 +32,10 @@ class Icollection extends StatelessWidget {
       initialRoute: '/',
       routes: {
         //Tela principal onde vai listar os produtos anunciados
-        '/': (context) => CadDados(null),
+        '/': (context) => Principal(),
         //Tela de login ao clicar no botao menu
         '/Login': (context) => LoginPage(),
-        '/CadastroUsuario': (context) => CadDados(null)
+        '/CadastroUsuario': (context) => CadDados(UsuarioModel(null, '','','','','')),
       },
     );
   }

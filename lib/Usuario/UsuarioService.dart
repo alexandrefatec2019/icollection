@@ -4,8 +4,6 @@ import 'package:icollection/model/usuarioModel.dart';
 
 //CRUD USUARIO
 
-
-
 final CollectionReference usuarioCollection =
     Firestore.instance.collection('Usuario');
 
@@ -17,16 +15,18 @@ class FirebaseFirestoreService {
 
   FirebaseFirestoreService.internal();
 
-  Future<UsuarioModel> criarUsuario(String nome, String sobrenome, String email, String cpfcnpj, String telefone) async {
+  Future<UsuarioModel> criarUsuario(String uid, String nome, String email,
+      String cpfcnpj, String telefone, String photourl) async {
     final TransactionHandler createTransaction = (Transaction tx) async {
-      final DocumentSnapshot ds = await tx.get(usuarioCollection.document());
+      //Salva um documento na Coleção usuario com o nome id do google (uid)
+      final DocumentSnapshot ds = await tx.get(usuarioCollection.document(uid));
 
       final UsuarioModel usuario =
-          UsuarioModel(ds.documentID, nome, sobrenome, email, cpfcnpj, telefone);
+          UsuarioModel(uid, nome, email, cpfcnpj, telefone, photourl);
       final Map<String, dynamic> data = usuario.toMap();
 
       await tx.set(ds.reference, data);
-      print('xxxxxxxxxxxxxxxxxxxxxxxxx');
+
       return data;
     };
 

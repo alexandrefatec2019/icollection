@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:icollection/tabs/categoriatab.dart';
-import 'package:icollection/tile/categoria_tile.dart';
 
 class Categoria extends StatelessWidget {
   const Categoria(DocumentSnapshot snapshot, {Key key}) : super(key: key);

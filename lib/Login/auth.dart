@@ -3,8 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:icollection/model/usuarioModel.dart';
 
- 
 class Autentica {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
@@ -14,16 +14,13 @@ class Autentica {
 
   final FacebookLogin _facebookSignIn = FacebookLogin();
 
-  
-
   String name;
   String email;
   String imageUrl;
 
   //Login Google
-  Future<bool> googleLogin() async {
+  Future<UsuarioModel> googleLogin() async {
     try {
-      
       final GoogleSignInAccount googleSignInAccount =
           await _googleSignIn.signIn();
       final GoogleSignInAuthentication googleSignInAuthentication =
@@ -33,7 +30,8 @@ class Autentica {
         accessToken: googleSignInAuthentication.accessToken,
         idToken: googleSignInAuthentication.idToken,
       );
-
+      
+      
       final FirebaseUser user =
           (await _auth.signInWithCredential(credential)).user;
 
@@ -41,24 +39,21 @@ class Autentica {
       assert(await user.getIdToken() != null);
 
       final FirebaseUser currentUser = await _auth.currentUser();
+      
       assert(user.uid == currentUser.uid);
 
-      
       name = user.email;
 
       assert(user.email != null);
 
       assert(user.displayName != null);
       assert(user.photoUrl != null);
-      //Salva dados no firestore pos a autenticação
-      _fireStore.collection("Users").document(user.uid).setData(
-          {'email': user.email, 'displayName': user.displayName, 'phone': user.phoneNumber,'photoURL': user.photoUrl,'emailVerified': user.isEmailVerified},
-          merge: false);
+      //auth.providerData[1].uid pega o uid da conta do google.com
+      //Ordem id, nome, email, cpfcnpj, telefone
+      return UsuarioModel(user.providerData[1].uid, user.displayName,user.email,'',user.phoneNumber,user.photoUrl);
 
-      //TODO talvez fazer retornoar todos os dados do user apos o login
-      return true;
     } catch (e) {
-      return false;
+      return null;
     }
   }
 
