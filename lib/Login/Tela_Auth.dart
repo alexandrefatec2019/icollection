@@ -20,7 +20,7 @@ class LoginPage extends StatelessWidget {
               onPressed: () {
                 auth.googleLogin().whenComplete(() {
                   Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => CadDados()));
+                      MaterialPageRoute(builder: (context) => CadDados(null)));
                 });
               }),
               FacebookSignInButton(

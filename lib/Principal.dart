@@ -76,6 +76,9 @@ class _Principal extends State<Principal> {
     // Scaffold:
     var scaffold = Scaffold(
 
+      //teclado nao sobrepor o campo
+        //resizeToAvoidBottomPadding: true,
+
         //Lista todos os produtos nao importa se esta ou nao utenticado
         body: ListViewNote(), //ListagemGeralProdutos(),
         appBar: BaseAppBar(

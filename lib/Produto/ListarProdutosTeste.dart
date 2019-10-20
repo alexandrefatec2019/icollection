@@ -93,8 +93,8 @@ class _ListViewNoteState extends State<ListViewNote> {
     // ),
   }
 
-
-  void _navigateToNote(BuildContext context, ListaProdutoModel note) async {
+//hummmm
+void _navigateToNote(BuildContext context, ListaProdutoModel note) async {
     await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => NoteScreen(note)),

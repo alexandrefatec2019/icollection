@@ -31,10 +31,10 @@ class Icollection extends StatelessWidget {
       initialRoute: '/',
       routes: {
         //Tela principal onde vai listar os produtos anunciados
-        '/': (context) => Principal(),
+        '/': (context) => CadDados(null),
         //Tela de login ao clicar no botao menu
         '/Login': (context) => LoginPage(),
-        '/CadastroUsuario': (context) => CadDados()
+        '/CadastroUsuario': (context) => CadDados(null)
       },
     );
   }
