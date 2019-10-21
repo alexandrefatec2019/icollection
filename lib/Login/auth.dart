@@ -30,8 +30,7 @@ class Autentica {
         accessToken: googleSignInAuthentication.accessToken,
         idToken: googleSignInAuthentication.idToken,
       );
-      
-      
+
       final FirebaseUser user =
           (await _auth.signInWithCredential(credential)).user;
 
@@ -39,7 +38,7 @@ class Autentica {
       assert(await user.getIdToken() != null);
 
       final FirebaseUser currentUser = await _auth.currentUser();
-      
+
       assert(user.uid == currentUser.uid);
 
       name = user.email;
@@ -50,8 +49,13 @@ class Autentica {
       assert(user.photoUrl != null);
       //auth.providerData[1].uid pega o uid da conta do google.com
       //Ordem id, nome, email, cpfcnpj, telefone
-      return UsuarioModel(user.providerData[1].uid, user.displayName,user.email,'',user.phoneNumber,user.photoUrl);
 
+      if (await userCheck(user.providerData[1].uid)) {
+        print('xxxxxxxxxxxxxxxx' + ' ' + user.providerData[1].uid);
+      }
+      
+      return UsuarioModel(user.providerData[1].uid, user.displayName,
+          user.email, '', user.phoneNumber, user.photoUrl);
     } catch (e) {
       return null;
     }
@@ -102,3 +106,13 @@ class Autentica {
 //         _idToken = data['idToken'] {
 //     assert(id != null);
 //   }
+
+Future<bool> userCheck(String uid) async {
+  final QuerySnapshot result = await Firestore.instance
+      .collection('Usuario')
+      .where('id', isEqualTo: uid)
+      .limit(1)
+      .getDocuments();
+  final List<DocumentSnapshot> documents = result.documents;
+  return documents.length == 1;
+}
