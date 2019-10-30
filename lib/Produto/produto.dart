@@ -19,7 +19,6 @@ class Produto extends StatelessWidget {
 
 // class ProdutoState extends State<Produto> {
   final DocumentSnapshot snapshot;
-
   Produto(this.snapshot);
 
   @override
@@ -42,6 +41,7 @@ class Produto extends StatelessWidget {
          ),
             //Carregar as info de acordo com a categoria (EM PROCESSO)
         body: FutureBuilder<QuerySnapshot>(
+          //TODO - Linha para pegar Produtos do Firebase
           future: Firestore.instance.collection("Produtos").document(snapshot.documentID).collection('itens').getDocuments(),
           builder: (context, snapshot){
             if(!snapshot.hasData){

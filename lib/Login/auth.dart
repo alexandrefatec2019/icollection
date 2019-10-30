@@ -49,7 +49,7 @@ class Autentica {
       assert(user.photoUrl != null);
       //auth.providerData[1].uid pega o uid da conta do google.com
       //Ordem id, nome, email, cpfcnpj, telefone
-
+    //TODO TCHTCFCFTFHCHT
       if (await userCheck(user.providerData[1].uid)) {
         print('xxxxxxxxxxxxxxxx' + ' ' + user.providerData[1].uid);
       }

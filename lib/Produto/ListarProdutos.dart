@@ -31,6 +31,7 @@ class ListaProdutosState extends State<ListagemGeralProdutos> {
         
           padding: const EdgeInsets.all(10.0),
           child: StreamBuilder<QuerySnapshot>(
+            // DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
             stream: Firestore.instance.collection('Produtos').snapshots(),
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
