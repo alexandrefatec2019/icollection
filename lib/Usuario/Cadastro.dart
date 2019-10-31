@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:icollection/Principal.dart';
 import 'package:icollection/Usuario/UsuarioService.dart';
 import 'package:icollection/model/usuarioModel.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class CadDados extends StatefulWidget {
   final UsuarioModel user;
@@ -24,6 +28,10 @@ class CadDadosState extends State<CadDados> {
   String email;
   String cpfcnpj;
   String telefone;
+  String photoUrl;
+
+  File imagem;
+  bool uploading = false;
 
   TextEditingController _nome;
   TextEditingController _email;
@@ -40,7 +48,38 @@ class CadDadosState extends State<CadDados> {
     _email = new TextEditingController(text: widget.user.email);
     _cpfcnpj = new TextEditingController(text: widget.user.cpfcnpj);
     _telefone = new TextEditingController(text: widget.user?.telefone);
-    _photourl = new TextEditingController(text: widget.user?.photourl);
+    photoUrl = (widget.user.photourl);
+  }
+
+  //Exatamente = do professor passou em sala
+  //Retornando a url da photo postada
+  Future<String> tirarFoto() async {
+    var _imagem = await ImagePicker.pickImage(
+        source: ImageSource.camera, imageQuality: 10, maxHeight: 800, maxWidth: 600);
+
+    var usuario = (widget.user.email);
+
+    setState(() {
+      this.imagem = _imagem;
+      this.uploading = true;
+    });
+
+    //Salva a foto do perfil na pasta do usuario
+    var ref = FirebaseStorage().ref().child('/Usuario/$usuario/photo_perfil');
+
+    StorageUploadTask upload = ref.putFile(_imagem);
+
+    var downloadUrl = await upload.onComplete;
+
+    var url = await downloadUrl.ref.getDownloadURL();
+
+    setState(() {
+      //Alterar variavel photoUrl com a nova url
+      photoUrl = url.toString();
+      this.uploading = false;
+    });
+
+    return url;
   }
 
   @override
@@ -68,18 +107,25 @@ class CadDadosState extends State<CadDados> {
             child: Center(
                 child: Column(
               children: <Widget>[
-                Container(
-                  height: 200.0,
-                  width: 200.0,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: new NetworkImage(
-                          widget.user.photourl),
+                GestureDetector(
+                  onTap: tirarFoto,
+                  child: Container(
+                    height: 200.0,
+                    width: 200.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                          fit: BoxFit.fill,
+                          //link da imagem, ao login pegar do Google ou Facebook
+                          //ao alterar !! hunmnnn....
+                          image: NetworkImage(photoUrl)
+
+                          //NetworkImage(widget.user.photourl),
+                          ),
                     ),
                   ),
                 ),
+
                 Align(
                   alignment: Alignment.center,
                   child: Padding(
@@ -172,13 +218,18 @@ class CadDadosState extends State<CadDados> {
                         borderRadius: new BorderRadius.circular(50)),
                     color: Color(0xff1f631b),
                     onPressed: () {
+                      //TESTE
+                      //tirarFoto();
+
                       //validação
-                      db.criarUsuario(uid,_nome.text, _email.text, _cpfcnpj.text,
-                          _telefone.text,_photourl.text).whenComplete(() {
-                  //print(value);
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => Principal()));
-                });
+                      db
+                          .criarUsuario(uid, _nome.text, _email.text,
+                              _cpfcnpj.text, _telefone.text, photoUrl)
+                          .whenComplete(() {
+                        //print(value);
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => Principal()));
+                      });
                     },
                     child: Center(
                       child: Text(
