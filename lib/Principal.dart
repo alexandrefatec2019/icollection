@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:icollection/AppBar.dart';
-import 'package:icollection/Firestore/Leitura.dart';
 import 'package:icollection/Login/auth.dart';
 //Arquivo onde esta todos os items do menu Lateral
 import 'Login/Tela_Auth.dart';
 import 'MenuLateral.dart';
-import 'Produto/ListarProdutos.dart';
-import 'Produto/ListarProdutosTeste.dart';
+import 'Produto/ListarProdutosPrincipal.dart';
 
 enum WidgetMarker { login, menu }
 
@@ -76,20 +74,18 @@ class _Principal extends State<Principal> {
     // Scaffold:
     var scaffold = Scaffold(
 
-      //teclado nao sobrepor o campo
+        //teclado nao sobrepor o campo
         //resizeToAvoidBottomPadding: true,
 
         //Lista todos os produtos nao importa se esta ou nao utenticado
-        body: ListViewNote(), //ListagemGeralProdutos(),
+        body: ListarProdutosPrincipal(), //ListagemGeralProdutos(),
         appBar: BaseAppBar(
           appBar: AppBar(),
           widgets: <Widget>[
             //Items que serão exibidos na AppBar
             IconButton(
               icon: new Icon(Icons.search),
-              onPressed: () {
-                
-              },
+              onPressed: () {},
             ),
           ],
         ),

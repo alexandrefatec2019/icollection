@@ -22,12 +22,12 @@ class FirebaseFirestoreService {
 
   FirebaseFirestoreService.internal();
 
-  Future<ListaProdutoModel> createNote(String title, String description) async {
+  Future<ListaProdutoModel> createNote(String title, String description, List image) async {
     final TransactionHandler createTransaction = (Transaction tx) async {
       final DocumentSnapshot ds = await tx.get(produtoCollection.document());
 
       final ListaProdutoModel produto =
-          ListaProdutoModel(ds.documentID, title, description);
+          ListaProdutoModel(ds.documentID, title, description,image);
       final Map<String, dynamic> data = produto.toMap();
 
       await tx.set(ds.reference, data);
