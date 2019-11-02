@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:io';
+import 'package:flutter/rendering.dart';
+
 
 class NovoProduto extends StatefulWidget {
   @override
@@ -14,6 +19,9 @@ class _NovoProdutoState extends State<NovoProduto> {
   bool _troca = false;
   int _estadoSelecionado = null;
   List<DropdownMenuItem<int>> estadoList = [];
+
+  File imagem;
+  bool uploading = false;
 
   void loadEstadoList() {
     estadoList = [];
@@ -53,6 +61,18 @@ class _NovoProdutoState extends State<NovoProduto> {
       ),
     );
   }
+  Future<String> tirarFoto() async{
+    var _imagem = await ImagePicker.pickImage(
+        source: ImageSource.camera);
+
+    // var produto = (widget.produto.email);
+
+    setState(() {
+      this.imagem = _imagem;
+      this.uploading = true;
+    });
+  }
+
   List<Widget> getFormWidget(){
     List<Widget> formWidget = new List();
 
@@ -227,6 +247,12 @@ class _NovoProdutoState extends State<NovoProduto> {
                         height: MediaQuery.of(context).size.width/2,
                         width: MediaQuery.of(context).size.width/2.7,
                         color: Colors.grey[200],
+                        child: this.imagem == null ? IconButton(
+                        icon: Icon(Icons.add),
+                        onPressed: (){
+                          tirarFoto();
+                        },
+                    ) : Image.file(this.imagem),
                       ),
                     ),
                   ),
@@ -236,29 +262,12 @@ class _NovoProdutoState extends State<NovoProduto> {
                         height: MediaQuery.of(context).size.width/2,
                         width: MediaQuery.of(context).size.width/2.7,
                         color: Colors.grey[200],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              new Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Card(
-                    child: InkWell(
-                      child: Container(
-                        height: MediaQuery.of(context).size.width/2,
-                        width: MediaQuery.of(context).size.width/2.7,
-                        color: Colors.grey[200],
-                      ),
-                    ),
-                  ),
-                  Card(
-                    child: InkWell(
-                      child: Container(
-                        height: MediaQuery.of(context).size.width/2,
-                        width: MediaQuery.of(context).size.width/2.7,
-                        color: Colors.grey[200],
+                        child: this.imagem == null ? IconButton(
+                        icon: Icon(Icons.add),
+                        onPressed: (){
+                          tirarFoto();
+                        },
+                    ) : Image.file(this.imagem),
                       ),
                     ),
                   ),
@@ -273,6 +282,12 @@ class _NovoProdutoState extends State<NovoProduto> {
                         height: MediaQuery.of(context).size.width/2,
                         width: MediaQuery.of(context).size.width/2.7,
                         color: Colors.grey[200],
+                        child: this.imagem == null ? IconButton(
+                        icon: Icon(Icons.add),
+                        onPressed: (){
+                          tirarFoto();
+                        },
+                    ) : Image.file(this.imagem),
                       ),
                     ),
                   ),
@@ -282,6 +297,47 @@ class _NovoProdutoState extends State<NovoProduto> {
                         height: MediaQuery.of(context).size.width/2,
                         width: MediaQuery.of(context).size.width/2.7,
                         color: Colors.grey[200],
+                        child: this.imagem == null ? IconButton(
+                        icon: Icon(Icons.add),
+                        onPressed: (){
+                          tirarFoto();
+                        },
+                    ) : Image.file(this.imagem),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              new Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Card(
+                    child: InkWell(
+                      child: Container(
+                        height: MediaQuery.of(context).size.width/2,
+                        width: MediaQuery.of(context).size.width/2.7,
+                        color: Colors.grey[200],
+                        child: this.imagem == null ? IconButton(
+                        icon: Icon(Icons.add),
+                        onPressed: (){
+                          tirarFoto();
+                        },
+                    ) : Image.file(this.imagem),
+                      ),
+                    ),
+                  ),
+                  Card(
+                    child: InkWell(
+                      child: Container(
+                        height: MediaQuery.of(context).size.width/2,
+                        width: MediaQuery.of(context).size.width/2.7,
+                        color: Colors.grey[200],
+                        child: this.imagem == null ? IconButton(
+                        icon: Icon(Icons.add),
+                        onPressed: (){
+                          tirarFoto();
+                        },
+                    ) : Image.file(this.imagem),
                       ),
                     ),
                   ),
