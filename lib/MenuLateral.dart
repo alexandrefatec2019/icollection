@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:icollection/Usuario/perfil.dart';
 import 'package:icollection/categoria.dart';
+import 'package:icollection/vendas.dart';
 import 'Login/auth.dart';
 
 //Classe autenticação
@@ -79,6 +80,13 @@ DocumentSnapshot snapshot;
         _criarItemMenu(
           icon: Icons.shopping_cart,
           text: 'Vendas',
+          onTap: (){
+            Navigator.of(context).pop();
+            Navigator.push(context, MaterialPageRoute(
+              builder: (context) => Vendas(),
+            )
+            );
+          }
         ),
         Divider(color: Colors.white24, indent: 17, endIndent: 17,),
          _criarItemMenu(
