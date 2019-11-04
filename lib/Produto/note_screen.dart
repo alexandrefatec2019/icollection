@@ -54,7 +54,7 @@ class _NoteScreenState extends State<NoteScreen> {
                 });
               } else {
                 db
-                    .criarProduto(
+                    .createNote(
                         _titleController.text, _descriptionController.text,null)
                     .then((_) {
                   Navigator.pop(context);
