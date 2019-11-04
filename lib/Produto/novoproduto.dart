@@ -3,6 +3,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 import 'package:flutter/rendering.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 
 class NovoProduto extends StatefulWidget {
@@ -12,17 +14,25 @@ class NovoProduto extends StatefulWidget {
 
 class _NovoProdutoState extends State<NovoProduto> {
   final _formKey = GlobalKey<FormState>();
+  DocumentSnapshot snapshot;
 
   //TODO - Pagina NovoProduto - Pegar info do Model ou Data do Produto
   String _nomeProduto = '';
   String _descricao = '';
   bool _troca = false;
   int _estadoSelecionado = null;
+  String _categoriaSelecionada;
   List<DropdownMenuItem<int>> estadoList = [];
+  // List<DropdownMenuItem<int>> categoriaList = [];
 
   File imagem;
   bool uploading = false;
 
+  void _categorySelected(String newValueSelected) {
+    setState(() {
+      this._categoriaSelecionada = newValueSelected;
+    });
+  }
   void loadEstadoList() {
     estadoList = [];
     estadoList.add(new DropdownMenuItem(
@@ -75,6 +85,37 @@ class _NovoProdutoState extends State<NovoProduto> {
 
   List<Widget> getFormWidget(){
     List<Widget> formWidget = new List();
+
+    //---------- CATEGORIA ----------
+    formWidget.add(new StreamBuilder<QuerySnapshot>(
+      stream: Firestore.instance.collection('Produtos').snapshots(),
+      builder: (context, snapshot){
+        return Container(
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: DropdownButton(
+                  hint: new Text('Escolha a Categoria:'),
+                  items: snapshot.data.documents.map((DocumentSnapshot document){
+                    return DropdownMenuItem<String>(
+                      value: document.data['title'],
+                      child: Text(document.data['title']),
+                    );
+                  },
+                  ).toList(),
+                  // value: _categoriaSelecionada,
+                  onChanged: (valorSelecionado) {
+                    _categorySelected(valorSelecionado);
+                  },
+                  isExpanded: true,
+                ),
+              )
+            ],
+          ),
+        );
+      },
+    )
+    );
 
     //---------- NOME DO PRODUTO ---------- 
      formWidget.add(new TextFormField(
