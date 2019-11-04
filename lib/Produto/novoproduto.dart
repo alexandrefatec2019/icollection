@@ -87,35 +87,35 @@ class _NovoProdutoState extends State<NovoProduto> {
     List<Widget> formWidget = new List();
 
     //---------- CATEGORIA ----------
-    formWidget.add(new StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('Produtos').snapshots(),
-      builder: (context, snapshot){
-        return Container(
-          child: Row(
-            children: <Widget>[
-              Expanded(
-                child: DropdownButton(
-                  hint: new Text('Escolha a Categoria:'),
-                  items: snapshot.data.documents.map((DocumentSnapshot document){
-                    return DropdownMenuItem<String>(
-                      value: document.data['title'],
-                      child: Text(document.data['title']),
-                    );
-                  },
-                  ).toList(),
-                  // value: _categoriaSelecionada,
-                  onChanged: (valorSelecionado) {
-                    _categorySelected(valorSelecionado);
-                  },
-                  isExpanded: true,
-                ),
-              )
-            ],
-          ),
-        );
-      },
-    )
-    );
+    // formWidget.add(new StreamBuilder<QuerySnapshot>(
+    //   stream: Firestore.instance.collection('Produtos').snapshots(),
+    //   builder: (context, snapshot){
+    //     return Container(
+    //       child: Row(
+    //         children: <Widget>[
+    //           Expanded(
+    //             child: DropdownButton(
+    //               hint: new Text('Escolha a Categoria:'),
+    //               items: snapshot.data.documents.map((DocumentSnapshot document){
+    //                 return DropdownMenuItem<String>(
+    //                   value: document.data['title'],
+    //                   child: Text(document.data['title']),
+    //                 );
+    //               },
+    //               ).toList(),
+    //               // value: _categoriaSelecionada,
+    //               onChanged: (valorSelecionado) {
+    //                 _categorySelected(valorSelecionado);
+    //               },
+    //               isExpanded: true,
+    //             ),
+    //           )
+    //         ],
+    //       ),
+    //     );
+    //   },
+    // )
+    // );
 
     //---------- NOME DO PRODUTO ---------- 
      formWidget.add(new TextFormField(

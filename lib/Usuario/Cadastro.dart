@@ -172,7 +172,7 @@ class _CadDadosState extends State<CadDados> {
                         });
                       },
                       validator: (val) =>
-                          val.isEmpty ? 'Nome não pode ser vasio.' : null,
+                          val.isEmpty ? 'Nome não pode ser vazio.' : null,
                       keyboardType: TextInputType.text,
                       controller: _nome,
                       decoration: InputDecoration(
