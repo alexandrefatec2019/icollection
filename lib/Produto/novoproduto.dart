@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:icollection/Produto/Produto_Services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
@@ -13,17 +14,27 @@ class NovoProduto extends StatefulWidget {
 }
 
 class _NovoProdutoState extends State<NovoProduto> {
+  FirebaseFirestoreService db = new FirebaseFirestoreService();
+
   final _formKey = GlobalKey<FormState>();
   DocumentSnapshot snapshot;
 
   //TODO - Pagina NovoProduto - Pegar info do Model ou Data do Produto
-  String _nomeProduto = '';
-  String _descricao = '';
-  bool _troca = false;
-  int _estadoSelecionado = null;
+  String nomeProduto;
+  String descricao;
+  String valor;
+  String material;
+  bool troca = false;
+  int _estadoSelecionado = null; // ainda não inserido
   String _categoriaSelecionada;
   List<DropdownMenuItem<int>> estadoList = [];
   // List<DropdownMenuItem<int>> categoriaList = [];
+
+  TextEditingController _nomeProduto;
+  TextEditingController _descricao;
+  TextEditingController _valor;
+  TextEditingController _material;
+  TextEditingController _troca;
 
   File imagem;
   bool uploading = false;
@@ -87,35 +98,35 @@ class _NovoProdutoState extends State<NovoProduto> {
     List<Widget> formWidget = new List();
 
     //---------- CATEGORIA ----------
-    formWidget.add(new StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('Produtos').snapshots(),
-      builder: (context, snapshot){
-        return Container(
-          child: Row(
-            children: <Widget>[
-              Expanded(
-                child: DropdownButton(
-                  hint: new Text('Escolha a Categoria:'),
-                  items: snapshot.data.documents.map((DocumentSnapshot document){
-                    return DropdownMenuItem<String>(
-                      value: document.data['title'],
-                      child: Text(document.data['title']),
-                    );
-                  },
-                  ).toList(),
-                  // value: _categoriaSelecionada,
-                  onChanged: (valorSelecionado) {
-                    _categorySelected(valorSelecionado);
-                  },
-                  isExpanded: true,
-                ),
-              )
-            ],
-          ),
-        );
-      },
-    )
-    );
+    // formWidget.add(new StreamBuilder<QuerySnapshot>(
+    //   stream: Firestore.instance.collection('Produtos').snapshots(),
+    //   builder: (context, snapshot){
+    //     return Container(
+    //       child: Row(
+    //         children: <Widget>[
+    //           Expanded(
+    //             child: DropdownButton(
+    //               hint: new Text('Escolha a Categoria:'),
+    //               items: snapshot.data.documents.map((DocumentSnapshot document){
+    //                 return DropdownMenuItem<String>(
+    //                   value: document.data['title'],
+    //                   child: Text(document.data['title']),
+    //                 );
+    //               },
+    //               ).toList(),
+    //               // value: _categoriaSelecionada,
+    //               onChanged: (valorSelecionado) {
+    //                 _categorySelected(valorSelecionado);
+    //               },
+    //               isExpanded: true,
+    //             ),
+    //           )
+    //         ],
+    //       ),
+    //     );
+    //   },
+    // )
+    // );
 
     //---------- NOME DO PRODUTO ---------- 
      formWidget.add(new TextFormField(
@@ -128,11 +139,8 @@ class _NovoProdutoState extends State<NovoProduto> {
           return 'Digite um Nome para o produto';
         }
        },
-       onSaved: (value) {
-        setState(() {
-          _nomeProduto = value;
-        });
-      },
+       onSaved: (value) => nomeProduto = value,
+       controller: _nomeProduto,
      ),
     );
 
@@ -148,11 +156,8 @@ class _NovoProdutoState extends State<NovoProduto> {
             return 'Escreva a descrição do produto';
           }
         },
-        onSaved: (value){
-          setState(() {
-           _descricao = value; 
-          });
-        },
+       onSaved: (value) => descricao = value,
+       controller: _descricao,
       )
     );
 
@@ -168,11 +173,8 @@ class _NovoProdutoState extends State<NovoProduto> {
             return 'Escreva o material do produto';
           }
         },
-        onSaved: (value){
-          setState(() {
-           _descricao = value; 
-          });
-        },
+        onSaved: (value) => material = value,
+        controller: _material,
       )
     );
     formWidget.add(new Padding(
@@ -205,11 +207,8 @@ class _NovoProdutoState extends State<NovoProduto> {
             return 'Digite o valor do produto';
           }
         },
-        onSaved: (value){
-          setState(() {
-           _descricao = value; 
-          });
-        },
+        onSaved: (value) => valor = value,
+        controller: _valor,
       )
     );
 
@@ -233,10 +232,10 @@ class _NovoProdutoState extends State<NovoProduto> {
                 Radio<bool>(
             // title: const Text('Não'),
             value: false,
-            groupValue: _troca,
+            groupValue: troca,
             onChanged: (value){
               setState(() {
-               _troca = value; 
+               troca = value; 
               });
             },
           ),
@@ -247,10 +246,10 @@ class _NovoProdutoState extends State<NovoProduto> {
           Radio<bool>(
             // title: const Text('Sim'),
             value: true,
-            groupValue: _troca,
+            groupValue: troca,
             onChanged: (value){
               setState(() {
-               _troca = value; 
+               troca = value; 
               });
             },
           ),
