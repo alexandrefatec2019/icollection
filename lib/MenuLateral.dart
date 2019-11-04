@@ -187,7 +187,7 @@ Widget _buildStack() => Stack(
                 shape: BoxShape.circle,
                 image: DecorationImage(
                   fit: BoxFit.fill,
-                  image: new NetworkImage(_imagemURL
+                  image: new NetworkImage(_imagemURL ?? null
                   ),
                 ),
               ),

@@ -15,6 +15,24 @@ class FirebaseFirestoreService {
 
   FirebaseFirestoreService.internal();
 
+  //Leitura de dados do usuario
+  Future<UsuarioModel> lerUsuario(String email) async {
+    final TransactionHandler leituraTransaction = (Transaction tx) async {
+      final DocumentSnapshot ds =await tx.get(usuarioCollection.document(email));
+
+      //await tx.update(ds.reference, usuario.toMap());
+      
+      //return ds.data['email'].to;
+    };
+     return Firestore.instance.runTransaction(leituraTransaction).then((mapData) {
+      return UsuarioModel.fromMap(mapData);
+    }).catchError((error) {
+      print('error: $error');
+      return null;
+    });
+
+    
+  }
   Future<UsuarioModel> criarUsuario(String uid, String nome, String email,
       String cpfcnpj, String telefone, String photourl) async {
     final TransactionHandler createTransaction = (Transaction tx) async {

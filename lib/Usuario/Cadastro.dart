@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:icollection/Principal.dart';
-import 'package:icollection/Usuario/UsuarioService.dart';
+import 'package:icollection/Usuario/UsuarioDATA.dart';
 import 'package:icollection/model/usuarioModel.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -28,7 +28,7 @@ class _CadDadosState extends State<CadDados> {
   String email;
   String cpfcnpj;
   String telefone;
-  String photoUrl;
+  String _photoUrl;
 
   File imagem;
   bool uploading = false;
@@ -37,7 +37,7 @@ class _CadDadosState extends State<CadDados> {
   TextEditingController _email;
   TextEditingController _cpfcnpj;
   TextEditingController _telefone;
-  TextEditingController _photourl;
+  //TextEditingController _photourl;
 
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
@@ -80,7 +80,7 @@ class _CadDadosState extends State<CadDados> {
 
     setState(() {
       //Alterar variavel photoUrl com a nova url
-      photoUrl = url.toString();
+      _photoUrl = url.toString();
       this.uploading = false;
     });
 
@@ -92,11 +92,11 @@ class _CadDadosState extends State<CadDados> {
     SystemChrome.setEnabledSystemUIOverlays([]);
     super.initState();
     uid = widget.user.id;
-     _nome = new TextEditingController(text: widget.user.nome);
-     _email = new TextEditingController(text: widget.user.email);
-     _cpfcnpj = new TextEditingController(text: widget.user.cpfcnpj);
-     _telefone = new TextEditingController(text: widget.user?.telefone);
-    photoUrl = (widget.user.photourl);
+    _nome = new TextEditingController(text: widget.user.nome);
+    _email = new TextEditingController(text: widget.user.email);
+    _cpfcnpj = new TextEditingController(text: widget.user.cpfcnpj);
+    _telefone = new TextEditingController(text: widget.user?.telefone);
+    _photoUrl = (widget.user.photourl);
   }
 
   @override
@@ -127,11 +127,14 @@ class _CadDadosState extends State<CadDados> {
                   children: [
                     Padding(
                       padding: EdgeInsets.only(top: 10),
-                      child: CircleAvatar(
+                      child: GestureDetector(
+                        onTap: tirarFoto,
+                        child: CircleAvatar(
                         backgroundColor: Colors.black,
-                        backgroundImage: NetworkImage(widget.user.photourl),
+                        backgroundImage: NetworkImage(_photoUrl),
                         radius: 100,
                       ),
+                      )
                     ),
                   ],
                 ),
@@ -264,15 +267,14 @@ class _CadDadosState extends State<CadDados> {
                   width: MediaQuery.of(context).size.width / 1.3,
                   height: 50,
                   child: RaisedButton(
-                    
                     shape: new RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(50)),
                     color: Color(0xff1f631b),
                     onPressed: () {
                       //validação
                       db
-                          .criarUsuario(uid, _nome.text, _email.text,
-                              _cpfcnpj.text, _telefone.text, _photourl.text)
+                          .criarUsuario(_email.text, _nome.text, _email.text,
+                              _cpfcnpj.text, _telefone.text, _photoUrl)
                           .whenComplete(() {
                         //print(value);
                         Navigator.of(context).push(MaterialPageRoute(
@@ -287,6 +289,10 @@ class _CadDadosState extends State<CadDados> {
                       ),
                     ),
                   ),
+                  
+                ),
+                FloatingActionButton(
+                  onPressed: () {db.lerUsuario('gruposjrp@gmail.com');},
                 ),
                 const SizedBox(height: 24.0),
               ],

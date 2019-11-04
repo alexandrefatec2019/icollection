@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:icollection/AppBar.dart';
 import 'package:icollection/Login/auth.dart';
+import 'package:icollection/main.dart';
 //Arquivo onde esta todos os items do menu Lateral
 import 'Login/Tela_Auth.dart';
 import 'MenuLateral.dart';
@@ -48,21 +49,23 @@ class _Principal extends State<Principal> {
   @override
   initState() {
     super.initState();
-    doAsyncStuff();
+    verificaAuth();
   }
 
-  doAsyncStuff() async {
+  //Se estiver autenticado chama o menu, se nao chama a autenticação
+  verificaAuth() async {
     var auth = await FirebaseAuth.instance.currentUser();
-    try {
+
+    if (auth?.isEmailVerified != null) {
       setState(() {
         selectedWidgetMarker = WidgetMarker.menu;
         //print('xxxxxxxxxxxxxxxxxxxxxxxxxxxAAAAAAAAAAAAAAx\n\n\n\n' + auth.providerData[1].uid+'\n\n\n\n');
-        this._email = auth.email.toString();
-        this._imagemURL = auth.photoUrl.toString();
-        this._nomeUsuario = auth.displayName.toString();
-        this._telefone = auth.phoneNumber.toString();
+        this._email = auth?.email.toString();
+        this._imagemURL = auth?.photoUrl.toString();
+        this._nomeUsuario = auth?.displayName.toString();
+        this._telefone = auth?.phoneNumber.toString();
       });
-    } catch (e) {
+    } else {
       setState(() {
         selectedWidgetMarker = WidgetMarker.login;
       });

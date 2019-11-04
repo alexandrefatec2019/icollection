@@ -4,8 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:icollection/Login/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:icollection/Principal.dart';
-import 'package:icollection/Usuario/dadosuser.dart';
+import 'package:icollection/Usuario/Cadastro.dart';
 import 'package:icollection/Usuario/historico.dart';
+import 'package:icollection/model/usuarioModel.dart';
 
 //Classe autenticação
 Autentica auth = Autentica();
@@ -123,8 +124,17 @@ class PerfilState extends State<Perfil> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => DadosUser(_email,
-                                        _imagemURL, _nomeUsuario, _telefone)));
+                                    //Alterei para CadDados pq a tela sao a mesma !
+                                    //CadDados(UsuarioModel(null, '','','','','')),
+                                    builder: (context) => CadDados(UsuarioModel(
+                                        null,
+                                        _nomeUsuario,
+                                        _email,
+                                        '',
+                                        '',
+                                        _imagemURL))));
+                            // builder: (context) => CadDados(_email,
+                            //     _imagemURL, _nomeUsuario, _telefone)));
                           },
                           child: Center(
                             child: Text(

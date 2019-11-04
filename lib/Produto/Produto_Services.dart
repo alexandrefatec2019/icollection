@@ -1,15 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:icollection/model/listaprodutoModel.dart';
 
-
-
-
-
 //CRUD PRODUTO
-
-
-
-
 
 final CollectionReference produtoCollection =
     Firestore.instance.collection('ProdutoLista');
@@ -22,12 +14,13 @@ class FirebaseFirestoreService {
 
   FirebaseFirestoreService.internal();
 
-  Future<ListaProdutoModel> createNote(String title, String description, List image) async {
+  Future<ListaProdutoModel> createNote(
+      String title, String description, List image) async {
     final TransactionHandler createTransaction = (Transaction tx) async {
       final DocumentSnapshot ds = await tx.get(produtoCollection.document());
 
       final ListaProdutoModel produto =
-          ListaProdutoModel(ds.documentID, title, description,image);
+          ListaProdutoModel(ds.documentID, title, description, image);
       final Map<String, dynamic> data = produto.toMap();
 
       await tx.set(ds.reference, data);
