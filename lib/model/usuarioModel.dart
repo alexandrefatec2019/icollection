@@ -1,17 +1,16 @@
-
 //Modelo do usuario com os campos que estao na tela
 
 class UsuarioModel {
   String _id; //Codigo do usuario
   String _nome; //Nome
-  
+
   String _email; //Descrição do produto anunciado
   String _cpfcnpj; //CPU ou CNPJ
   String _telefone; //Telefone
   String _photourl; //Endereço da foto
 
-  UsuarioModel(
-      this._id, this._nome, this._email, this._cpfcnpj, this._telefone, this._photourl);
+  UsuarioModel(this._id, this._nome, this._email, this._cpfcnpj, this._telefone,
+      this._photourl);
 
   UsuarioModel.map(dynamic obj) {
     this._id = obj['id'];

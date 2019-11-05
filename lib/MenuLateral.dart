@@ -123,50 +123,50 @@ DocumentSnapshot snapshot;
 
 //Fim
 
-class ItemsMenuLateral extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-        child: ListView(
-      padding: EdgeInsets.zero,
-      children: <Widget>[
-        _criarCabecalhoMenu(),
+// class ItemsMenuLateral extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Drawer(
+//         child: ListView(
+//       padding: EdgeInsets.zero,
+//       children: <Widget>[
+//         _criarCabecalhoMenu(),
         
-        _criarItemMenu(
-          icon: Icons.home,
-          text: 'Página inicial',
-        ),
-        _criarItemMenu(icon: Icons.account_box, text: 'Minha Conta'),
-        _criarItemMenu(
-          icon: Icons.shopping_cart,
-          text: 'Vendas',
-        ),
-        Divider(),
-        _criarItemMenu(
-          icon: Icons.visibility,
-          text: 'Produtos',
-        ),
-        _criarItemMenu(
-          icon: Icons.collections_bookmark, 
-          text: 'Categorias',
-          ),
-        _criarItemMenu(icon: Icons.search, text: 'Procurar'),
+//         _criarItemMenu(
+//           icon: Icons.home,
+//           text: 'Página inicial',
+//         ),
+//         _criarItemMenu(icon: Icons.account_box, text: 'Minha Conta'),
+//         _criarItemMenu(
+//           icon: Icons.shopping_cart,
+//           text: 'Vendas',
+//         ),
+//         Divider(),
+//         _criarItemMenu(
+//           icon: Icons.visibility,
+//           text: 'Produtos',
+//         ),
+//         _criarItemMenu(
+//           icon: Icons.collections_bookmark, 
+//           text: 'Categorias',
+//           ),
+//         _criarItemMenu(icon: Icons.search, text: 'Procurar'),
 
 
-        Divider(),
-        _criarItemMenu(icon: Icons.bug_report, text: 'Sobre Nós'),
-        Divider(),
-        //ao clicar em sair chama a funçao logout do google e sai do app
-        _criarItemMenu(
-            icon: Icons.exit_to_app, text: 'Sair', onTap: auth.googleLogout),
-        // ListTile(
-        //   title: Text('0.0.1'),
-        //   onTap: () {},
-        // ),
-      ],
-    ));
-  }
-}
+//         Divider(),
+//         _criarItemMenu(icon: Icons.bug_report, text: 'Sobre Nós'),
+//         Divider(),
+//         //ao clicar em sair chama a funçao logout do google e sai do app
+//         _criarItemMenu(
+//             icon: Icons.exit_to_app, text: 'Sair', onTap: auth.googleLogout),
+//         // ListTile(
+//         //   title: Text('0.0.1'),
+//         //   onTap: () {},
+//         // ),
+//       ],
+//     ));
+//   }
+// }
 
 //teste de Imagem do usuario
 Widget _buildStack() => Stack(

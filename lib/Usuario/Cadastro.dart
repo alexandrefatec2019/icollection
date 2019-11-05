@@ -91,12 +91,27 @@ class _CadDadosState extends State<CadDados> {
   void initState() {
     SystemChrome.setEnabledSystemUIOverlays([]);
     super.initState();
-    uid = widget.user.id;
-    _nome = new TextEditingController(text: widget.user.nome);
-    _email = new TextEditingController(text: widget.user.email);
-    _cpfcnpj = new TextEditingController(text: widget.user.cpfcnpj);
-    _telefone = new TextEditingController(text: widget.user?.telefone);
-    _photoUrl = (widget.user.photourl);
+
+    //se o Cadadastro for chamado sem id.. ele ainda nao tem cadastro
+
+    if (widget.user.id == null) {
+      uid = widget.user.id;
+      _nome = new TextEditingController(text: widget.user.nome);
+      _email = new TextEditingController(text: widget.user.email);
+      _cpfcnpj = new TextEditingController(text: widget.user.cpfcnpj);
+      _telefone = new TextEditingController(text: widget.user?.telefone);
+      _photoUrl = (widget.user.photourl);
+    } else {
+      
+      //esse email ja vem da autenticação(widget.user.email)
+      db.lerUsuario(widget.user.email).then((_u) {
+        nome = _u.nome;
+        email = _u.email;
+        cpfcnpj = _u.cpfcnpj;
+        telefone = _u.telefone;
+        _photoUrl = _u.photourl;
+      });
+    }
   }
 
   @override
@@ -126,16 +141,15 @@ class _CadDadosState extends State<CadDados> {
                   alignment: Alignment.center,
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(top: 10),
-                      child: GestureDetector(
-                        onTap: tirarFoto,
-                        child: CircleAvatar(
-                        backgroundColor: Colors.black,
-                        backgroundImage: NetworkImage(_photoUrl),
-                        radius: 100,
-                      ),
-                      )
-                    ),
+                        padding: EdgeInsets.only(top: 10),
+                        child: GestureDetector(
+                          onTap: tirarFoto,
+                          child: CircleAvatar(
+                            backgroundColor: Colors.black,
+                            backgroundImage: NetworkImage(_photoUrl),
+                            radius: 100,
+                          ),
+                        )),
                   ],
                 ),
 
@@ -289,10 +303,11 @@ class _CadDadosState extends State<CadDados> {
                       ),
                     ),
                   ),
-                  
                 ),
                 FloatingActionButton(
-                  onPressed: () {db.lerUsuario('gruposjrp@gmail.com');},
+                  onPressed: () {
+                    db.lerUsuario('gruposjrp@gmail.com');
+                  },
                 ),
                 const SizedBox(height: 24.0),
               ],
