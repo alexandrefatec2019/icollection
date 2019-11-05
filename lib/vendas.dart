@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:icollection/Produto/novoproduto.dart';
+import 'package:icollection/model/listaprodutoModel.dart';
 
 class Vendas extends StatefulWidget {
   @override
@@ -7,6 +8,8 @@ class Vendas extends StatefulWidget {
 }
 
 class _VendasState extends State<Vendas> {
+  ListaProdutoModel get product => null;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +22,7 @@ class _VendasState extends State<Vendas> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: (){
           Navigator.push(context, MaterialPageRoute(
-            builder: (context) => NovoProduto(),
+            builder: (context) => NovoProduto(product),
           )
           );
         },

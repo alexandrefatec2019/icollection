@@ -46,7 +46,7 @@ Future<UsuarioModel> lerUsuario(String email) async {
       print('error: $error');
       return null;
     });
-  }
+  } 
 
   Future<dynamic> updateUsuario(ListaProdutoModel produto) async {
     final TransactionHandler updateTransaction = (Transaction tx) async {

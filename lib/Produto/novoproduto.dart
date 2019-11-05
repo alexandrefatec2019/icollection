@@ -1,25 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:icollection/Produto/Produto_Services.dart';
+import 'package:icollection/Produto/produtoDATA.dart' as prefix0;
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 import 'package:flutter/rendering.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-
+import 'package:icollection/Produto/produtoDATA.dart';
+import 'package:icollection/model/listaprodutoModel.dart';
 
 class NovoProduto extends StatefulWidget {
+  final ListaProdutoModel product;
+  NovoProduto(this.product);
+
   @override
   _NovoProdutoState createState() => _NovoProdutoState();
 }
 
 class _NovoProdutoState extends State<NovoProduto> {
-  FirebaseFirestoreService db = new FirebaseFirestoreService();
+  prefix0.FirebaseFirestoreService db = new prefix0.FirebaseFirestoreService();
 
   final _formKey = GlobalKey<FormState>();
   DocumentSnapshot snapshot;
 
   //TODO - Pagina NovoProduto - Pegar info do Model ou Data do Produto
+  String uid;
   String nomeProduto;
   String descricao;
   String valor;
@@ -139,7 +144,11 @@ class _NovoProdutoState extends State<NovoProduto> {
           return 'Digite um Nome para o produto';
         }
        },
-       onSaved: (value) => nomeProduto = value,
+       onSaved: (value) {
+        setState(() {
+          nomeProduto = value;
+        });
+      },
        controller: _nomeProduto,
      ),
     );
@@ -156,7 +165,11 @@ class _NovoProdutoState extends State<NovoProduto> {
             return 'Escreva a descrição do produto';
           }
         },
-       onSaved: (value) => descricao = value,
+       onSaved: (value) {
+        setState(() {
+          descricao = value;
+        });
+      },
        controller: _descricao,
       )
     );
@@ -173,7 +186,11 @@ class _NovoProdutoState extends State<NovoProduto> {
             return 'Escreva o material do produto';
           }
         },
-        onSaved: (value) => material = value,
+        onSaved: (value) {
+        setState(() {
+          material = value;
+        });
+      },
         controller: _material,
       )
     );
@@ -207,7 +224,11 @@ class _NovoProdutoState extends State<NovoProduto> {
             return 'Digite o valor do produto';
           }
         },
-        onSaved: (value) => valor = value,
+        onSaved: (value) {
+        setState(() {
+          valor = value;
+        });
+      },
         controller: _valor,
       )
     );
@@ -397,7 +418,9 @@ class _NovoProdutoState extends State<NovoProduto> {
     //---------- BOTÃO CONFIRMAR ----------
     formWidget.add(new FloatingActionButton.extended(
         onPressed: (){
-          
+          // print(nomeProduto + descricao + material + valor + troca.toString());
+          db.criarProduto('gruposjrp@gmail.com', nomeProduto, descricao, material, valor, troca, null);
+
         },
         icon: Icon(Icons.done),
         label: Text('Criar Anúncio'),

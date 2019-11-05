@@ -167,7 +167,7 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
       context,
       MaterialPageRoute(
           builder: (context) =>
-              NoteScreen(ListaProdutoModel(null, '', '', null))),
+              NoteScreen(ListaProdutoModel(null, '', '', null, null, null, null))),
     );
   }
 }

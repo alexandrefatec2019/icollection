@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:icollection/model/listaprodutoModel.dart';
+import 'package:icollection/model/usuarioModel.dart';
+import 'package:icollection/Usuario/UsuarioDATA.dart';
 
-//CRUD PRODUTO
+//CRUD USUARIO
 
 final CollectionReference produtoCollection =
     Firestore.instance.collection('ProdutoLista');
@@ -14,13 +16,25 @@ class FirebaseFirestoreService {
 
   FirebaseFirestoreService.internal();
 
-  Future<ListaProdutoModel> createNote(
-      String title, String description, String material, String valor, bool troca, List image) async {
+// Ler dados do usuario logado
+Future<UsuarioModel> lerUsuario(String email) async {
+    var document = usuarioCollection.document(email).get();
+    return await document.then((doc) {
+      return UsuarioModel.map(doc);
+    });
+  }
+
+
+  //TODO passar o model em vez de variaveis
+
+  Future<ListaProdutoModel> criarProduto(String id, String nomeProduto, String descricao,
+      String material, String valor, bool troca, List image) async {
     final TransactionHandler createTransaction = (Transaction tx) async {
-      final DocumentSnapshot ds = await tx.get(produtoCollection.document());
+      //Salva um documento na Coleção usuario com o nome id do google (uid)
+      final DocumentSnapshot ds = await tx.get(produtoCollection.document(id));
 
       final ListaProdutoModel produto =
-          ListaProdutoModel(ds.documentID, title, description, material, valor, troca, image);
+          ListaProdutoModel(id, nomeProduto, descricao, material, valor, troca, image);
       final Map<String, dynamic> data = produto.toMap();
 
       await tx.set(ds.reference, data);
@@ -36,21 +50,7 @@ class FirebaseFirestoreService {
     });
   }
 
-  Stream<QuerySnapshot> getNoteList({int offset, int limit}) {
-    Stream<QuerySnapshot> snapshots = produtoCollection.snapshots();
-
-    if (offset != null) {
-      snapshots = snapshots.skip(offset);
-    }
-
-    if (limit != null) {
-      snapshots = snapshots.take(limit);
-    }
-
-    return snapshots;
-  }
-
-  Future<dynamic> updateNote(ListaProdutoModel produto) async {
+  Future<dynamic> updateProduto(ListaProdutoModel produto) async {
     final TransactionHandler updateTransaction = (Transaction tx) async {
       final DocumentSnapshot ds =
           await tx.get(produtoCollection.document(produto.id));
@@ -68,9 +68,10 @@ class FirebaseFirestoreService {
     });
   }
 
-  Future<dynamic> deleteNote(String id) async {
+  //SEM USO
+  Future<dynamic> deleteUsuario(String id) async {
     final TransactionHandler deleteTransaction = (Transaction tx) async {
-      final DocumentSnapshot ds = await tx.get(produtoCollection.document(id));
+      final DocumentSnapshot ds = await tx.get(usuarioCollection.document(id));
 
       await tx.delete(ds.reference);
       return {'deleted': true};

@@ -7,7 +7,7 @@ class ListaProdutoModel {
   bool _troca;
   List _image; //talvez uma lista com mais de uma imagem
 
-  ListaProdutoModel(this._id, this._nomeProduto, this._descricao, this._image);
+  ListaProdutoModel(this._id, this._nomeProduto, this._descricao, this._material, this._valor, this._troca, this._image);
 
   ListaProdutoModel.map(dynamic obj) {
     this._id = obj['id'];
