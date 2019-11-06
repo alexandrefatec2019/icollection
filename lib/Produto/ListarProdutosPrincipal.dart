@@ -106,7 +106,8 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
                                   fontWeight: FontWeight.bold,
                                   fontSize: 34,
                                   color: Colors.white)),
-                        ))
+                        )
+                    )
                   ],
                 ),
               ),

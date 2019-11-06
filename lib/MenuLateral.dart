@@ -5,6 +5,7 @@ import 'package:icollection/Usuario/perfil.dart';
 import 'package:icollection/categoria.dart';
 import 'package:icollection/vendas.dart';
 import 'Login/auth.dart';
+import 'Principal.dart';
 
 //Classe autenticação
 Autentica auth = Autentica();
@@ -66,6 +67,13 @@ DocumentSnapshot snapshot;
         _criarItemMenu(
           icon: Icons.home,
           text: 'Página inicial',
+          onTap: (){
+            Navigator.of(context).pop();
+            Navigator.push(context, MaterialPageRoute(
+              builder: (context) => Principal(),
+            )
+            );
+          }
         ),
         _criarItemMenu(icon: Icons.account_box, text: 'Minha Conta',
         onTap: (){

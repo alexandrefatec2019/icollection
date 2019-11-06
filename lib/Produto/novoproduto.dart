@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:icollection/Principal.dart';
 import 'package:icollection/Produto/Produto_Services.dart';
 import 'package:icollection/Produto/produtoDATA.dart' as prefix0;
 import 'package:image_picker/image_picker.dart';
@@ -34,12 +36,31 @@ class _NovoProdutoState extends State<NovoProduto> {
   String _categoriaSelecionada;
   List<DropdownMenuItem<int>> estadoList = [];
   // List<DropdownMenuItem<int>> categoriaList = [];
+  List img = ['https://cdn.shopify.com/s/files/1/0973/0376/products/mail_b48a54fc-2368-4e05-ae2d-fe8a4f4dcb39.jpg?v=1548118355'];
 
   TextEditingController _nomeProduto;
   TextEditingController _descricao;
   TextEditingController _valor;
   TextEditingController _material;
   TextEditingController _troca;
+
+ @override
+  void initState() {
+    SystemChrome.setEnabledSystemUIOverlays([]);
+    super.initState();
+    _nomeProduto = new TextEditingController(text: widget.product?.nomeproduto);
+    _descricao = new TextEditingController(text: widget.product?.descricao);
+    _valor = new TextEditingController(text: widget.product?.valor);
+    _material = new TextEditingController(text: widget.product?.material);
+
+  }
+//     if (widget.product.id == null) {
+//       _nomeProduto = new TextEditingController(text: widget.product.nomeproduto);
+//       _descricao = new TextEditingController(text: widget.product.descricao);
+//       _valor = new TextEditingController(text: widget.product.valor);
+//       _material = new TextEditingController(text: widget.product.material);
+//     }
+// }
 
   File imagem;
   bool uploading = false;
@@ -69,6 +90,12 @@ class _NovoProdutoState extends State<NovoProduto> {
     ));
   }
 
+  // @override
+  // void initState() { 
+  //   SystemChrome.setEnabledSystemUIOverlays([]);
+  //   super.initState();
+
+  // }
   @override
   Widget build(BuildContext context) {
     loadEstadoList();
@@ -144,11 +171,8 @@ class _NovoProdutoState extends State<NovoProduto> {
           return 'Digite um Nome para o produto';
         }
        },
-       onSaved: (value) {
-        setState(() {
-          nomeProduto = value;
-        });
-      },
+       onSaved: (value) => nomeProduto = value,
+      
        controller: _nomeProduto,
      ),
     );
@@ -165,11 +189,7 @@ class _NovoProdutoState extends State<NovoProduto> {
             return 'Escreva a descrição do produto';
           }
         },
-       onSaved: (value) {
-        setState(() {
-          descricao = value;
-        });
-      },
+       onSaved: (value) => descricao = value,
        controller: _descricao,
       )
     );
@@ -186,11 +206,7 @@ class _NovoProdutoState extends State<NovoProduto> {
             return 'Escreva o material do produto';
           }
         },
-        onSaved: (value) {
-        setState(() {
-          material = value;
-        });
-      },
+        onSaved: (value) => material = value,
         controller: _material,
       )
     );
@@ -224,11 +240,7 @@ class _NovoProdutoState extends State<NovoProduto> {
             return 'Digite o valor do produto';
           }
         },
-        onSaved: (value) {
-        setState(() {
-          valor = value;
-        });
-      },
+        onSaved: (value) => valor = value,
         controller: _valor,
       )
     );
@@ -418,9 +430,14 @@ class _NovoProdutoState extends State<NovoProduto> {
     //---------- BOTÃO CONFIRMAR ----------
     formWidget.add(new FloatingActionButton.extended(
         onPressed: (){
-          // print(nomeProduto + descricao + material + valor + troca.toString());
-          db.criarProduto('gruposjrp@gmail.com', nomeProduto, descricao, material, valor, troca, null);
-
+          // print(_valor.text);
+          db.criarProduto(uid, _nomeProduto.text, _descricao.text, _material.text, _valor.text, troca, img);
+          Navigator.of(context).pop();
+            Navigator.push(context, MaterialPageRoute(
+              builder: (context) => Principal()
+              )
+            );
+            
         },
         icon: Icon(Icons.done),
         label: Text('Criar Anúncio'),

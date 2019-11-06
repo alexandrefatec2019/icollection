@@ -3,7 +3,7 @@ import 'package:icollection/model/listaprodutoModel.dart';
 import 'package:icollection/model/usuarioModel.dart';
 import 'package:icollection/Usuario/UsuarioDATA.dart';
 
-//CRUD USUARIO
+//CRUD PRODUTO
 
 final CollectionReference produtoCollection =
     Firestore.instance.collection('ProdutoLista');
@@ -16,11 +16,11 @@ class FirebaseFirestoreService {
 
   FirebaseFirestoreService.internal();
 
-// Ler dados do usuario logado
-Future<UsuarioModel> lerUsuario(String email) async {
-    var document = usuarioCollection.document(email).get();
+// Ler dados do produto
+Future<ListaProdutoModel> lerProduto(String nomeproduto) async {
+    var document = produtoCollection.document(nomeproduto).get();
     return await document.then((doc) {
-      return UsuarioModel.map(doc);
+      return ListaProdutoModel.map(doc);
     });
   }
 
