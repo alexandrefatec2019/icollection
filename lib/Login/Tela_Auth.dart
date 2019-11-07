@@ -18,10 +18,11 @@ class LoginPage extends StatelessWidget {
         children: <Widget>[
           GoogleSignInButton(
               darkMode: true,
-              onPressed: () {
-                auth.googleLogin().then((value) {
-                  //print(value);
+              onPressed: () async {
+                await auth.googleLogin().then((value) {
+                  print('\n\n\n\n\n\n\n'+value.email+'\n\n\n\n\n\n');
                   Navigator.of(context).push(
+                    
                       MaterialPageRoute(builder: (context) => CadDados(value)));
                 });
               }),
@@ -118,4 +119,8 @@ class Header extends StatelessWidget {
                       fontWeight: FontWeight.w500))),
         ]));
   }
+}
+
+void chamaAutenticador() async {
+
 }

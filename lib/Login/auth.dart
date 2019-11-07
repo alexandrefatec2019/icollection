@@ -5,6 +5,7 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:icollection/model/usuarioModel.dart';
 
+
 class Autentica {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
@@ -17,6 +18,19 @@ class Autentica {
   String name;
   String email;
   String imageUrl;
+
+  //Retorna dados do usuario do Database
+  Future<UsuarioModel> userData() async {
+    final CollectionReference usuarioCollection =
+        Firestore.instance.collection('Usuario');
+
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    //Le o documento do usuario
+    var document = usuarioCollection.document(user.email).get();
+    return await document.then((r) {
+      return UsuarioModel.map(r);
+    });
+  }
 
   //Login Google
   Future<UsuarioModel> googleLogin() async {
@@ -44,17 +58,27 @@ class Autentica {
       name = user.email;
 
       assert(user.email != null);
+      //assert(user?.phoneNumber != null);
 
       assert(user.displayName != null);
       assert(user.photoUrl != null);
-      
+
       // if (await userCheck(user.providerData[1].uid)) {
-      //   print('xxxxxxxxxxxxxxxx' + ' ' + user.providerData[1].uid);
+      print('xxxxxxxxxxxxxxxx' + ' ' + user.photoUrl);
       // }
-      
-      return UsuarioModel(user.email, user.displayName,
-          user.email, '', user.phoneNumber, user.photoUrl);
+      print('\n\n\nmetodo auth google \n email = ' +
+          user.email +
+          '\n displayname = ' +
+          user.displayName +
+          '\n photourl = ' +
+          user.photoUrl +
+          '\n\n\n\n');
+
+      return UsuarioModel(
+          user.email, user.displayName, user.email, '', '', user.photoUrl);
     } catch (e) {
+      print('\n\n\n\n\n\n' + e.toString() + '\n\n\n\n\n\n\n');
+      googleLogout();
       return null;
     }
   }

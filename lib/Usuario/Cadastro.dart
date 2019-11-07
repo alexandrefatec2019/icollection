@@ -28,7 +28,7 @@ class _CadDadosState extends State<CadDados> {
   String email;
   String cpfcnpj;
   String telefone;
-  String _photoUrl;
+  String _photoUrl = '';
 
   File imagem;
   bool uploading = false;
@@ -91,25 +91,34 @@ class _CadDadosState extends State<CadDados> {
   void initState() {
     SystemChrome.setEnabledSystemUIOverlays([]);
     super.initState();
-
     //se o Cadadastro for chamado sem id.. ele ainda nao tem cadastro
+    verifica();
+  }
 
-    if (widget.user.id == null) {
-      uid = widget.user.id;
-      _nome = new TextEditingController(text: widget.user.nome);
-      _email = new TextEditingController(text: widget.user.email);
-      _cpfcnpj = new TextEditingController(text: widget.user.cpfcnpj);
-      _telefone = new TextEditingController(text: widget.user?.telefone);
-      _photoUrl = (widget.user.photourl);
+  //Verifica
+  void verifica() {
+    print('\n\n\n\naueuhaiuhihuih\n\n\n\n');
+    if (widget.user.id != null) {
+      print('Primeiro If');
+      setState(() {
+        uid = widget.user.id;
+        _nome = new TextEditingController(text: widget.user.nome);
+        _email = new TextEditingController(text: widget.user.email);
+        _cpfcnpj = new TextEditingController(text: widget.user.cpfcnpj);
+        _telefone = new TextEditingController(text: widget.user?.telefone);
+        _photoUrl = (widget.user.photourl);
+      });
     } else {
-      
+      print('Segundo If');
       //esse email ja vem da autenticação(widget.user.email)
       db.lerUsuario(widget.user.email).then((_u) {
-        nome = _u.nome;
-        email = _u.email;
-        cpfcnpj = _u.cpfcnpj;
-        telefone = _u.telefone;
-        _photoUrl = _u.photourl;
+        setState(() {
+          nome = _u.nome;
+          email = _u.email;
+          cpfcnpj = _u.cpfcnpj;
+          telefone = _u.telefone;
+          _photoUrl = _u.photourl;
+        });
       });
     }
   }
