@@ -50,26 +50,20 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
   Widget build(BuildContext context) {
     return Center(
       child: ListView.builder(
+          //NetworkImage('${items[position].image[0]}')),
           itemCount: items.length,
           padding: const EdgeInsets.all(1.0),
           itemBuilder: (context, position) {
             return Card(
               semanticContainer: true,
-              // shape: RoundedRectangleBorder(
-              //   borderRadius: BorderRadius.circular(15.0),
-              // ),
               child: AspectRatio(
                 aspectRatio: 500 / 500,
                 child: Stack(
                   children: <Widget>[
                     Container(
                       decoration: BoxDecoration(
-                        // borderRadius:
-                        //     new BorderRadius.all(const Radius.circular(20.0)),
-                        //topRight: const Radius.circular(20.0)),
                         image: DecorationImage(
                             fit: BoxFit.fitWidth,
-                            //Define aonde vai cortar a imagem !!
                             alignment: FractionalOffset.topCenter,
                             image: NetworkImage('${items[position].image[0]}')),
                       ),
