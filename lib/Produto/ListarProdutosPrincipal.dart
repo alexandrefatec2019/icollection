@@ -55,17 +55,17 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
           itemBuilder: (context, position) {
             return Card(
               semanticContainer: true,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0),
-              ),
+              // shape: RoundedRectangleBorder(
+              //   borderRadius: BorderRadius.circular(15.0),
+              // ),
               child: AspectRatio(
                 aspectRatio: 500 / 500,
                 child: Stack(
                   children: <Widget>[
                     Container(
                       decoration: BoxDecoration(
-                        borderRadius:
-                            new BorderRadius.all(const Radius.circular(20.0)),
+                        // borderRadius:
+                        //     new BorderRadius.all(const Radius.circular(20.0)),
                         //topRight: const Radius.circular(20.0)),
                         image: DecorationImage(
                             fit: BoxFit.fitWidth,
@@ -74,28 +74,6 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
                             image: NetworkImage('${items[position].image[0]}')),
                       ),
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius:
-                            BorderRadius.all(const Radius.circular(20.0)),
-                        gradient: LinearGradient(
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter,
-                            colors: [Colors.black, Colors.transparent],
-                            stops: [0.2, 0.3]),
-                      ),
-                    ),
-                    Container(
-                        //Alinhamento do texto
-                        alignment: Alignment(-1.0, 1.0),
-                        child: Padding(
-                          padding: EdgeInsets.all(20),
-                          child: Text('${items[position].nomeproduto}',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 34,
-                                  color: Colors.white)),
-                        ))
                   ],
                 ),
               ),
