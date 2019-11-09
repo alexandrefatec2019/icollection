@@ -55,9 +55,6 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
           itemBuilder: (context, position) {
             return Card(
               semanticContainer: true,
-              //color: Colors.black,
-
-              //Remover depois !!
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15.0),
               ),
@@ -76,19 +73,11 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
                             alignment: FractionalOffset.topCenter,
                             image: NetworkImage('${items[position].image[0]}')),
                       ),
-
-                      //Faixa preta degrade
-                      // foregroundDecoration: BoxDecoration(
-                      //   gradient: LinearGradient(
-                      //       begin: Alignment.bottomCenter,
-                      //       end: Alignment.topCenter,
-                      //       colors: [Colors.black, Colors.transparent],
-                      //       stops: [0.2, 0.3]),
-                      // ),
                     ),
                     Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(const Radius.circular(20.0)),
+                        borderRadius:
+                            BorderRadius.all(const Radius.circular(20.0)),
                         gradient: LinearGradient(
                             begin: Alignment.bottomCenter,
                             end: Alignment.topCenter,
@@ -106,82 +95,12 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
                                   fontWeight: FontWeight.bold,
                                   fontSize: 34,
                                   color: Colors.white)),
-                        )
-                    )
+                        ))
                   ],
                 ),
               ),
             );
-
-            //Image.network('${items[position].image[0]}', height: 150) ,
-            // Column(
-            //   children: <Widget>[
-            //     Divider(height: 5.0),
-            //     //Mostrar a imagem do produto
-            //     imageProduto('${items[position].image[0]}'),
-            //     ListTile(
-            //       title: Text(
-            //         '${items[position].nomeproduto}',
-            //         style: TextStyle(
-            //           fontSize: 22.0,
-            //           color: Colors.deepOrangeAccent,
-            //         ),
-            //       ),
-            //       subtitle: Text(
-            //         '${items[position].descricao}',
-            //         style: new TextStyle(
-            //           fontSize: 18.0,
-            //           fontStyle: FontStyle.italic,
-            //         ),
-            //       ),
-            //       leading: Column(
-            //         children: <Widget>[
-            //           Padding(padding: EdgeInsets.all(1.0)),
-            //           // IconButton(
-            //           //     icon: const Icon(Icons.remove_circle_outline),
-            //           //     onPressed: () =>
-            //           //         _deleteNote(context, items[position], position)),
-            //         ],
-            //       ),
-            //       onTap: () => _navigateToNote(context, items[position]),
-            //     ),
-            //   ],
-            // ),
           }),
     );
-    // floatingActionButton: FloatingActionButton(
-    //   child: Icon(Icons.add),
-    //   onPressed: () => _createNewNote(context),
-    // ),
   }
-
-//hummmm
-  void _navigateToNote(BuildContext context, ListaProdutoModel note) async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => NoteScreen(note)),
-    );
-  }
-
-  void createNewNote(BuildContext context) async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) =>
-              NoteScreen(ListaProdutoModel(null, '', '', null, null, null, null))),
-    );
-  }
-}
-
-Widget imageProduto(String url) {
-  return ListTile(
-    title: Row(
-      children: <Widget>[
-        Image.network(
-          url,
-          height: 150,
-        )
-      ],
-    ),
-  );
 }

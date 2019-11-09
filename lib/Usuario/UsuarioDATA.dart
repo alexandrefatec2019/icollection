@@ -16,11 +16,18 @@ class FirebaseFirestoreService {
   FirebaseFirestoreService.internal();
 
 // Ler dados do usuario logado
+
 Future<UsuarioModel> lerUsuario(String email) async {
-    var document = usuarioCollection.document(email).get();
+    try {
+var document = usuarioCollection.document(email).get();
     return await document.then((doc) {
       return UsuarioModel.map(doc);
     });
+    }
+    catch(e){
+      return null;
+    }
+    
   }
 
   //TODO passar o model em vez de variaveis

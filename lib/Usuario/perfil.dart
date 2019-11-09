@@ -126,13 +126,7 @@ class PerfilState extends State<Perfil> {
                                 MaterialPageRoute(
                                     //Alterei para CadDados pq a tela sao a mesma !
                                     //CadDados(UsuarioModel(null, '','','','','')),
-                                    builder: (context) => CadDados(UsuarioModel(
-                                        null,
-                                        _nomeUsuario,
-                                        _email,
-                                        '',
-                                        '',
-                                        _imagemURL))));
+                                    builder: (context) => CadDados()));
                             // builder: (context) => CadDados(_email,
                             //     _imagemURL, _nomeUsuario, _telefone)));
                           },

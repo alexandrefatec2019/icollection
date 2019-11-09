@@ -12,15 +12,16 @@ import 'package:firebase_storage/firebase_storage.dart';
 //cuida da sobreposição do teclado
 import 'ensure.dart';
 
-class CadDados extends StatefulWidget {
-  final UsuarioModel user;
-  CadDados(this.user);
+import 'package:icollection/VariaveisGlobais/UsuarioGlobal.dart' as g;
+import 'package:cached_network_image/cached_network_image.dart';
 
+class CadDados extends StatefulWidget {
   @override
   _CadDadosState createState() => new _CadDadosState();
 }
 
 class _CadDadosState extends State<CadDados> {
+  
   FirebaseFirestoreService db = new FirebaseFirestoreService();
   //TODO verificar depois se é possivel diminuir o numero de vars
   String uid;
@@ -59,10 +60,11 @@ class _CadDadosState extends State<CadDados> {
     var _imagem = await ImagePicker.pickImage(
         source: ImageSource.camera,
         imageQuality: 100,
-        maxHeight: 800,
-        maxWidth: 600);
-
-    var usuario = (widget.user.email);
+        maxHeight: 96,
+        maxWidth: 96);
+    
+    //TODO ver se vem do auth ou do db
+    var usuario = g.emailAuth;
 
     setState(() {
       this.imagem = _imagem;
@@ -98,30 +100,30 @@ class _CadDadosState extends State<CadDados> {
   //Verifica
   void verifica() {
     print('\n\n\n\naueuhaiuhihuih\n\n\n\n');
-    if (widget.user.id != null) {
+    if (g.dadosUser = true) {
       print('Primeiro If');
       setState(() {
-        uid = widget.user.id;
-        _nome = new TextEditingController(text: widget.user.nome);
-        _email = new TextEditingController(text: widget.user.email);
-        _cpfcnpj = new TextEditingController(text: widget.user.cpfcnpj);
-        _telefone = new TextEditingController(text: widget.user?.telefone);
-        _photoUrl = (widget.user.photourl);
+        //uid = g.id;
+        _nome = new TextEditingController(text: g.nome);
+        _email = new TextEditingController(text: g.email);
+        _cpfcnpj = new TextEditingController(text: g.cpfcnpj);
+        _telefone = new TextEditingController(text: g.telefone);
+        _photoUrl = (g.photourl);
       });
     } else {
       print('Segundo If');
       //esse email ja vem da autenticação(widget.user.email)
-      db.lerUsuario(widget.user.email).then((_u) {
+      
         setState(() {
-          nome = _u.nome;
-          email = _u.email;
-          cpfcnpj = _u.cpfcnpj;
-          telefone = _u.telefone;
-          _photoUrl = _u.photourl;
+          nome = g.nome;
+          email = g.email;
+          cpfcnpj = '';//_u.cpfcnpj;
+          telefone = '';//_u.telefone;
+          _photoUrl = g.photoAuth;//.photourl;
         });
-      });
+      }
     }
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -153,10 +155,16 @@ class _CadDadosState extends State<CadDados> {
                         padding: EdgeInsets.only(top: 10),
                         child: GestureDetector(
                           onTap: tirarFoto,
-                          child: CircleAvatar(
-                            backgroundColor: Colors.black,
-                            backgroundImage: NetworkImage(_photoUrl),
-                            radius: 100,
+                          child: Container(
+                            width: 170.0,
+                            height: 170.0,
+                            decoration: new BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: new DecorationImage(
+                                fit: BoxFit.fill,
+                                image: CachedNetworkImageProvider(_photoUrl),
+                              ),
+                            ),
                           ),
                         )),
                   ],
@@ -294,6 +302,11 @@ class _CadDadosState extends State<CadDados> {
                         borderRadius: new BorderRadius.circular(50)),
                     color: Color(0xff1f631b),
                     onPressed: () {
+                      //Define as novas alterações para as var globais
+                      g.nome = _nome.text;
+                      g.email = _email.text;
+                      g.cpfcnpj = _cpfcnpj.text;
+                      g.telefone = _telefone.text;
                       //validação
                       db
                           .criarUsuario(_email.text, _nome.text, _email.text,
@@ -312,11 +325,6 @@ class _CadDadosState extends State<CadDados> {
                       ),
                     ),
                   ),
-                ),
-                FloatingActionButton(
-                  onPressed: () {
-                    db.lerUsuario('gruposjrp@gmail.com');
-                  },
                 ),
                 const SizedBox(height: 24.0),
               ],
