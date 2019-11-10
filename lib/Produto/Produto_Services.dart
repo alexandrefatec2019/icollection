@@ -4,7 +4,7 @@ import 'package:icollection/model/listaprodutoModel.dart';
 //CRUD PRODUTO
 
 final CollectionReference produtoCollection =
-    Firestore.instance.collection('ProdutoLista');
+    Firestore.instance.collection('ProdutoLista').reference();
 
 class FirebaseFirestoreService {
   static final FirebaseFirestoreService _instance =
@@ -14,13 +14,13 @@ class FirebaseFirestoreService {
 
   FirebaseFirestoreService.internal();
 
-  Future<ListaProdutoModel> createNote(
-      String title, String description, String material, String valor, bool troca, List image) async {
+  Future<ListaProdutoModel> createNote(String title, String description,
+      String material, String valor, bool troca, List image) async {
     final TransactionHandler createTransaction = (Transaction tx) async {
       final DocumentSnapshot ds = await tx.get(produtoCollection.document());
 
-      final ListaProdutoModel produto =
-          ListaProdutoModel(ds.documentID, title, description, material, valor, troca, image);
+      final ListaProdutoModel produto = ListaProdutoModel(
+          ds.documentID, title, description, material, valor, troca, image);
       final Map<String, dynamic> data = produto.toMap();
 
       await tx.set(ds.reference, data);
@@ -35,10 +35,11 @@ class FirebaseFirestoreService {
       return null;
     });
   }
+  //Leitura do produto na lista geral !!!
 
   Stream<QuerySnapshot> getNoteList({int offset, int limit}) {
+    
     Stream<QuerySnapshot> snapshots = produtoCollection.snapshots();
-
     if (offset != null) {
       snapshots = snapshots.skip(offset);
     }

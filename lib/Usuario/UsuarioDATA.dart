@@ -17,17 +17,18 @@ class FirebaseFirestoreService {
 
 // Ler dados do usuario logado
 
-Future<UsuarioModel> lerUsuario(String email) async {
+  Future<UsuarioModel> lerUsuario(String email) async {
     try {
-var document = usuarioCollection.document(email).get();
-    return await document.then((doc) {
-      return UsuarioModel.map(doc);
-    });
-    }
-    catch(e){
+
+      var document = usuarioCollection.document(email).get();
+      return await document.then((doc) {
+        return UsuarioModel.map(doc);
+
+        
+      });
+    } catch (e) {
       return null;
     }
-    
   }
 
   //TODO passar o model em vez de variaveis
@@ -53,7 +54,7 @@ var document = usuarioCollection.document(email).get();
       print('error: $error');
       return null;
     });
-  } 
+  }
 
   Future<dynamic> updateUsuario(ListaProdutoModel produto) async {
     final TransactionHandler updateTransaction = (Transaction tx) async {

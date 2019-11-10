@@ -1,3 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:icollection/Produto/Produto_Services.dart';
+import 'package:icollection/model/usuarioModel.dart';
+
 class ListaProdutoModel {
   String _id; //Codigo do usuario que postou o produto
   String _nomeProduto; //Nome do produto anunciado
@@ -5,9 +10,17 @@ class ListaProdutoModel {
   String _material;
   String _valor;
   bool _troca;
-  List _image; //talvez uma lista com mais de uma imagem
+  List _image;
+  String _nomeB;
+  String _nomeC;
 
-  ListaProdutoModel(this._id, this._nomeProduto, this._descricao, this._material, this._valor, this._troca, this._image);
+  //DocumentReference _usuario2; //= Firestore.instance.collection('Usuario').document('gruposjrp@gmail.com');
+  DocumentReference _teste;
+
+  UsuarioModel _u;
+
+  ListaProdutoModel(this._id, this._nomeProduto, this._descricao,
+      this._material, this._valor, this._troca, this._image);
 
   ListaProdutoModel.map(dynamic obj) {
     this._id = obj['id'];
@@ -17,6 +30,7 @@ class ListaProdutoModel {
     this._valor = obj['valor'];
     this._troca = obj['troca'];
     this._image = obj['image'];
+    //this._teste = obj['usuario'];
   }
 
   String get id => _id;
@@ -24,6 +38,40 @@ class ListaProdutoModel {
   String get descricao => _descricao;
   String get material => _material;
   String get valor => _valor;
+
+  
+
+  String get produtoUsuario {
+    _teste.get().then((onValue) {
+     //print(onValue.data['nome']);
+    _nomeB = onValue.data['nome'].toString();
+     });
+    print(_nomeB);
+    return _nomeB;
+  }
+
+  
+  //Referencia
+
+// Future<Map<String, dynamic>> read() {
+//   var _x   = _teste.get().then((onValue) {
+//     //print(onValue.data['nome']);
+//     return (onValue.data);
+//     }
+//     ).toString();
+//     print(_x);
+//     return _x;
+    
+    
+// }  
+
+//   snapshots().listen((data) {
+//   data.documents.forEach((document) {
+//       print(document.data['FKOne'].path);
+//       document.data['FKTwo'].forEach((documentReference) => print(documentReference.path));
+//   });
+// });
+
   bool get troca => _troca;
   List get image => _image;
 
@@ -38,7 +86,7 @@ class ListaProdutoModel {
     map['valor'] = _valor;
     map['troca'] = _troca;
     map['image'] = _image;
-
+    map['usuario'] = _teste;
     return map;
   }
 
@@ -50,5 +98,8 @@ class ListaProdutoModel {
     this._valor = map['valor'];
     this._troca = map['troca'];
     this._image = map['image'];
+    this._teste = map['usuario'];
+    //this._u = UsuarioModel.map(map['usuario']);
+    print('XX ' + map['usuario'].toString());
   }
 }

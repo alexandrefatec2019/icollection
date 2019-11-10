@@ -1,5 +1,7 @@
 //Modelo do usuario com os campos que estao na tela
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class UsuarioModel {
   String _id; //Codigo do usuario
   String _nome; //Nome
@@ -8,6 +10,10 @@ class UsuarioModel {
   String _cpfcnpj; //CPU ou CNPJ
   String _telefone; //Telefone
   String _photourl; //Endereço da foto
+
+  DocumentReference usuario;
+
+
 
   UsuarioModel(this._id, this._nome, this._email, this._cpfcnpj, this._telefone,
       this._photourl);

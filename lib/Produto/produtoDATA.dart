@@ -17,24 +17,29 @@ class FirebaseFirestoreService {
   FirebaseFirestoreService.internal();
 
 // Ler dados do produto
-Future<ListaProdutoModel> lerProduto(String nomeproduto) async {
+  Future<ListaProdutoModel> lerProduto(String nomeproduto) async {
     var document = produtoCollection.document(nomeproduto).get();
     return await document.then((doc) {
       return ListaProdutoModel.map(doc);
     });
   }
 
-
   //TODO passar o model em vez de variaveis
 
-  Future<ListaProdutoModel> criarProduto(String id, String nomeProduto, String descricao,
-      String material, String valor, bool troca, List image) async {
+  Future<ListaProdutoModel> criarProduto(
+      String id,
+      String nomeProduto,
+      String descricao,
+      String material,
+      String valor,
+      bool troca,
+      List image) async {
     final TransactionHandler createTransaction = (Transaction tx) async {
       //Salva um documento na Coleção usuario com o nome id do google (uid)
       final DocumentSnapshot ds = await tx.get(produtoCollection.document(id));
 
-      final ListaProdutoModel produto =
-          ListaProdutoModel(id, nomeProduto, descricao, material, valor, troca, image);
+      final ListaProdutoModel produto = ListaProdutoModel(
+          id, nomeProduto, descricao, material, valor, troca, image);
       final Map<String, dynamic> data = produto.toMap();
 
       await tx.set(ds.reference, data);

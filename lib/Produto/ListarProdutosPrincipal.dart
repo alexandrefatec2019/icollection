@@ -68,6 +68,29 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
                             image: NetworkImage('${items[position].image[0]}')),
                       ),
                     ),
+                     Container(
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            BorderRadius.all(const Radius.circular(20.0)),
+                        gradient: LinearGradient(
+                            begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter,
+                            colors: [Colors.black, Colors.transparent],
+                            stops: [0.2, 0.3]),
+                      ),
+                    ),
+                    Container(
+                        //Alinhamento do texto
+                        alignment: Alignment(-1.0, 1.0),
+                        child: Padding(
+                          padding: EdgeInsets.all(20),
+                          child: Text('${items[position].produtoUsuario}',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 34,
+                                  color: Colors.white)),
+                        ))
+                  
                   ],
                 ),
               ),
