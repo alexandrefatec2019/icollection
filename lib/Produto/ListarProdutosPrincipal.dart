@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:icollection/Produto/Produto_Services.dart';
@@ -22,10 +23,10 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
   StreamSubscription<QuerySnapshot> noteSub;
 
   @override
-  void initState() {
+  initState() {
     super.initState();
 
-    items = new List();
+    items = List();
 
     noteSub?.cancel();
     noteSub = db.getNoteList().listen((QuerySnapshot snapshot) {
@@ -49,53 +50,57 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: ListView.builder(
-          //NetworkImage('${items[position].image[0]}')),
-          itemCount: items.length,
-          padding: const EdgeInsets.all(1.0),
-          itemBuilder: (context, position) {
-            return Card(
-              semanticContainer: true,
-              child: AspectRatio(
-                aspectRatio: 500 / 500,
-                child: Stack(
-                  children: <Widget>[
-                    Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                            fit: BoxFit.fitWidth,
-                            alignment: FractionalOffset.topCenter,
-                            image: NetworkImage('${items[position].image[0]}')),
-                      ),
+        child: ListView.builder(
+            //NetworkImage('${items[position].image[0]}')),
+            itemCount: items.length,
+            padding: const EdgeInsets.all(0.0),
+            itemBuilder: (context, position) {
+              return Column(children: <Widget>[
+                Container(
+                  width: 30.0,
+                  height: 30.0,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      image: CachedNetworkImageProvider(
+                          '${items[position].imageUsuario}'),
                     ),
-                     Container(
-                      decoration: BoxDecoration(
-                        borderRadius:
-                            BorderRadius.all(const Radius.circular(20.0)),
-                        gradient: LinearGradient(
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter,
-                            colors: [Colors.black, Colors.transparent],
-                            stops: [0.2, 0.3]),
-                      ),
-                    ),
-                    Container(
-                        //Alinhamento do texto
-                        alignment: Alignment(-1.0, 1.0),
-                        child: Padding(
-                          padding: EdgeInsets.all(20),
-                          child: Text('${items[position].produtoUsuario}',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 34,
-                                  color: Colors.white)),
-                        ))
-                  
-                  ],
+                  ),
                 ),
-              ),
-            );
-          }),
-    );
+                SizedBox(
+                    width: 230,
+                    height: 50,
+                    child: //Nome do usuario e avatar = do instagram
+                        Container(
+                            child: Padding(
+                      padding: EdgeInsets.all(1),
+                      child: Text('${items[position].nomeUsuario}',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                              color: Colors.black)),
+                    ))),
+                Container(
+
+                    //TODO ver depois para deixar o tamanho maximo
+
+                    height: MediaQuery.of(context).size.height / 2,
+                    child: AspectRatio(
+                        aspectRatio: 500 / 500,
+                        child: Stack(
+                          children: <Widget>[
+                            Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    fit: BoxFit.fitWidth,
+                                    alignment: FractionalOffset.topCenter,
+                                    image: NetworkImage(
+                                        '${items[position].image[0]}')),
+                              ),
+                            )
+                          ],
+                        )))
+              ]);
+            }));
   }
 }

@@ -11,13 +11,11 @@ class ListaProdutoModel {
   String _valor;
   bool _troca;
   List _image;
-  String _nomeB;
-  String _nomeC;
 
   //DocumentReference _usuario2; //= Firestore.instance.collection('Usuario').document('gruposjrp@gmail.com');
-  DocumentReference _teste;
-
-  UsuarioModel _u;
+  //Dados do usuario
+  String _nomeUsuario;
+  String _photoURL;
 
   ListaProdutoModel(this._id, this._nomeProduto, this._descricao,
       this._material, this._valor, this._troca, this._image);
@@ -39,18 +37,18 @@ class ListaProdutoModel {
   String get material => _material;
   String get valor => _valor;
 
-  
+  String get nomeUsuario => _nomeUsuario;
+  String get imageUsuario => _photoURL;
 
-  String get produtoUsuario {
-    _teste.get().then((onValue) {
-     //print(onValue.data['nome']);
-    _nomeB = onValue.data['nome'].toString();
-     });
-    print(_nomeB);
-    return _nomeB;
-  }
+  // String get produtoUsuario {
+  //   _teste.get().then((onValue) {
+  //    //print(onValue.data['nome']);
+  //   _nomeB = onValue.data['nome'].toString();
+  //    });
+  //   print(_nomeB);
+  //   return _nomeB;
+  // }
 
-  
   //Referencia
 
 // Future<Map<String, dynamic>> read() {
@@ -61,9 +59,8 @@ class ListaProdutoModel {
 //     ).toString();
 //     print(_x);
 //     return _x;
-    
-    
-// }  
+
+// }
 
 //   snapshots().listen((data) {
 //   data.documents.forEach((document) {
@@ -86,20 +83,26 @@ class ListaProdutoModel {
     map['valor'] = _valor;
     map['troca'] = _troca;
     map['image'] = _image;
-    map['usuario'] = _teste;
+    map['usuario'] = _nomeUsuario;
     return map;
   }
 
   ListaProdutoModel.fromMap(Map<String, dynamic> map) {
-    this._id = map['id'];
-    this._nomeProduto = map['nomeproduto'];
-    this._descricao = map['descricao'];
-    this._material = map['material'];
-    this._valor = map['valor'];
-    this._troca = map['troca'];
-    this._image = map['image'];
-    this._teste = map['usuario'];
-    //this._u = UsuarioModel.map(map['usuario']);
-    print('XX ' + map['usuario'].toString());
+    //Recebhe a referencia do usuario
+    DocumentReference _x = map['usuario'];
+    _x.get().then((onValue) {
+      this._id = map['id'];
+      this._nomeProduto = map['nomeproduto'];
+      this._descricao = map['descricao'];
+      this._material = map['material'];
+      this._valor = map['valor'];
+      this._troca = map['troca'];
+      this._image = map['image'];
+
+      this._nomeUsuario = onValue.data['nome'].toString();
+      this._photoURL = onValue.data['photourl'].toString();
+
+      print('\n\n refer = ' + _nomeUsuario);
+    });
   }
 }
