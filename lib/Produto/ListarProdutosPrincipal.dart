@@ -120,33 +120,36 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
                                 image: DecorationImage(
                                     fit: BoxFit.fitWidth,
                                     alignment: FractionalOffset.topCenter,
-                                    image: NetworkImage(
+                                    image: CachedNetworkImageProvider(
                                         '${items[position].image[0]}')),
                               ),
                             ),
-                            
                           ],
                         ))),
-                        SizedBox(
-                              height: 80,
-                              //width: 300,
-                              child: Row(
-                                children: <Widget>[
-                                  Container(
-                                      child: Padding(
-                                    padding: EdgeInsets.only(left: 5),
-                                    child: Text(
-                                        '${items[position].nomeproduto}',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 14,
-                                            color: Colors.black)),
-                                  )),
-                                ],
-                              ),
-                            )
-              ]
-              );
+                SizedBox(
+                  height: 40,
+                  //width: 300,
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                          child: Padding(
+                        padding: EdgeInsets.only(left: 5),
+                        child: Text('${items[position].nomeproduto}',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                color: Colors.black)),
+                      )),
+                      
+                    ],
+                  ),
+                  
+                ),
+                Divider(
+                        thickness: 1,
+                        color: Colors.black,
+                      )
+              ]);
             }));
   }
 }
