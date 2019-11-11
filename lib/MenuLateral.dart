@@ -10,8 +10,10 @@ import 'Principal.dart';
 
 //Teste
 import 'VariaveisGlobais/UsuarioGlobal.dart' as g;
+import 'package:badges/badges.dart';
 
 //Classe autenticação
+//TODO Pegar dados das var globais !!
 Autentica auth = Autentica();
 String _email;
 String _imagemURL;
@@ -59,7 +61,7 @@ class _Header extends State<MenuLateral> {
           ),
         );
     return Drawer(
-        child: Stack(children: <Widget>[
+child: Stack(children: <Widget>[
       _buildDrawerBack(),
       ListView(
         padding: EdgeInsets.zero,

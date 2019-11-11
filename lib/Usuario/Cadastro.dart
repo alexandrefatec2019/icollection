@@ -5,7 +5,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:icollection/Principal.dart';
 import 'package:icollection/Usuario/UsuarioDATA.dart';
-import 'package:icollection/model/usuarioModel.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -101,7 +100,7 @@ class _CadDadosState extends State<CadDados> {
   void verifica() {
     print('\n\n\n\naueuhaiuhihuih\n\n\n\n');
     if (g.dadosUser = true) {
-      print('Primeiro If');
+      //print('Primeiro If');
       setState(() {
         //uid = g.id;
         _nome = new TextEditingController(text: g.nome);
@@ -111,7 +110,7 @@ class _CadDadosState extends State<CadDados> {
         _photoUrl = (g.photourl);
       });
     } else {
-      print('Segundo If');
+      //print('Segundo If');
       //esse email ja vem da autenticação(widget.user.email)
       
         setState(() {

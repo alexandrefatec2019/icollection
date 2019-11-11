@@ -10,28 +10,32 @@ import 'VariaveisGlobais/UsuarioGlobal.dart' as g;
 
 void main() async {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  var firestore = Firestore.instance;
+  final firestore = Firestore.instance;
   final VerificaAuth _auth = VerificaAuth();
 
-  FirebaseUser user = await _firebaseAuth.currentUser();
+  _firebaseAuth.currentUser().then((_d) {
+
+    //Referencia no database ao usuario autenticado
+    g.usuarioReferencia = firestore.collection('Usuario').document(_d.email);
+
+    //Verifica se o usuario já tem cadastro no database
+    //_d.email vem do autenticador
+    _auth.readUsuarioDB(_d.email).then((_d) {
+      if (_d) {
+        //Retornar algo se o email existir no cadatro
+        g.dadosUser = true;
+        print('\n\n\n\n\n\n\n Usuario autenticado já cadastrado no database');
+      } else {
+        //Retornar algo se o cadastro ainda nao existir.6
+        //forcar tela de cadastro talvez
+        g.dadosUser = false;
+        print('\n\n\n\n\n\n\nUsuario autenticado nao cadastrado no database');
+      }
+    });
+//////////////////////////////////////////////////////////////////
+  });
 
   //Define a variavel referencia
-  g.usuarioReferencia = firestore.collection('Usuario').document(user.email);
-
-  //Verifica se o usuario já tem cadastro no database
-  _auth.readUsuarioDB(user.email).then((onValue) {
-    if (onValue) {
-      //Retornar algo se o email existir no cadatro
-      g.dadosUser = true;
-      print('\n\n\n\n\n\n\n existi');
-    } else {
-      //Retornar algo se o cadastro ainda nao existir.6
-      //forcar tela de cadastro talvez
-      g.dadosUser = false;
-      print('\n\n\n\n\n\n\n nao existi');
-    }
-  });
-//////////////////////////////////////////////////////////////////
 
   final bool isLogged = await _auth.isLogged();
   final Icollection icollection = Icollection(
