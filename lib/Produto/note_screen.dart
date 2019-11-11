@@ -48,7 +48,7 @@ class _NoteScreenState extends State<NoteScreen> {
               if (widget.note.id != null) {
                 db
                     .updateNote(ListaProdutoModel(widget.note.id,
-                        _titleController.text, _descriptionController.text,null, null, null, null))
+                        _titleController.text, _descriptionController.text,null, null, null, null,null))
                     .then((_) {
                   Navigator.pop(context);
                 });

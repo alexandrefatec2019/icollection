@@ -1,25 +1,29 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:icollection/Principal.dart';
 import 'package:icollection/Usuario/Cadastro.dart';
-import 'package:icollection/model/usuarioModel.dart';
-
 import 'Login/Tela_Auth.dart';
 import 'Usuario/UsuarioDATA.dart';
 //Variaveis globais! (em teste)
 import 'VariaveisGlobais/UsuarioGlobal.dart' as g;
-import 'package:show_dialog/show_dialog.dart' as dialog;
 
 void main() async {
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  var firestore = Firestore.instance;
   final VerificaAuth _auth = VerificaAuth();
 
+  FirebaseUser user = await _firebaseAuth.currentUser();
+
+  //Define a variavel referencia
+  g.usuarioReferencia = firestore.collection('Usuario').document(user.email);
+
   //Verifica se o usuario já tem cadastro no database
-  _auth.readUsuarioDB('gruposjrp@gmail.com').then((onValue) {
+  _auth.readUsuarioDB(user.email).then((onValue) {
     if (onValue) {
       //Retornar algo se o email existir no cadatro
       g.dadosUser = true;
       print('\n\n\n\n\n\n\n existi');
-
     } else {
       //Retornar algo se o cadastro ainda nao existir.6
       //forcar tela de cadastro talvez
@@ -53,8 +57,7 @@ class Icollection extends StatelessWidget {
         '/': (context) => Principal(),
         //Tela de login ao clicar no botao menu
         '/Login': (context) => LoginPage(),
-        '/CadastroUsuario': (context) =>
-            CadDados(),
+        '/CadastroUsuario': (context) => CadDados(),
       },
     );
   }
@@ -75,7 +78,7 @@ class VerificaAuth {
         g.cpfcnpj = data.cpfcnpj;
         g.email = data.email;
         g.photourl = data.photourl;
-      }).then((x) => _ok =true);
+      }).then((x) => _ok = true);
       return _ok;
     } catch (e) {
       //print('\n\n\n\n\n\n\n\n\n catch main = '+e.toString());

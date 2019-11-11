@@ -1,5 +1,7 @@
 library my_prj.globals;
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 String id; //Codigo do usuario
 
 //Dados do database
@@ -11,6 +13,8 @@ String photourl; //Endereço da foto
 
 //só se altera pelo main
 bool dadosUser = false; //Verifica se existe o cadastro no database
+
+DocumentReference usuarioReferencia;
 
 //vem da autenticação
 String nomeAuth;

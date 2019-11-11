@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:icollection/model/listaprodutoModel.dart';
 import 'package:icollection/model/usuarioModel.dart';
 import 'package:icollection/Usuario/UsuarioDATA.dart';
+import '../VariaveisGlobais/UsuarioGlobal.dart' as g;
 
 //CRUD PRODUTO
 
@@ -24,35 +25,26 @@ class FirebaseFirestoreService {
     });
   }
 
-  //TODO passar o model em vez de variaveis
+  //TODO passar o model em vez de variaveis !!!!!!!!!!!!!!!
 
-  Future<ListaProdutoModel> criarProduto(
-      String id,
-      String nomeProduto,
-      String descricao,
-      String material,
-      String valor,
-      bool troca,
-      List image) async {
-    final TransactionHandler createTransaction = (Transaction tx) async {
-      //Salva um documento na Coleção usuario com o nome id do google (uid)
-      final DocumentSnapshot ds = await tx.get(produtoCollection.document(id));
+  Future<bool> criarProduto(ListaProdutoModel modelo) async {
+    try {
+      final TransactionHandler createTransaction = (Transaction tx) async {
+        //Salva um documento na Coleção usuario com o nome id do google (uid)
+        final DocumentSnapshot ds =
+            await tx.get(produtoCollection.document(g.emailAuth));
 
-      final ListaProdutoModel produto = ListaProdutoModel(
-          id, nomeProduto, descricao, material, valor, troca, image);
-      final Map<String, dynamic> data = produto.toMap();
+        //final ListaProdutoModel produto = ListaProdutoModel(modelo);
+        final Map<String, dynamic> data = modelo.toMap();
 
-      await tx.set(ds.reference, data);
+        await tx.set(ds.reference, data);
+      };
+      Firestore.instance.runTransaction(createTransaction);
 
-      return data;
-    };
-
-    return Firestore.instance.runTransaction(createTransaction).then((mapData) {
-      return ListaProdutoModel.fromMap(mapData);
-    }).catchError((error) {
-      print('error: $error');
-      return null;
-    });
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   Future<dynamic> updateProduto(ListaProdutoModel produto) async {

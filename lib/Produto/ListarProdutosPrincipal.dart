@@ -1,11 +1,8 @@
 import 'dart:async';
-import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:icollection/Produto/Produto_Services.dart';
-import 'package:icollection/Produto/note_screen.dart';
 import 'package:icollection/model/listaprodutoModel.dart';
 
 import 'package:show_dialog/show_dialog.dart' as dialog;
@@ -91,7 +88,7 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
                             child: Container(
                                 alignment: Alignment.centerRight,
                                 child: Padding(
-                                    padding: EdgeInsets.only(right: 5),
+                                    padding: EdgeInsets.only(right: 0),
                                     child: IconButton(
                                         icon: Icon(Icons.more_vert),
                                         iconSize: 30,
@@ -133,22 +130,21 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
                     children: <Widget>[
                       Container(
                           child: Padding(
-                        padding: EdgeInsets.only(left: 5),
+                        padding: EdgeInsets.only(left: 10),
                         child: Text('${items[position].nomeproduto}',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 14,
                                 color: Colors.black)),
                       )),
-                      
                     ],
                   ),
-                  
                 ),
+                //linha divisora
                 Divider(
-                        thickness: 1,
-                        color: Colors.black,
-                      )
+                  thickness: 0.4,
+                  color: Colors.black,
+                )
               ]);
             }));
   }

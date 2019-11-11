@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:icollection/Produto/Produto_Services.dart';
-import 'package:icollection/model/usuarioModel.dart';
+//import '../VariaveisGlobais/UsuarioGlobal.dart' as g;
 
 class ListaProdutoModel {
   String _id; //Codigo do usuario que postou o produto
@@ -9,6 +7,8 @@ class ListaProdutoModel {
   String _descricao; //Descrição do produto anunciado
   String _material;
   String _valor;
+  //Ja defini o usuario atravez da variavel global
+  DocumentReference _usuario;
   bool _troca;
   List _image;
 
@@ -18,7 +18,7 @@ class ListaProdutoModel {
   String _photoURL;
 
   ListaProdutoModel(this._id, this._nomeProduto, this._descricao,
-      this._material, this._valor, this._troca, this._image);
+      this._material, this._valor, this._troca, this._image,this._usuario);
 
   ListaProdutoModel.map(dynamic obj) {
     this._id = obj['id'];
@@ -28,7 +28,9 @@ class ListaProdutoModel {
     this._valor = obj['valor'];
     this._troca = obj['troca'];
     this._image = obj['image'];
-    //this._teste = obj['usuario'];
+
+    //Referencia
+    this._usuario = obj['usuario'];
   }
 
   String get id => _id;
@@ -40,35 +42,10 @@ class ListaProdutoModel {
   String get nomeUsuario => _nomeUsuario;
   String get imageUsuario => _photoURL;
 
-  // String get produtoUsuario {
-  //   _teste.get().then((onValue) {
-  //    //print(onValue.data['nome']);
-  //   _nomeB = onValue.data['nome'].toString();
-  //    });
-  //   print(_nomeB);
-  //   return _nomeB;
-  // }
-
   //Referencia
-
-// Future<Map<String, dynamic>> read() {
-//   var _x   = _teste.get().then((onValue) {
-//     //print(onValue.data['nome']);
-//     return (onValue.data);
-//     }
-//     ).toString();
-//     print(_x);
-//     return _x;
-
-// }
-
-//   snapshots().listen((data) {
-//   data.documents.forEach((document) {
-//       print(document.data['FKOne'].path);
-//       document.data['FKTwo'].forEach((documentReference) => print(documentReference.path));
-//   });
-// });
-
+  String get usuario => _usuario.path;
+  ////////////
+  ///
   bool get troca => _troca;
   List get image => _image;
 
@@ -83,15 +60,19 @@ class ListaProdutoModel {
     map['valor'] = _valor;
     map['troca'] = _troca;
     map['image'] = _image;
-    map['usuario'] = _nomeUsuario;
+    //Referencia
+    map['usuario'] = _usuario;
+
     return map;
   }
 
   ListaProdutoModel.fromMap(Map<String, dynamic> map) {
     //Recebhe a referencia do usuario
+    //Ainda com problemas por isso a tela vermelha na listagem do produto
     DocumentReference _x = map['usuario'];
     _x.get().then((onValue) {
       this._id = map['id'];
+
       this._nomeProduto = map['nomeproduto'];
       this._descricao = map['descricao'];
       this._material = map['material'];
@@ -99,8 +80,8 @@ class ListaProdutoModel {
       this._troca = map['troca'];
       this._image = map['image'];
 
-      this._nomeUsuario = onValue.data['nome'].toString();
-      this._photoURL = onValue.data['photourl'].toString();
+      this._nomeUsuario = onValue.data['nome'];
+      this._photoURL = onValue.data['photourl'];
 
       print('\n\n refer = ' + _nomeUsuario);
     });

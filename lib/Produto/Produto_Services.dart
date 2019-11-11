@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:icollection/model/listaprodutoModel.dart';
 
+
 //CRUD PRODUTO
 
 final CollectionReference produtoCollection =
@@ -20,7 +21,7 @@ class FirebaseFirestoreService {
       final DocumentSnapshot ds = await tx.get(produtoCollection.document());
 
       final ListaProdutoModel produto = ListaProdutoModel(
-          ds.documentID, title, description, material, valor, troca, image);
+          ds.documentID, title, description, material, valor, troca, image,null);
       final Map<String, dynamic> data = produto.toMap();
 
       await tx.set(ds.reference, data);
