@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:icollection/Produto/Produto_Services.dart';
@@ -105,24 +106,28 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
                   ),
                 ),
                 //Imagem do produto
-                Container(
-                    //TODO ver depois para deixar o tamanho maximo
-                    height: MediaQuery.of(context).size.height / 2,
-                    child: AspectRatio(
-                        aspectRatio: 500 / 500,
-                        child: Stack(
-                          children: <Widget>[
-                            Container(
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    fit: BoxFit.fitWidth,
-                                    alignment: FractionalOffset.topCenter,
-                                    image: CachedNetworkImageProvider(
-                                        '${items[position].image[0]}')),
-                              ),
-                            ),
-                          ],
-                        ))),
+                CarouselSlider(
+                    height: 400.0,
+                    items: [1, 2, 3, 4, 5].map((i) {
+                      return Builder(builder: (BuildContext context) {
+                        return Container(
+                            //TODO ver depois para deixar o tamanho maximo
+                            height: MediaQuery.of(context).size.height / 2,
+                            child: AspectRatio(
+                                aspectRatio: 500 / 500,
+                                child: Stack(children: <Widget>[
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          fit: BoxFit.fitWidth,
+                                          alignment: FractionalOffset.topCenter,
+                                          image: CachedNetworkImageProvider(
+                                              '${items[position].image[0]}')),
+                                    ),
+                                  )
+                                ])));
+                      });
+                    }).toList()),
                 SizedBox(
                   height: 40,
                   //width: 300,
