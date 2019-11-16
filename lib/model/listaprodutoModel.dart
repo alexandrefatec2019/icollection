@@ -3,17 +3,19 @@ class ListaProdutoModel {
   String _nomeProduto; //Nome do produto anunciado
   String _descricao; //Descrição do produto anunciado
   String _material;
+  String _estado;
   String _valor;
   bool _troca;
   List _image; //talvez uma lista com mais de uma imagem
 
-  ListaProdutoModel(this._id, this._nomeProduto, this._descricao, this._material, this._valor, this._troca, this._image);
+  ListaProdutoModel(this._id, this._nomeProduto, this._descricao, this._material, this._estado, this._valor, this._troca, this._image);
 
   ListaProdutoModel.map(dynamic obj) {
     this._id = obj['id'];
     this._nomeProduto = obj['nomeproduto'];
     this._descricao = obj['descricao'];
     this._material = obj['material'];
+    this._estado = obj['estado'];
     this._valor = obj['valor'];
     this._troca = obj['troca'];
     this._image = obj['image'];
@@ -23,6 +25,7 @@ class ListaProdutoModel {
   String get nomeproduto => _nomeProduto;
   String get descricao => _descricao;
   String get material => _material;
+  String get estado => _estado;
   String get valor => _valor;
   bool get troca => _troca;
   List get image => _image;
@@ -35,6 +38,7 @@ class ListaProdutoModel {
     map['nomeproduto'] = _nomeProduto;
     map['descricao'] = _descricao;
     map['material'] = _material;
+    map['estado'] = _estado;
     map['valor'] = _valor;
     map['troca'] = _troca;
     map['image'] = _image;
@@ -47,6 +51,7 @@ class ListaProdutoModel {
     this._nomeProduto = map['nomeproduto'];
     this._descricao = map['descricao'];
     this._material = map['material'];
+    this._material = map['estado'];
     this._valor = map['valor'];
     this._troca = map['troca'];
     this._image = map['image'];
