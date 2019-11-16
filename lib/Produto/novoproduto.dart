@@ -32,9 +32,9 @@ class _NovoProdutoState extends State<NovoProduto> {
   String valor;
   String material;
   bool troca = false;
-  String _estadoSelecionado = null; // ainda não inserido
+  int _estadoSelecionado = null; // ainda não inserido
   String _categoriaSelecionada;
-  List<DropdownMenuItem<String>> estadoList = [];
+  List<DropdownMenuItem<int>> estadoList = [];
   // List<DropdownMenuItem<int>> categoriaList = [];
   List img = ['https://cdn.shopify.com/s/files/1/0973/0376/products/mail_b48a54fc-2368-4e05-ae2d-fe8a4f4dcb39.jpg?v=1548118355'];
 
@@ -74,7 +74,7 @@ class _NovoProdutoState extends State<NovoProduto> {
     estadoList = [];
     estadoList.add(new DropdownMenuItem(
       child: new Text('Novo'),
-      value: 'Novo',
+      value: 0,
     ));
     estadoList.add(new DropdownMenuItem(
       child: new Text('Usado'),
@@ -431,7 +431,7 @@ class _NovoProdutoState extends State<NovoProduto> {
     formWidget.add(new FloatingActionButton.extended(
         onPressed: (){
           // print(_valor.text);
-          db.criarProduto(uid, _nomeProduto.text, _descricao.text, _material.text, _valor.text, _estadoSelecionado.tx, troca, img);
+          db.criarProduto(uid, _nomeProduto.text, _descricao.text, _material.text, _valor.text, troca, img);
           Navigator.of(context).pop();
             Navigator.push(context, MaterialPageRoute(
               builder: (context) => Principal()
