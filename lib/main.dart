@@ -12,15 +12,20 @@ void main() async {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final firestore = Firestore.instance;
   final VerificaAuth _auth = VerificaAuth();
+  
 
-  _firebaseAuth.currentUser().then((_d) {
-
+  _auth.currentUser().then((_d) {
+      
+      if(_d != null){
+        print('current user nao returnou vazio = '+_d);
     //Referencia no database ao usuario autenticado
-    g.usuarioReferencia = firestore.collection('Usuario').document(_d.email);
+    g.usuarioReferencia = firestore.collection('Usuario').document(_d);
+
+    
 
     //Verifica se o usuario já tem cadastro no database
     //_d.email vem do autenticador
-    _auth.readUsuarioDB(_d.email).then((_d) {
+    _auth.readUsuarioDB(_d).then((_d) {
       if (_d) {
         //Retornar algo se o email existir no cadatro
         g.dadosUser = true;
@@ -33,7 +38,8 @@ void main() async {
       }
     });
 //////////////////////////////////////////////////////////////////
-  });
+  }});
+  
 
   //Define a variavel referencia
 
@@ -96,6 +102,16 @@ class VerificaAuth {
     // _photoUrl = _u.photourl;
   }
 
+   Future<String> currentUser() async {
+     try {
+        FirebaseUser user = await _firebaseAuth.currentUser();
+      return user != null ? user.uid : null;
+     }
+     catch(e){
+       return null;
+     }
+     
+    }
   Future<bool> isLogged() async {
     try {
       final FirebaseUser user = await _firebaseAuth.currentUser();
