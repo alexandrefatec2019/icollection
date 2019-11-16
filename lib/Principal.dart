@@ -8,6 +8,12 @@ import 'Login/Tela_Auth.dart';
 import 'MenuLateral.dart';
 import 'Produto/ListarProdutosPrincipal.dart';
 
+
+//Variaveis globais! (em teste)
+import 'VariaveisGlobais/UsuarioGlobal.dart' as g;
+import 'package:show_dialog/show_dialog.dart' as dialog;
+
+
 enum WidgetMarker { login, menu }
 
 Autentica auth = Autentica();
@@ -88,7 +94,11 @@ class _Principal extends State<Principal> {
             //Items que serão exibidos na AppBar
             IconButton(
               icon: new Icon(Icons.search),
-              onPressed: () {},
+              onPressed: () {
+                //testando variavel global!
+                 dialog.aboutDialog(context, g.photourl, "content");
+
+              },
             ),
           ],
         ),
@@ -107,16 +117,17 @@ class _Principal extends State<Principal> {
         return LoginPage();
       case WidgetMarker.menu:
         //Passa os dados do usuario autenticado para o menu lateral
-        return MenuLateral(_email, _imagemURL, _nomeUsuario, _telefone);
+        //Nao precisa mais passar os dados para o menu pois pega das global
+        return MenuLateral();
     }
 
-    return MenuLateral(_email, _imagemURL, _nomeUsuario, _telefone);
+    return MenuLateral();
   }
 }
 
-Future<String> getCurrentUser() async {
-  String _u = auth.googleUser().toString();
+// Future<String> getCurrentUser() async {
+//   String _u = auth.googleUser().toString();
 
-  print(_u);
-  return auth.googleUser();
-}
+//   print(_u);
+//   return auth.googleUser();
+// }

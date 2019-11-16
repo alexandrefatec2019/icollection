@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:icollection/Principal.dart';
-import 'package:icollection/Produto/Produto_Services.dart';
 import 'package:icollection/Produto/produtoDATA.dart' as prefix0;
 import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 import 'package:flutter/rendering.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:icollection/Produto/produtoDATA.dart';
 import 'package:icollection/model/listaprodutoModel.dart';
+
+import '../VariaveisGlobais/UsuarioGlobal.dart' as g;
 
 class NovoProduto extends StatefulWidget {
   final ListaProdutoModel product;
@@ -34,9 +33,12 @@ class _NovoProdutoState extends State<NovoProduto> {
   bool troca = false;
   int _estadoSelecionado = null; // ainda não inserido
   String _categoriaSelecionada;
+
   List<DropdownMenuItem<int>> estadoList = [];
   // List<DropdownMenuItem<int>> categoriaList = [];
-  List img = ['https://cdn.shopify.com/s/files/1/0973/0376/products/mail_b48a54fc-2368-4e05-ae2d-fe8a4f4dcb39.jpg?v=1548118355'];
+  List img = [
+    'https://cdn.shopify.com/s/files/1/0973/0376/products/mail_b48a54fc-2368-4e05-ae2d-fe8a4f4dcb39.jpg?v=1548118355'
+  ];
 
   TextEditingController _nomeProduto;
   TextEditingController _descricao;
@@ -44,15 +46,15 @@ class _NovoProdutoState extends State<NovoProduto> {
   TextEditingController _material;
   TextEditingController _troca;
 
- @override
+  @override
   void initState() {
     SystemChrome.setEnabledSystemUIOverlays([]);
     super.initState();
+
     _nomeProduto = new TextEditingController(text: widget.product?.nomeproduto);
     _descricao = new TextEditingController(text: widget.product?.descricao);
     _valor = new TextEditingController(text: widget.product?.valor);
     _material = new TextEditingController(text: widget.product?.material);
-
   }
 //     if (widget.product.id == null) {
 //       _nomeProduto = new TextEditingController(text: widget.product.nomeproduto);
@@ -70,6 +72,7 @@ class _NovoProdutoState extends State<NovoProduto> {
       this._categoriaSelecionada = newValueSelected;
     });
   }
+
   void loadEstadoList() {
     estadoList = [];
     estadoList.add(new DropdownMenuItem(
@@ -91,7 +94,7 @@ class _NovoProdutoState extends State<NovoProduto> {
   }
 
   // @override
-  // void initState() { 
+  // void initState() {
   //   SystemChrome.setEnabledSystemUIOverlays([]);
   //   super.initState();
 
@@ -101,22 +104,21 @@ class _NovoProdutoState extends State<NovoProduto> {
     loadEstadoList();
     return Scaffold(
       appBar: AppBar(
-           backgroundColor: Color(0xff1c2634),
-          title: Text('Novo Anúncio'),
-          centerTitle: true,
-         ),
-      body: Form(
-      key: _formKey,
-      child: ListView(
-        padding: EdgeInsets.all(15.0),
-        children: getFormWidget(),
-      )
+        backgroundColor: Color(0xff1c2634),
+        title: Text('Novo Anúncio'),
+        centerTitle: true,
       ),
+      body: Form(
+          key: _formKey,
+          child: ListView(
+            padding: EdgeInsets.all(15.0),
+            children: getFormWidget(),
+          )),
     );
   }
-  Future<String> tirarFoto() async{
-    var _imagem = await ImagePicker.pickImage(
-        source: ImageSource.camera);
+
+  Future<String> tirarFoto() async {
+    var _imagem = await ImagePicker.pickImage(source: ImageSource.camera);
 
     // var produto = (widget.produto.email);
 
@@ -126,7 +128,7 @@ class _NovoProdutoState extends State<NovoProduto> {
     });
   }
 
-  List<Widget> getFormWidget(){
+  List<Widget> getFormWidget() {
     List<Widget> formWidget = new List();
 
     //---------- CATEGORIA ----------
@@ -160,63 +162,55 @@ class _NovoProdutoState extends State<NovoProduto> {
     // )
     // );
 
-    //---------- NOME DO PRODUTO ---------- 
-     formWidget.add(new TextFormField(
-       keyboardType: TextInputType.text,
-       decoration: InputDecoration(
-         labelText: 'Nome do Produto:',
-       ),
-       validator: (value) {
+    //---------- NOME DO PRODUTO ----------
+    formWidget.add(
+      new TextFormField(
+        keyboardType: TextInputType.text,
+        decoration: InputDecoration(
+          labelText: 'Nome do Produto:',
+        ),
+        validator: (value) {
+          if (value.isEmpty) {
+            return 'Digite um Nome para o produto';
+          }
+        },
+        onSaved: (value) => nomeProduto = value,
+        controller: _nomeProduto,
+      ),
+    );
+
+    //---------- DESCRIÇÃO ----------
+    formWidget.add(new TextFormField(
+      keyboardType: TextInputType.text,
+      decoration: InputDecoration(
+        labelText: 'Descrição:',
+      ),
+      validator: (value) {
         if (value.isEmpty) {
-          return 'Digite um Nome para o produto';
+          return 'Escreva a descrição do produto';
         }
-       },
-       onSaved: (value) => nomeProduto = value,
-      
-       controller: _nomeProduto,
-     ),
-    );
+      },
+      onSaved: (value) => descricao = value,
+      controller: _descricao,
+    ));
 
-    //---------- DESCRIÇÃO ---------- 
-    formWidget.add(
-      new TextFormField(
-        keyboardType: TextInputType.text,
-        decoration: InputDecoration(
-          labelText: 'Descrição:',
-        ),
-        validator: (value){
-          if(value.isEmpty){
-            return 'Escreva a descrição do produto';
-          }
-        },
-       onSaved: (value) => descricao = value,
-       controller: _descricao,
-      )
-    );
-
-    //---------- MATERIAL ---------- 
-    formWidget.add(
-      new TextFormField(
-        keyboardType: TextInputType.text,
-        decoration: InputDecoration(
-          labelText: 'Material do Produto:',
-        ),
-        validator: (value){
-          if(value.isEmpty){
-            return 'Escreva o material do produto';
-          }
-        },
-        onSaved: (value) => material = value,
-        controller: _material,
-      )
-    );
-    formWidget.add(new Padding(
-      padding: EdgeInsets.all(5)
-    )
-    );
+    //---------- MATERIAL ----------
+    formWidget.add(new TextFormField(
+      keyboardType: TextInputType.text,
+      decoration: InputDecoration(
+        labelText: 'Material do Produto:',
+      ),
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Escreva o material do produto';
+        }
+      },
+      onSaved: (value) => material = value,
+      controller: _material,
+    ));
+    formWidget.add(new Padding(padding: EdgeInsets.all(5)));
     //---------- ESTADO DO PRODUTO ----------
-    formWidget.add(
-      new DropdownButton(
+    formWidget.add(new DropdownButton(
       hint: new Text('Estado do Produto:'),
       items: estadoList,
       value: _estadoSelecionado,
@@ -229,220 +223,243 @@ class _NovoProdutoState extends State<NovoProduto> {
     ));
 
     //---------- VALOR R$ ----------
-    formWidget.add(
-      new TextFormField(
-        keyboardType: TextInputType.text,
-        decoration: InputDecoration(
-          labelText: 'Valor (R\$):',
-        ),
-        validator: (value){
-          if(value.isEmpty){
-            return 'Digite o valor do produto';
-          }
-        },
-        onSaved: (value) => valor = value,
-        controller: _valor,
-      )
-    );
+    formWidget.add(new TextFormField(
+      keyboardType: TextInputType.text,
+      decoration: InputDecoration(
+        labelText: 'Valor (R\$):',
+      ),
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Digite o valor do produto';
+        }
+      },
+      onSaved: (value) => valor = value,
+      controller: _valor,
+    ));
 
     //---------- DISPONIBILIDADE TROCA ----------
-    formWidget.add(
-      new Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            new Padding(
-                      padding: new EdgeInsets.all(10.0),
-                    ),
-            new Text('Disponibilidade para Troca:', style: TextStyle(
-                color: Colors.grey[600],
-                fontSize: 16
-              ),
-            ),
-            new Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Radio<bool>(
-            // title: const Text('Não'),
-            value: false,
-            groupValue: troca,
-            onChanged: (value){
-              setState(() {
-               troca = value; 
-              });
-            },
+    formWidget.add(new Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          new Padding(
+            padding: new EdgeInsets.all(10.0),
           ),
-          new Text('Não', style: TextStyle(
-                color: Colors.grey[600],
-              ),
+          new Text(
+            'Disponibilidade para Troca:',
+            style: TextStyle(color: Colors.grey[600], fontSize: 16),
           ),
-          Radio<bool>(
-            // title: const Text('Sim'),
-            value: true,
-            groupValue: troca,
-            onChanged: (value){
-              setState(() {
-               troca = value; 
-              });
-            },
-          ),
-          new Text('Sim', style: TextStyle(
-                color: Colors.grey[600],
-              ),
-          ),
-              ],
-            )
-          ],
-        ),
-      )
-    );
-
-    //---------- IMAGENS ----------
-    formWidget.add(
-      new Container(
-        child: SizedBox(
-          child: Column(
+          new Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              new Divider(height: 20, color: Colors.grey[300],),
-              new Padding(padding: EdgeInsets.all(5),),
-              new Text('Imagens:', style: TextStyle(
-                color: Colors.grey[600],
-                fontSize: 16,
+              Radio<bool>(
+                // title: const Text('Não'),
+                value: false,
+                groupValue: troca,
+                onChanged: (value) {
+                  setState(() {
+                    troca = value;
+                  });
+                },
+              ),
+              new Text(
+                'Não',
+                style: TextStyle(
+                  color: Colors.grey[600],
                 ),
               ),
-              new Padding(padding: EdgeInsets.all(10),),
-              new Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Card(
-                    child: InkWell(
-                      child: Container(
-                        height: MediaQuery.of(context).size.width/2,
-                        width: MediaQuery.of(context).size.width/2.7,
-                        color: Colors.grey[200],
-                        child: this.imagem == null ? IconButton(
-                        icon: Icon(Icons.add),
-                        onPressed: (){
-                          tirarFoto();
-                        },
-                    ) : Image.file(this.imagem),
-                      ),
-                    ),
-                  ),
-                  Card(
-                    child: InkWell(
-                      child: Container(
-                        height: MediaQuery.of(context).size.width/2,
-                        width: MediaQuery.of(context).size.width/2.7,
-                        color: Colors.grey[200],
-                        child: this.imagem == null ? IconButton(
-                        icon: Icon(Icons.add),
-                        onPressed: (){
-                          tirarFoto();
-                        },
-                    ) : Image.file(this.imagem),
-                      ),
-                    ),
-                  ),
-                ],
+              Radio<bool>(
+                // title: const Text('Sim'),
+                value: true,
+                groupValue: troca,
+                onChanged: (value) {
+                  setState(() {
+                    troca = value;
+                  });
+                },
               ),
-              new Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Card(
-                    child: InkWell(
-                      child: Container(
-                        height: MediaQuery.of(context).size.width/2,
-                        width: MediaQuery.of(context).size.width/2.7,
-                        color: Colors.grey[200],
-                        child: this.imagem == null ? IconButton(
-                        icon: Icon(Icons.add),
-                        onPressed: (){
-                          tirarFoto();
-                        },
-                    ) : Image.file(this.imagem),
-                      ),
-                    ),
-                  ),
-                  Card(
-                    child: InkWell(
-                      child: Container(
-                        height: MediaQuery.of(context).size.width/2,
-                        width: MediaQuery.of(context).size.width/2.7,
-                        color: Colors.grey[200],
-                        child: this.imagem == null ? IconButton(
-                        icon: Icon(Icons.add),
-                        onPressed: (){
-                          tirarFoto();
-                        },
-                    ) : Image.file(this.imagem),
-                      ),
-                    ),
-                  ),
-                ],
+              new Text(
+                'Sim',
+                style: TextStyle(
+                  color: Colors.grey[600],
+                ),
               ),
-              new Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Card(
-                    child: InkWell(
-                      child: Container(
-                        height: MediaQuery.of(context).size.width/2,
-                        width: MediaQuery.of(context).size.width/2.7,
-                        color: Colors.grey[200],
-                        child: this.imagem == null ? IconButton(
-                        icon: Icon(Icons.add),
-                        onPressed: (){
-                          tirarFoto();
-                        },
-                    ) : Image.file(this.imagem),
-                      ),
-                    ),
+            ],
+          )
+        ],
+      ),
+    ));
+
+    //---------- IMAGENS ----------
+    formWidget.add(new Container(
+        child: SizedBox(
+      child: Column(
+        children: <Widget>[
+          new Divider(
+            height: 20,
+            color: Colors.grey[300],
+          ),
+          new Padding(
+            padding: EdgeInsets.all(5),
+          ),
+          new Text(
+            'Imagens:',
+            style: TextStyle(
+              color: Colors.grey[600],
+              fontSize: 16,
+            ),
+          ),
+          new Padding(
+            padding: EdgeInsets.all(10),
+          ),
+          new Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Card(
+                child: InkWell(
+                  child: Container(
+                    height: MediaQuery.of(context).size.width / 2,
+                    width: MediaQuery.of(context).size.width / 2.7,
+                    color: Colors.grey[200],
+                    child: this.imagem == null
+                        ? IconButton(
+                            icon: Icon(Icons.add),
+                            onPressed: () {
+                              tirarFoto();
+                            },
+                          )
+                        : Image.file(this.imagem),
                   ),
-                  Card(
-                    child: InkWell(
-                      child: Container(
-                        height: MediaQuery.of(context).size.width/2,
-                        width: MediaQuery.of(context).size.width/2.7,
-                        color: Colors.grey[200],
-                        child: this.imagem == null ? IconButton(
-                        icon: Icon(Icons.add),
-                        onPressed: (){
-                          tirarFoto();
-                        },
-                    ) : Image.file(this.imagem),
-                      ),
-                    ),
+                ),
+              ),
+              Card(
+                child: InkWell(
+                  child: Container(
+                    height: MediaQuery.of(context).size.width / 2,
+                    width: MediaQuery.of(context).size.width / 2.7,
+                    color: Colors.grey[200],
+                    child: this.imagem == null
+                        ? IconButton(
+                            icon: Icon(Icons.add),
+                            onPressed: () {
+                              tirarFoto();
+                            },
+                          )
+                        : Image.file(this.imagem),
                   ),
-                ],
-              )
+                ),
+              ),
             ],
           ),
-        )
-      )
-    );
+          new Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Card(
+                child: InkWell(
+                  child: Container(
+                    height: MediaQuery.of(context).size.width / 2,
+                    width: MediaQuery.of(context).size.width / 2.7,
+                    color: Colors.grey[200],
+                    child: this.imagem == null
+                        ? IconButton(
+                            icon: Icon(Icons.add),
+                            onPressed: () {
+                              tirarFoto();
+                            },
+                          )
+                        : Image.file(this.imagem),
+                  ),
+                ),
+              ),
+              Card(
+                child: InkWell(
+                  child: Container(
+                    height: MediaQuery.of(context).size.width / 2,
+                    width: MediaQuery.of(context).size.width / 2.7,
+                    color: Colors.grey[200],
+                    child: this.imagem == null
+                        ? IconButton(
+                            icon: Icon(Icons.add),
+                            onPressed: () {
+                              tirarFoto();
+                            },
+                          )
+                        : Image.file(this.imagem),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          new Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Card(
+                child: InkWell(
+                  child: Container(
+                    height: MediaQuery.of(context).size.width / 2,
+                    width: MediaQuery.of(context).size.width / 2.7,
+                    color: Colors.grey[200],
+                    child: this.imagem == null
+                        ? IconButton(
+                            icon: Icon(Icons.add),
+                            onPressed: () {
+                              tirarFoto();
+                            },
+                          )
+                        : Image.file(this.imagem),
+                  ),
+                ),
+              ),
+              Card(
+                child: InkWell(
+                  child: Container(
+                    height: MediaQuery.of(context).size.width / 2,
+                    width: MediaQuery.of(context).size.width / 2.7,
+                    color: Colors.grey[200],
+                    child: this.imagem == null
+                        ? IconButton(
+                            icon: Icon(Icons.add),
+                            onPressed: () {
+                              tirarFoto();
+                            },
+                          )
+                        : Image.file(this.imagem),
+                  ),
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
+    )));
 
     formWidget.add(new Padding(
       padding: EdgeInsets.all(6),
-    )
-    );
+    ));
 
     //---------- BOTÃO CONFIRMAR ----------
-    formWidget.add(new FloatingActionButton.extended(
-        onPressed: (){
+    formWidget.add(
+      new FloatingActionButton.extended(
+        onPressed: () {
           // print(_valor.text);
-          db.criarProduto(uid, _nomeProduto.text, _descricao.text, _material.text, _valor.text, troca, img);
+          //Passando o modelo !!
+          db.criarProduto(ListaProdutoModel(
+              uid,
+              _nomeProduto.text,
+              _descricao.text,
+              _material.text,
+              _valor.text,
+              troca,
+              img,
+              g.usuarioReferencia));
           Navigator.of(context).pop();
-            Navigator.push(context, MaterialPageRoute(
-              builder: (context) => Principal()
-              )
-            );
-            
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Principal()));
         },
         icon: Icon(Icons.done),
         label: Text('Criar Anúncio'),
         backgroundColor: Colors.green,
-      ),    
+      ),
     );
     return formWidget;
   }

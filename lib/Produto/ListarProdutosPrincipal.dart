@@ -1,12 +1,12 @@
 import 'dart:async';
-import 'dart:math';
-
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:icollection/Produto/Produto_Services.dart';
-import 'package:icollection/Produto/note_screen.dart';
 import 'package:icollection/model/listaprodutoModel.dart';
 
+import 'package:show_dialog/show_dialog.dart' as dialog;
 //Futuramente será formatado, mas ja traz a lista dos produtos do firabase e a rolagem funciona
 
 class ListarProdutosPrincipal extends StatefulWidget {
@@ -22,10 +22,10 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
   StreamSubscription<QuerySnapshot> noteSub;
 
   @override
-  void initState() {
+  initState() {
     super.initState();
 
-    items = new List();
+    items = List();
 
     noteSub?.cancel();
     noteSub = db.getNoteList().listen((QuerySnapshot snapshot) {
@@ -49,139 +49,108 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: ListView.builder(
-          itemCount: items.length,
-          padding: const EdgeInsets.all(1.0),
-          itemBuilder: (context, position) {
-            return Card(
-              semanticContainer: true,
-              //color: Colors.black,
-
-              //Remover depois !!
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0),
-              ),
-              child: AspectRatio(
-                aspectRatio: 500 / 500,
-                child: Stack(
-                  children: <Widget>[
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius:
-                            new BorderRadius.all(const Radius.circular(20.0)),
-                        //topRight: const Radius.circular(20.0)),
-                        image: DecorationImage(
-                            fit: BoxFit.fitWidth,
-                            //Define aonde vai cortar a imagem !!
-                            alignment: FractionalOffset.topCenter,
-                            image: NetworkImage('${items[position].image[0]}')),
-                      ),
-
-                      //Faixa preta degrade
-                      // foregroundDecoration: BoxDecoration(
-                      //   gradient: LinearGradient(
-                      //       begin: Alignment.bottomCenter,
-                      //       end: Alignment.topCenter,
-                      //       colors: [Colors.black, Colors.transparent],
-                      //       stops: [0.2, 0.3]),
-                      // ),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(const Radius.circular(20.0)),
-                        gradient: LinearGradient(
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter,
-                            colors: [Colors.black, Colors.transparent],
-                            stops: [0.2, 0.3]),
-                      ),
-                    ),
-                    Container(
-                        //Alinhamento do texto
-                        alignment: Alignment(-1.0, 1.0),
-                        child: Padding(
-                          padding: EdgeInsets.all(20),
-                          child: Text('${items[position].nomeproduto}',
+        child: ListView.builder(
+            //NetworkImage('${items[position].image[0]}')),
+            itemCount: items.length,
+            //padding: const EdgeInsets.all(0.0),
+            itemBuilder: (context, position) {
+              return Column(children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
+                  child: SizedBox(
+                    //tamanho da faixa branca onde vai avatar usuario e nome e mais um botao talvez
+                    height: 60,
+                    child: Row(
+                      children: <Widget>[
+                        //Avatar do usuario
+                        Container(
+                          width: 45.0,
+                          height: 45.0,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image: CachedNetworkImageProvider(
+                                  '${items[position].imageUsuario}'),
+                            ),
+                          ),
+                        ),
+                        //Nome do usuario
+                        Container(
+                            child: Padding(
+                          padding: EdgeInsets.only(left: 5),
+                          child: Text('${items[position].nomeUsuario}',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 34,
-                                  color: Colors.white)),
-                        )
-                    )
-                  ],
+                                  fontSize: 14,
+                                  color: Colors.black)),
+                        )),
+                        //Icon
+                        Expanded(
+                            child: Container(
+                                alignment: Alignment.centerRight,
+                                child: Padding(
+                                    padding: EdgeInsets.only(right: 0),
+                                    child: IconButton(
+                                        icon: Icon(Icons.more_vert),
+                                        iconSize: 30,
+                                        tooltip: 'Increase volume by 10',
+                                        onPressed: () {
+                                          dialog.aboutDialog(
+                                              context,
+                                              'oie ' +
+                                                  '${items[position].nomeUsuario}',
+                                              'xxxx');
+                                        }))))
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-            );
-
-            //Image.network('${items[position].image[0]}', height: 150) ,
-            // Column(
-            //   children: <Widget>[
-            //     Divider(height: 5.0),
-            //     //Mostrar a imagem do produto
-            //     imageProduto('${items[position].image[0]}'),
-            //     ListTile(
-            //       title: Text(
-            //         '${items[position].nomeproduto}',
-            //         style: TextStyle(
-            //           fontSize: 22.0,
-            //           color: Colors.deepOrangeAccent,
-            //         ),
-            //       ),
-            //       subtitle: Text(
-            //         '${items[position].descricao}',
-            //         style: new TextStyle(
-            //           fontSize: 18.0,
-            //           fontStyle: FontStyle.italic,
-            //         ),
-            //       ),
-            //       leading: Column(
-            //         children: <Widget>[
-            //           Padding(padding: EdgeInsets.all(1.0)),
-            //           // IconButton(
-            //           //     icon: const Icon(Icons.remove_circle_outline),
-            //           //     onPressed: () =>
-            //           //         _deleteNote(context, items[position], position)),
-            //         ],
-            //       ),
-            //       onTap: () => _navigateToNote(context, items[position]),
-            //     ),
-            //   ],
-            // ),
-          }),
-    );
-    // floatingActionButton: FloatingActionButton(
-    //   child: Icon(Icons.add),
-    //   onPressed: () => _createNewNote(context),
-    // ),
+                //Imagem do produto
+                CarouselSlider(
+                    height: 400.0,
+                    items: [1, 2, 3, 4, 5].map((i) {
+                      return Builder(builder: (BuildContext context) {
+                        return Container(
+                            //TODO ver depois para deixar o tamanho maximo
+                            height: MediaQuery.of(context).size.height / 2,
+                            child: AspectRatio(
+                                aspectRatio: 500 / 500,
+                                child: Stack(children: <Widget>[
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          fit: BoxFit.fitWidth,
+                                          alignment: FractionalOffset.topCenter,
+                                          image: CachedNetworkImageProvider(
+                                              '${items[position].image[0]}')),
+                                    ),
+                                  )
+                                ])));
+                      });
+                    }).toList()),
+                SizedBox(
+                  height: 40,
+                  //width: 300,
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                          child: Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: Text('${items[position].nomeproduto}',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                color: Colors.black)),
+                      )),
+                    ],
+                  ),
+                ),
+                //linha divisora
+                Divider(
+                  thickness: 0.4,
+                  color: Colors.black,
+                )
+              ]);
+            }));
   }
-
-//hummmm
-  void _navigateToNote(BuildContext context, ListaProdutoModel note) async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => NoteScreen(note)),
-    );
-  }
-
-  void createNewNote(BuildContext context) async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) =>
-              NoteScreen(ListaProdutoModel(null, '', '', null, null, null, null))),
-    );
-  }
-}
-
-Widget imageProduto(String url) {
-  return ListTile(
-    title: Row(
-      children: <Widget>[
-        Image.network(
-          url,
-          height: 150,
-        )
-      ],
-    ),
-  );
 }
