@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:icollection/model/listaprodutoModel.dart';
-import 'package:icollection/model/usuarioModel.dart';
+import 'package:icollection/model/usuarioModel.dart'; 
 import 'package:icollection/Usuario/UsuarioDATA.dart';
 import '../VariaveisGlobais/UsuarioGlobal.dart' as g;
 
