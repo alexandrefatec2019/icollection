@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:icollection/Produto/Produto_Services.dart';
 import 'package:icollection/model/listaprodutoModel.dart';
+import 'package:icollection/model/usuarioModel.dart';
 
 import 'package:show_dialog/show_dialog.dart' as dialog;
 //Futuramente será formatado, mas ja traz a lista dos produtos do firabase e a rolagem funciona
@@ -48,34 +49,67 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
         return new ListView(
           children: snapshot.data.documents.map((DocumentSnapshot document) {
             return FutureBuilder(
-        
-        future: call(document.data['usuario']),
-          
+              future: call(document.data['usuario']),
+              builder: (ctx, snapshot) {
+                if (!snapshot.hasData)
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
 
-         // nesse caso, ele vai refazer a chamada, porque toda vez que a função facaAlgo é chamada, ela retorna um novo objeto
-         // da classe Future
-       //  future: facaAlgo(),
-        builder: (ctx, snapshot) {
-          if (!snapshot.hasData)
-            return Center(
-              child: CircularProgressIndicator(),
+                return Center(
+                    child: Row(
+                  children: <Widget>[
+                    avatar(snapshot.data.photourl),
+                    nomeUsuario(snapshot.data.nome),
+                    imagemProduto(document.data['image'][0])
+                    //
+                  ],
+                ));
+              },
             );
-
-          return Center(
-            child: Text(" fiz : ${snapshot.data}"+ 'xxxxx' +document.data['descricao']),
-          );
-        },
-      );
-          
           }).toList(),
         );
-        
       },
     );
   }
 }
 
-Future<String> call(DocumentReference doc) {
+Future<UsuarioModel> call(DocumentReference doc) {
 //  return 'xxxxxxxxxxxxxxxxxxxxxxx3233333333333333';
-  return  doc.get().then((onValue) =>  onValue.data['nome'].toString());
+  return doc.get().then((onValue) => UsuarioModel.map(onValue));
+}
+
+Widget imagemProduto(String imgProduto) {
+  print(imgProduto);
+  return Container(
+      width: 205.0,
+      height: 205.0,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        image: DecorationImage(
+          image: CachedNetworkImageProvider(imgProduto),
+        ),
+      ));
+}
+
+Widget nomeUsuario(String nomeUsuario) {
+  return Container(
+      child: Padding(
+    padding: EdgeInsets.only(left: 5),
+    child: Text(nomeUsuario,
+        style: TextStyle(
+            fontWeight: FontWeight.bold, fontSize: 14, color: Colors.black)),
+  ));
+}
+
+Widget avatar(String imagemUsuario) {
+  return Container(
+      width: 45.0,
+      height: 45.0,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        image: DecorationImage(
+          image: CachedNetworkImageProvider(imagemUsuario),
+        ),
+      ));
 }
