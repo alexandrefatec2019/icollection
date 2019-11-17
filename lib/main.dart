@@ -8,9 +8,15 @@ import 'Usuario/UsuarioDATA.dart';
 //Variaveis globais! (em teste)
 import 'VariaveisGlobais/UsuarioGlobal.dart' as g;
 
-void main() async {
+void main()  {
+   WidgetsFlutterBinding.ensureInitialized();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final firestore = Firestore.instance;
+  Firestore.instance.settings(
+    persistenceEnabled: true,
+    cacheSizeBytes: 1048576
+  );
+  
   final VerificaAuth _auth = VerificaAuth();
   
 
@@ -43,12 +49,12 @@ void main() async {
 
   //Define a variavel referencia
 
-  final bool isLogged = await _auth.isLogged();
-  final Icollection icollection = Icollection(
-    initialRoute: isLogged ? '/' : '/Login',
-  );
+  // final bool isLogged = await _auth.isLogged();
+  // final Icollection icollection = Icollection(
+  //   initialRoute: isLogged ? '/' : '/Login',
+  // );
 
-  runApp(icollection);
+  runApp(Icollection());
 }
 
 class Icollection extends StatelessWidget {
@@ -105,7 +111,7 @@ class VerificaAuth {
    Future<String> currentUser() async {
      try {
         FirebaseUser user = await _firebaseAuth.currentUser();
-      return user != null ? user.uid : null;
+      return user != null ? user.email : null;
      }
      catch(e){
        return null;

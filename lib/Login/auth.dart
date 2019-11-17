@@ -4,7 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:icollection/model/usuarioModel.dart';
-
+//Variaveis globais! (em teste)
+import '../VariaveisGlobais/UsuarioGlobal.dart' as g;
 
 class Autentica {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -55,29 +56,20 @@ class Autentica {
 
       assert(user.uid == currentUser.uid);
 
-      name = user.email;
-
       assert(user.email != null);
       //assert(user?.phoneNumber != null);
 
       assert(user.displayName != null);
-      assert(user.photoUrl != null);
+      //assert(user.photoUrl != null);
 
-      // if (await userCheck(user.providerData[1].uid)) {
-      print('xxxxxxxxxxxxxxxx' + ' ' + user.photoUrl);
-      // }
-      print('\n\n\nmetodo auth google \n email = ' +
-          user.email +
-          '\n displayname = ' +
-          user.displayName +
-          '\n photourl = ' +
-          user.photoUrl +
-          '\n\n\n\n');
+      //Define as variaveis globais na primeira autenticacao!!
+      g.email = user.email;
+      g.nome = user.displayName;
+      g.photourl = user.photoUrl;
 
       return UsuarioModel(
           user.email, user.displayName, user.email, '', '', user.photoUrl);
     } catch (e) {
-      print('\n\n\n\n\n\n' + e.toString() + '\n\n\n\n\n\n\n');
       googleLogout();
       return null;
     }
@@ -111,7 +103,7 @@ class Autentica {
     await _auth.signOut();
     await _googleSignIn.signOut();
     //Fecha app
-    SystemNavigator.pop();
+    //SystemNavigator.pop();
   }
 
   Future<String> googleUser() async {

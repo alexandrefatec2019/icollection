@@ -27,7 +27,6 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
 
     items = List();
 
-    noteSub?.cancel();
     noteSub = db.getNoteList().listen((QuerySnapshot snapshot) {
       final List<ListaProdutoModel> notes = snapshot.documents
           .map((documentSnapshot) =>
@@ -41,116 +40,42 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
   }
 
   @override
-  void dispose() {
-    noteSub?.cancel();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Center(
-        child: ListView.builder(
-            //NetworkImage('${items[position].image[0]}')),
-            itemCount: items.length,
-            //padding: const EdgeInsets.all(0.0),
-            itemBuilder: (context, position) {
-              return Column(children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
-                  child: SizedBox(
-                    //tamanho da faixa branca onde vai avatar usuario e nome e mais um botao talvez
-                    height: 60,
-                    child: Row(
-                      children: <Widget>[
-                        //Avatar do usuario
-                        Container(
-                          width: 45.0,
-                          height: 45.0,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              image: CachedNetworkImageProvider(
-                                  '${items[position].imageUsuario}'),
-                            ),
-                          ),
-                        ),
-                        //Nome do usuario
-                        Container(
-                            child: Padding(
-                          padding: EdgeInsets.only(left: 5),
-                          child: Text('${items[position].nomeUsuario}',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                  color: Colors.black)),
-                        )),
-                        //Icon
-                        Expanded(
-                            child: Container(
-                                alignment: Alignment.centerRight,
-                                child: Padding(
-                                    padding: EdgeInsets.only(right: 0),
-                                    child: IconButton(
-                                        icon: Icon(Icons.more_vert),
-                                        iconSize: 30,
-                                        tooltip: 'Increase volume by 10',
-                                        onPressed: () {
-                                          dialog.aboutDialog(
-                                              context,
-                                              'oie ' +
-                                                  '${items[position].nomeUsuario}',
-                                              'xxxx');
-                                        }))))
-                      ],
-                    ),
-                  ),
-                ),
-                //Imagem do produto
-                CarouselSlider(
-                    height: 400.0,
-                    items: [1, 2, 3, 4, 5].map((i) {
-                      return Builder(builder: (BuildContext context) {
-                        return Container(
-                            //TODO ver depois para deixar o tamanho maximo
-                            height: MediaQuery.of(context).size.height / 2,
-                            child: AspectRatio(
-                                aspectRatio: 500 / 500,
-                                child: Stack(children: <Widget>[
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          fit: BoxFit.fitWidth,
-                                          alignment: FractionalOffset.topCenter,
-                                          image: CachedNetworkImageProvider(
-                                              '${items[position].image[0]}')),
-                                    ),
-                                  )
-                                ])));
-                      });
-                    }).toList()),
-                SizedBox(
-                  height: 40,
-                  //width: 300,
-                  child: Row(
-                    children: <Widget>[
-                      Container(
-                          child: Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: Text('${items[position].nomeproduto}',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                                color: Colors.black)),
-                      )),
-                    ],
-                  ),
-                ),
-                //linha divisora
-                Divider(
-                  thickness: 0.4,
-                  color: Colors.black,
-                )
-              ]);
-            }));
+    return StreamBuilder<QuerySnapshot>(
+      stream: Firestore.instance.collection('ProdutoLista').snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (!snapshot.hasData) return new Text('Loading...');
+        return new ListView(
+          children: snapshot.data.documents.map((DocumentSnapshot document) {
+            return FutureBuilder(
+        
+        future: call(document.data['usuario']),
+          
+
+         // nesse caso, ele vai refazer a chamada, porque toda vez que a função facaAlgo é chamada, ela retorna um novo objeto
+         // da classe Future
+       //  future: facaAlgo(),
+        builder: (ctx, snapshot) {
+          if (!snapshot.hasData)
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+
+          return Center(
+            child: Text(" fiz : ${snapshot.data}"+ 'xxxxx' +document.data['descricao']),
+          );
+        },
+      );
+          
+          }).toList(),
+        );
+        
+      },
+    );
   }
+}
+
+Future<String> call(DocumentReference doc) {
+//  return 'xxxxxxxxxxxxxxxxxxxxxxx3233333333333333';
+  return  doc.get().then((onValue) =>  onValue.data['nome'].toString());
 }

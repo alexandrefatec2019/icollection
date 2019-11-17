@@ -7,6 +7,7 @@ import 'package:icollection/model/listaprodutoModel.dart';
 final CollectionReference produtoCollection =
     Firestore.instance.collection('ProdutoLista').reference();
 
+
 class FirebaseFirestoreService {
   static final FirebaseFirestoreService _instance =
       new FirebaseFirestoreService.internal();

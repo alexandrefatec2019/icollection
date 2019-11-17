@@ -65,7 +65,7 @@ class _Principal extends State<Principal> {
     if (auth?.isEmailVerified != null) {
       setState(() {
         selectedWidgetMarker = WidgetMarker.menu;
-        //print('xxxxxxxxxxxxxxxxxxxxxxxxxxxAAAAAAAAAAAAAAx\n\n\n\n' + auth.providerData[1].uid+'\n\n\n\n');
+        print('xxxxxxxxxxxxxxxxxxxxxxxxxxxAAAAAAAAAAAAAAx\n\n\n\n' + auth.providerData[1].uid+'\n\n\n\n');
         this._email = auth?.email.toString();
         this._imagemURL = auth?.photoUrl.toString();
         this._nomeUsuario = auth?.displayName.toString();

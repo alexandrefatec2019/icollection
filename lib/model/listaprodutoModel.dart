@@ -18,8 +18,16 @@ class ListaProdutoModel {
   String _nomeUsuario;
   String _photoURL;
 
-  ListaProdutoModel(this._id, this._nomeProduto, this._descricao,
-      this._material, this._estado,this._valor, this._troca, this._image,this._usuario);
+  ListaProdutoModel(
+      this._id,
+      this._nomeProduto,
+      this._descricao,
+      this._material,
+      this._estado,
+      this._valor,
+      this._troca,
+      this._image,
+      this._usuario);
 
   ListaProdutoModel.map(dynamic obj) {
     this._id = obj['id'];
@@ -35,22 +43,22 @@ class ListaProdutoModel {
     this._usuario = obj['usuario'];
   }
 
-  String get id => _id;
-  String get nomeproduto => _nomeProduto;
-  String get descricao => _descricao;
-  String get material => _material;
-  String get estado => _estado;
-  String get valor => _valor;
+  String get id => _id ?? '';
+  String get nomeproduto => _nomeProduto ?? '';
+  String get descricao => _descricao ?? '';
+  String get material => _material ?? ' ';
+  String get estado => _estado ?? '';
+  String get valor => _valor ?? '';
 
-  String get nomeUsuario => _nomeUsuario;
-  String get imageUsuario => _photoURL;
+  String get nomeUsuario => _nomeUsuario ?? '';
+  String get imageUsuario => _photoURL ?? '';
 
   //Referencia
-  String get usuario => _usuario.path;
+  String get usuario => _usuario.path ?? '';
   ////////////
   ///
-  bool get troca => _troca;
-  List get image => _image;
+  bool get troca => _troca ?? '';
+  List get image => _image ?? [];
 
   Map<String, dynamic> toMap() {
     var map = new Map<String, dynamic>();
@@ -73,22 +81,28 @@ class ListaProdutoModel {
   ListaProdutoModel.fromMap(Map<String, dynamic> map) {
     //Recebhe a referencia do usuario
     //Ainda com problemas por isso a tela vermelha na listagem do produto
-    DocumentReference _x = map['usuario'];
-    _x.get().then((onValue) {
-      this._id = map['id'];
+    //Firestore.instance.collection('Usuario').document('gruposjrp@gmail.com');
+    DocumentReference _x = map['usuario']; //Firestore.instance.collection('Usuario').document('gruposjrp@gmail.com');
+    //print('mapa do usuario'+map['usuario']);
+    try {
+      _x.get().then((onValue) {
+        print('eeeeeeeeeeeeeeeeeeeeeeee');
+        this._nomeProduto = map['nomeproduto'];
+        this._descricao = map['descricao'];
+        this._material = map['material'];
+        this._estado = map['estado'];
+        this._valor = map['valor'];
+        this._troca = map['troca'];
+        this._image = map['image'];
+        this._nomeUsuario = onValue.data['nome'];
+        this._photoURL = onValue.data['photourl'];
 
-      this._nomeProduto = map['nomeproduto'];
-      this._descricao = map['descricao'];
-      this._material = map['material'];
-      this._estado = map['estado'];
-      this._valor = map['valor'];
-      this._troca = map['troca'];
-      this._image = map['image'];
+        print('\n\n refer = ' + _image[0]);
+      });
+    } catch (e) {
+      print(e);
+    }
 
-      this._nomeUsuario = onValue.data['nome'];
-      this._photoURL = onValue.data['photourl'];
-
-      print('\n\n refer = ' + _nomeUsuario);
-    });
+    //this._id = map['id'];
   }
 }
