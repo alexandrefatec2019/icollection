@@ -77,10 +77,10 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
                                   ],
                                 ),
                               )),
-                              SizedBox(
-                                width: 50,
-                                child: botaoPerfil('usuario', context),
-                              )
+                          SizedBox(
+                            width: 50,
+                            child: botaoPerfil('usuario', context),
+                          )
                         ],
                       ),
 
@@ -103,32 +103,30 @@ Future<UsuarioModel> call(DocumentReference doc) {
   return doc.get().then((onValue) => UsuarioModel.map(onValue));
 }
 
-
-
 Widget imagemProduto(List imgProduto) {
   int n = imgProduto.length.toInt();
   return CarouselSlider(
-                    height: 400.0,
-                    items: imgProduto.skip(0).take(n).map((i) {
-                      return Builder(builder: (BuildContext context) {
-                        return Container(
-                            //TODO ver depois para deixar o tamanho maximo
-                            height: MediaQuery.of(context).size.height / 2,
-                            child: AspectRatio(
-                                aspectRatio: 500 / 500,
-                                child: Stack(children: <Widget>[
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          fit: BoxFit.fitWidth,
-                                          alignment: FractionalOffset.topCenter,
-                                          image: CachedNetworkImageProvider(
-                                              i)),
-                                    ),
-                                  )
-                                ])));
-                      });
-                    }).toList());
+    enlargeCenterPage: true,
+      height: 400.0,
+      items: imgProduto.skip(0).take(n).map((i) {
+        return Builder(builder: (BuildContext context) {
+          return Container(
+              //TODO ver depois para deixar o tamanho maximo
+              height: MediaQuery.of(context).size.height / 2,
+              child: AspectRatio(
+                  aspectRatio: 500 / 500,
+                  child: Stack(children: <Widget>[
+                    Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                            fit: BoxFit.fitWidth,
+                            alignment: FractionalOffset.topCenter,
+                            image: CachedNetworkImageProvider(i)),
+                      ),
+                    )
+                  ])));
+        });
+      }).toList());
 }
 
 Widget botaoPerfil(String usuario, BuildContext context) {
@@ -157,8 +155,8 @@ Widget nomeUsuario(String nomeUsuario) {
 
 Widget avatar(String imagemUsuario) {
   return Container(
-      width: 45.0,
-      height: 45.0,
+      width: 35.0,
+      height: 35.0,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         image: DecorationImage(
