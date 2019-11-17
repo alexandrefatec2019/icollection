@@ -13,11 +13,6 @@ class ListaProdutoModel {
   bool _troca;
   List _image;
 
-  //DocumentReference _usuario2; //= Firestore.instance.collection('Usuario').document('gruposjrp@gmail.com');
-  //Dados do usuario
-  String _nomeUsuario;
-  String _photoURL;
-
   ListaProdutoModel(
       this._id,
       this._nomeProduto,
@@ -38,9 +33,6 @@ class ListaProdutoModel {
     this._valor = obj['valor'];
     this._troca = obj['troca'];
     this._image = obj['image'];
-
-    //Referencia
-    this._usuario = obj['usuario'];
   }
 
   String get id => _id ?? '';
@@ -49,14 +41,6 @@ class ListaProdutoModel {
   String get material => _material ?? ' ';
   String get estado => _estado ?? '';
   String get valor => _valor ?? '';
-
-  String get nomeUsuario => _nomeUsuario ?? '';
-  String get imageUsuario => _photoURL ?? '';
-
-  //Referencia
-  String get usuario => _usuario.path ?? '';
-  ////////////
-  ///
   bool get troca => _troca ?? '';
   List get image => _image ?? [];
 
@@ -72,37 +56,17 @@ class ListaProdutoModel {
     map['valor'] = _valor;
     map['troca'] = _troca;
     map['image'] = _image;
-    //Referencia
-    map['usuario'] = _usuario;
 
     return map;
   }
 
   ListaProdutoModel.fromMap(Map<String, dynamic> map) {
-    //Recebhe a referencia do usuario
-    //Ainda com problemas por isso a tela vermelha na listagem do produto
-    //Firestore.instance.collection('Usuario').document('gruposjrp@gmail.com');
-    DocumentReference _x = map['usuario']; //Firestore.instance.collection('Usuario').document('gruposjrp@gmail.com');
-    //print('mapa do usuario'+map['usuario']);
-    try {
-      _x.get().then((onValue) {
-        print('eeeeeeeeeeeeeeeeeeeeeeee');
-        this._nomeProduto = map['nomeproduto'];
-        this._descricao = map['descricao'];
-        this._material = map['material'];
-        this._estado = map['estado'];
-        this._valor = map['valor'];
-        this._troca = map['troca'];
-        this._image = map['image'];
-        this._nomeUsuario = onValue.data['nome'];
-        this._photoURL = onValue.data['photourl'];
-
-        print('\n\n refer = ' + _image[0]);
-      });
-    } catch (e) {
-      print(e);
-    }
-
-    //this._id = map['id'];
+    this._nomeProduto = map['nomeproduto'];
+    this._descricao = map['descricao'];
+    this._material = map['material'];
+    this._estado = map['estado'];
+    this._valor = map['valor'];
+    this._troca = map['troca'];
+    this._image = map['image'];
   }
 }

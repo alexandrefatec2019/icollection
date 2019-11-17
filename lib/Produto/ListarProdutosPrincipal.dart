@@ -47,6 +47,7 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) return new Text('Loading...');
         return new ListView(
+          reverse: true,
           children: snapshot.data.documents.map((DocumentSnapshot document) {
             return FutureBuilder(
               future: call(document.data['usuario']),
@@ -57,14 +58,37 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
                   );
 
                 return Center(
-                    child: Row(
-                  children: <Widget>[
-                    avatar(snapshot.data.photourl),
-                    nomeUsuario(snapshot.data.nome),
-                    imagemProduto(document.data['image'][0])
-                    //
-                  ],
-                ));
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          Padding(
+                              padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
+                              child: SizedBox(
+                                height: 50,
+                                child: Row(
+                                  children: <Widget>[
+                                    Row(
+                                      children: <Widget>[
+                                        avatar(snapshot.data.photourl),
+                                        nomeUsuario(snapshot.data.nome),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              )),
+                              SizedBox(
+                                width: 50,
+                                child: botaoPerfil('usuario', context),
+                              )
+                        ],
+                      ),
+
+                      imagemProduto(document.data['image'])
+                      //
+                    ],
+                  ),
+                );
               },
             );
           }).toList(),
@@ -74,22 +98,51 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
   }
 }
 
+//Faz a leitura da referencia e traz em lista
 Future<UsuarioModel> call(DocumentReference doc) {
-//  return 'xxxxxxxxxxxxxxxxxxxxxxx3233333333333333';
   return doc.get().then((onValue) => UsuarioModel.map(onValue));
 }
 
-Widget imagemProduto(String imgProduto) {
-  print(imgProduto);
+
+
+Widget imagemProduto(List imgProduto) {
+  int n = imgProduto.length.toInt();
+  return CarouselSlider(
+                    height: 400.0,
+                    items: imgProduto.skip(0).take(n).map((i) {
+                      return Builder(builder: (BuildContext context) {
+                        return Container(
+                            //TODO ver depois para deixar o tamanho maximo
+                            height: MediaQuery.of(context).size.height / 2,
+                            child: AspectRatio(
+                                aspectRatio: 500 / 500,
+                                child: Stack(children: <Widget>[
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          fit: BoxFit.fitWidth,
+                                          alignment: FractionalOffset.topCenter,
+                                          image: CachedNetworkImageProvider(
+                                              i)),
+                                    ),
+                                  )
+                                ])));
+                      });
+                    }).toList());
+}
+
+Widget botaoPerfil(String usuario, BuildContext context) {
   return Container(
-      width: 205.0,
-      height: 205.0,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        image: DecorationImage(
-          image: CachedNetworkImageProvider(imgProduto),
-        ),
-      ));
+      alignment: Alignment.centerRight,
+      child: Padding(
+          padding: EdgeInsets.only(right: 0),
+          child: IconButton(
+              icon: Icon(Icons.more_vert),
+              iconSize: 30,
+              tooltip: 'Increase volume by 10',
+              onPressed: () {
+                dialog.aboutDialog(context, usuario.toString(), 'xxxx');
+              })));
 }
 
 Widget nomeUsuario(String nomeUsuario) {

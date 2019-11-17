@@ -9,7 +9,7 @@ import 'Usuario/UsuarioDATA.dart';
 import 'VariaveisGlobais/UsuarioGlobal.dart' as g;
 
 void main()  {
-   WidgetsFlutterBinding.ensureInitialized();
+  //WidgetsFlutterBinding.ensureInitialized();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final firestore = Firestore.instance;
   Firestore.instance.settings(
