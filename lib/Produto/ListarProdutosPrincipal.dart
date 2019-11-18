@@ -8,7 +8,7 @@ import 'package:icollection/model/listaprodutoModel.dart';
 import 'package:icollection/model/usuarioModel.dart';
 
 import 'package:show_dialog/show_dialog.dart' as dialog;
-//Futuramente será formatado, mas ja traz a lista dos produtos do firabase e a rolagem funciona
+//Futuramente será formatado, mas ja traz a lista dos produtos do firabase e a rolagem funciona 
 
 class ListarProdutosPrincipal extends StatefulWidget {
   @override
