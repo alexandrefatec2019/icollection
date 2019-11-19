@@ -69,13 +69,13 @@ class _NovoProdutoState extends State<NovoProduto> {
 //     }
 // }
 
-  File imagem;
-  // File imagem1;
-  // File imagem2;
-  // File imagem3;
-  // File imagem4;
-  // File imagem5;
-  // File imagem6;
+  //File imagem;
+  File imagem1;
+  File imagem2;
+  File imagem3;
+  File imagem4;
+  File imagem5;
+  File imagem6;
 
   bool uploading = false;
 
@@ -130,73 +130,119 @@ class _NovoProdutoState extends State<NovoProduto> {
   }
 
   // ------------------------------------------------------------------------------------------------------------------------
-  void tirarFoto() async {
+  void tirarFoto1(String n) async {
     var _imagem = await ImagePicker.pickImage(source: ImageSource.camera);
 
     setState(() {
-      this.imagem = _imagem;
+      this.imagem1 = _imagem;
       this.uploading = true;
     });
-    var endereco = '/Produtos/'+usuario+'/name.jpg';
+    var endereco = '/Produtos/'+usuario+'/image'+n+'.jpg';
 
     var ref = FirebaseStorage().ref().child(endereco);
     StorageUploadTask upload = ref.putFile(_imagem);
     var downloadUrl = await upload.onComplete;
     String url = (await downloadUrl.ref.getDownloadURL());
-
-    //print(url);
-    //var decoded = Uri.decodeFull(url);
-//assert(url == decoded);
     
     if(url != null)
     img.add(url);
     print('imag da lista = '+img.map((f){print(f);}).toString());
   }
   // ------------------------------------------------------------------------------------------------------------------------
-  // Future<String> tirarFoto2() async {
-  //   var _imagem2 = await ImagePicker.pickImage(source: ImageSource.camera);
+  void tirarFoto2(String n) async {
+    var _imagem = await ImagePicker.pickImage(source: ImageSource.camera);
 
-  //   setState(() {
-  //     this.imagem2 = _imagem2;
-  //     this.uploading = true;
-  //   });
-  // }
-  // // ------------------------------------------------------------------------------------------------------------------------
-  // Future<String> tirarFoto3() async {
-  //   var _imagem3 = await ImagePicker.pickImage(source: ImageSource.camera);
+    setState(() {
+      this.imagem2 = _imagem;
+      this.uploading = true;
+    });
+    var endereco = '/Produtos/'+usuario+'/image'+n+'.jpg';
 
-  //   setState(() {
-  //     this.imagem3 = _imagem3;
-  //     this.uploading = true;
-  //   });
-  // }
+    var ref = FirebaseStorage().ref().child(endereco);
+    StorageUploadTask upload = ref.putFile(_imagem);
+    var downloadUrl = await upload.onComplete;
+    String url = (await downloadUrl.ref.getDownloadURL());
+    
+    if(url != null)
+    img.add(url);
+    print('imag da lista = '+img.map((f){print(f);}).toString());
+  }
   // // ------------------------------------------------------------------------------------------------------------------------
-  // Future<String> tirarFoto4() async {
-  //   var _imagem4 = await ImagePicker.pickImage(source: ImageSource.camera);
+  void tirarFoto3(String n) async {
+    var _imagem = await ImagePicker.pickImage(source: ImageSource.camera);
 
-  //   setState(() {
-  //     this.imagem4 = _imagem4;
-  //     this.uploading = true;
-  //   });
-  // }
-  // // ------------------------------------------------------------------------------------------------------------------------
-  // Future<String> tirarFoto5() async {
-  //   var _imagem5 = await ImagePicker.pickImage(source: ImageSource.camera);
-  //   setState(() {
-  //     this.imagem5 = _imagem5;
-  //     this.uploading = true;
-  //   });
-  // }
-  // // ------------------------------------------------------------------------------------------------------------------------
-  // Future<String> tirarFoto6() async {
-  //   var _imagem6 = await ImagePicker.pickImage(source: ImageSource.camera);
-  //   // var produto = (widget.produto.email);
+    setState(() {
+      this.imagem3 = _imagem;
+      this.uploading = true;
+    });
+    var endereco = '/Produtos/'+usuario+'/image'+n+'.jpg';
 
-  //   setState(() {
-  //     this.imagem6 = _imagem6;
-  //     this.uploading = true;
-  //   });
-  // }
+    var ref = FirebaseStorage().ref().child(endereco);
+    StorageUploadTask upload = ref.putFile(_imagem);
+    var downloadUrl = await upload.onComplete;
+    String url = (await downloadUrl.ref.getDownloadURL());
+    
+    if(url != null)
+    img.add(url);
+    print('imag da lista = '+img.map((f){print(f);}).toString());
+  }
+  // ------------------------------------------------------------------------------------------------------------------------
+  void tirarFoto4(String n) async {
+    var _imagem = await ImagePicker.pickImage(source: ImageSource.camera);
+
+    setState(() {
+      this.imagem4 = _imagem;
+      this.uploading = true;
+    });
+    var endereco = '/Produtos/'+usuario+'/image'+n+'.jpg';
+
+    var ref = FirebaseStorage().ref().child(endereco);
+    StorageUploadTask upload = ref.putFile(_imagem);
+    var downloadUrl = await upload.onComplete;
+    String url = (await downloadUrl.ref.getDownloadURL());
+    
+    if(url != null)
+    img.add(url);
+    print('imag da lista = '+img.map((f){print(f);}).toString());
+  }
+  // // ------------------------------------------------------------------------------------------------------------------------
+void tirarFoto5(String n) async {
+    var _imagem = await ImagePicker.pickImage(source: ImageSource.camera);
+
+    setState(() {
+      this.imagem5 = _imagem;
+      this.uploading = true;
+    });
+    var endereco = '/Produtos/'+usuario+'/image'+n+'.jpg';
+
+    var ref = FirebaseStorage().ref().child(endereco);
+    StorageUploadTask upload = ref.putFile(_imagem);
+    var downloadUrl = await upload.onComplete;
+    String url = (await downloadUrl.ref.getDownloadURL());
+    
+    if(url != null)
+    img.add(url);
+    print('imag da lista = '+img.map((f){print(f);}).toString());
+  }
+  // ------------------------------------------------------------------------------------------------------------------------
+  void tirarFoto6(String n) async {
+    var _imagem = await ImagePicker.pickImage(source: ImageSource.camera);
+
+    setState(() {
+      this.imagem6 = _imagem;
+      this.uploading = true;
+    });
+    var endereco = '/Produtos/'+usuario+'/image'+n+'.jpg';
+
+    var ref = FirebaseStorage().ref().child(endereco);
+    StorageUploadTask upload = ref.putFile(_imagem);
+    var downloadUrl = await upload.onComplete;
+    String url = (await downloadUrl.ref.getDownloadURL());
+    
+    if(url != null)
+    img.add(url);
+    print('imag da lista = '+img.map((f){print(f);}).toString());
+  }
 // ------------------------------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------------------------------
 //   Future saveImage() async {
@@ -408,14 +454,14 @@ class _NovoProdutoState extends State<NovoProduto> {
                     height: MediaQuery.of(context).size.width / 2,
                     width: MediaQuery.of(context).size.width / 2.7,
                     color: Colors.grey[200],
-                    child: this.imagem == null
+                    child: this.imagem1 == null
                         ? IconButton(
                             icon: Icon(Icons.add),
                             onPressed: () {
-                              tirarFoto();
+                              tirarFoto1('1');
                             },
                           )
-                        : Image.file(this.imagem),
+                        : Image.file(this.imagem1),
                   ),
                 ),
               ),
@@ -425,53 +471,14 @@ class _NovoProdutoState extends State<NovoProduto> {
                     height: MediaQuery.of(context).size.width / 2,
                     width: MediaQuery.of(context).size.width / 2.7,
                     color: Colors.grey[200],
-                    child: this.imagem == null
+                    child: this.imagem2 == null
                         ? IconButton(
                             icon: Icon(Icons.add),
                             onPressed: () {
-                              tirarFoto();
+                              tirarFoto2('2');
                             },
                           )
-                        : Image.file(this.imagem),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          new Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Card(
-                child: InkWell(
-                  child: Container(
-                    height: MediaQuery.of(context).size.width / 2,
-                    width: MediaQuery.of(context).size.width / 2.7,
-                    color: Colors.grey[200],
-                    child: this.imagem == null
-                        ? IconButton(
-                            icon: Icon(Icons.add),
-                            onPressed: () {
-                              tirarFoto();
-                            },
-                          )
-                        : Image.file(this.imagem),
-                  ),
-                ),
-              ),
-              Card(
-                child: InkWell(
-                  child: Container(
-                    height: MediaQuery.of(context).size.width / 2,
-                    width: MediaQuery.of(context).size.width / 2.7,
-                    color: Colors.grey[200],
-                    child: this.imagem == null
-                        ? IconButton(
-                            icon: Icon(Icons.add),
-                            onPressed: () {
-                              tirarFoto();
-                            },
-                          )
-                        : Image.file(this.imagem),
+                        : Image.file(this.imagem2),
                   ),
                 ),
               ),
@@ -486,14 +493,14 @@ class _NovoProdutoState extends State<NovoProduto> {
                     height: MediaQuery.of(context).size.width / 2,
                     width: MediaQuery.of(context).size.width / 2.7,
                     color: Colors.grey[200],
-                    child: this.imagem == null
+                    child: this.imagem3 == null
                         ? IconButton(
                             icon: Icon(Icons.add),
                             onPressed: () {
-                              tirarFoto();
+                              tirarFoto3('3');
                             },
                           )
-                        : Image.file(this.imagem),
+                        : Image.file(this.imagem3),
                   ),
                 ),
               ),
@@ -503,14 +510,53 @@ class _NovoProdutoState extends State<NovoProduto> {
                     height: MediaQuery.of(context).size.width / 2,
                     width: MediaQuery.of(context).size.width / 2.7,
                     color: Colors.grey[200],
-                    child: this.imagem == null
+                    child: this.imagem4 == null
                         ? IconButton(
                             icon: Icon(Icons.add),
                             onPressed: () {
-                              tirarFoto();
+                              tirarFoto4('4');
                             },
                           )
-                        : Image.file(this.imagem),
+                        : Image.file(this.imagem4),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          new Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Card(
+                child: InkWell(
+                  child: Container(
+                    height: MediaQuery.of(context).size.width / 2,
+                    width: MediaQuery.of(context).size.width / 2.7,
+                    color: Colors.grey[200],
+                    child: this.imagem5 == null
+                        ? IconButton(
+                            icon: Icon(Icons.add),
+                            onPressed: () {
+                              tirarFoto5('5');
+                            },
+                          )
+                        : Image.file(this.imagem5),
+                  ),
+                ),
+              ),
+              Card(
+                child: InkWell(
+                  child: Container(
+                    height: MediaQuery.of(context).size.width / 2,
+                    width: MediaQuery.of(context).size.width / 2.7,
+                    color: Colors.grey[200],
+                    child: this.imagem6 == null
+                        ? IconButton(
+                            icon: Icon(Icons.add),
+                            onPressed: () {
+                              tirarFoto6('6');
+                            },
+                          )
+                        : Image.file(this.imagem6),
                   ),
                 ),
               ),
