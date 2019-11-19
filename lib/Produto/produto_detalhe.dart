@@ -7,6 +7,8 @@ import 'package:firebase_database/firebase_database.dart';
 
 
 class ProdutoDetalhe extends StatefulWidget {
+  String id;
+  ProdutoDetalhe(this.id);
   @override
   _ProdutoDetalheState createState() => _ProdutoDetalheState(snapshot, produto);
    DocumentSnapshot snapshot;
