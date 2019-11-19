@@ -84,6 +84,7 @@ class _CadDadosState extends State<CadDados> {
       _photoUrl = url.toString();
       this.uploading = false;
     });
+    print(url.toString());
 
     return url;
   }

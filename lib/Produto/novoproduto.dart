@@ -12,7 +12,6 @@ import 'package:icollection/model/listaprodutoModel.dart';
 import '../VariaveisGlobais/UsuarioGlobal.dart' as g;
 import 'package:icollection/VariaveisGlobais/UsuarioGlobal.dart' as g;
 
-
 class NovoProduto extends StatefulWidget {
   final ListaProdutoModel product;
   NovoProduto(this.product);
@@ -40,9 +39,11 @@ class _NovoProdutoState extends State<NovoProduto> {
 
   List<DropdownMenuItem<int>> estadoList = [];
   // List<DropdownMenuItem<int>> categoriaList = [];
-  List img = [
+  List<String> img = [
     // 'https://cdn.shopify.com/s/files/1/0973/0376/products/mail_b48a54fc-2368-4e05-ae2d-fe8a4f4dcb39.jpg?v=1548118355'
   ];
+  //teste
+  String urlphoto;
 
   TextEditingController _nomeProduto;
   TextEditingController _descricao;
@@ -64,7 +65,7 @@ class _NovoProdutoState extends State<NovoProduto> {
 //       _nomeProduto = new TextEditingController(text: widget.product.nomeproduto);
 //       _descricao = new TextEditingController(text: widget.product.descricao);
 //       _valor = new TextEditingController(text: widget.product.valor);
-//       _material = new TextEditingController(text: widget.product.material); 
+//       _material = new TextEditingController(text: widget.product.material);
 //     }
 // }
 
@@ -127,6 +128,7 @@ class _NovoProdutoState extends State<NovoProduto> {
           )),
     );
   }
+
   // ------------------------------------------------------------------------------------------------------------------------
   void tirarFoto() async {
     var _imagem = await ImagePicker.pickImage(source: ImageSource.camera);
@@ -135,14 +137,20 @@ class _NovoProdutoState extends State<NovoProduto> {
       this.imagem = _imagem;
       this.uploading = true;
     });
+    var endereco = '/Produtos/'+usuario+'/name.jpg';
 
-    var ref = FirebaseStorage().ref().child('/Produtos/$usuario/imgem');
-    StorageUploadTask upload = ref.putFile(imagem);
+    var ref = FirebaseStorage().ref().child(endereco);
+    StorageUploadTask upload = ref.putFile(_imagem);
     var downloadUrl = await upload.onComplete;
-    var url = await downloadUrl.ref.getDownloadURL();
+    String url = (await downloadUrl.ref.getDownloadURL());
 
-    print(url);
-    // img.add(url);
+    //print(url);
+    var decoded = Uri.decodeFull(url);
+//assert(url == decoded);
+    
+    if(decoded != null)
+    img.add(decoded);
+    print('imag da lista = '+img.map((f){print(f);}).toString());
   }
   // ------------------------------------------------------------------------------------------------------------------------
   // Future<String> tirarFoto2() async {
@@ -197,7 +205,7 @@ class _NovoProdutoState extends State<NovoProduto> {
 //   var downloadUrl = await upload.onComplete;
 //   var url = await downloadUrl.ref.getDownloadURL();
 // }
-  
+
   List<Widget> getFormWidget() {
     List<Widget> formWidget = new List();
 
@@ -286,13 +294,13 @@ class _NovoProdutoState extends State<NovoProduto> {
       value: _estadoSelecionado,
       onChanged: (value) {
         setState(() {
-          if(value == 0){
+          if (value == 0) {
             _estado = 'Novo';
-          }else if(value  == 1){
+          } else if (value == 1) {
             _estado = 'Usado';
-          }else if(value  == 2){
+          } else if (value == 2) {
             _estado = 'Seminovo';
-          }else if(value  == 3){
+          } else if (value == 3) {
             _estado = 'Restaurado';
           }
           _estadoSelecionado = value;
