@@ -8,7 +8,7 @@ import 'package:icollection/model/listaprodutoModel.dart';
 import 'package:icollection/model/usuarioModel.dart';
 
 import 'package:show_dialog/show_dialog.dart' as dialog;
-//Futuramente será formatado, mas ja traz a lista dos produtos do firabase e a rolagem funciona 
+//Futuramente será formatado, mas ja traz a lista dos produtos do firabase e a rolagem funciona
 
 class ListarProdutosPrincipal extends StatefulWidget {
   @override
@@ -106,7 +106,7 @@ Future<UsuarioModel> call(DocumentReference doc) {
 Widget imagemProduto(List imgProduto) {
   int n = imgProduto.length.toInt();
   return CarouselSlider(
-    enlargeCenterPage: true,
+      enlargeCenterPage: true,
       height: 400.0,
       items: imgProduto.skip(0).take(n).map((i) {
         return Builder(builder: (BuildContext context) {
@@ -116,14 +116,16 @@ Widget imagemProduto(List imgProduto) {
               child: AspectRatio(
                   aspectRatio: 500 / 500,
                   child: Stack(children: <Widget>[
-                    Container(
+                    InkWell(
+                      onTap: (){},
+                        child: Container(
                       decoration: BoxDecoration(
                         image: DecorationImage(
                             fit: BoxFit.fitWidth,
                             alignment: FractionalOffset.topCenter,
                             image: CachedNetworkImageProvider(i)),
                       ),
-                    )
+                    )),
                   ])));
         });
       }).toList());

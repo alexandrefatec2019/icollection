@@ -16,7 +16,7 @@ class FirebaseFirestoreService {
 
   FirebaseFirestoreService.internal();
 
-  Future<ListaProdutoModel> createNote(String title, String description,
+  Future<ListaProdutoModel> cadastrarProduto(String title, String description,
       String material, String estado, String valor, bool troca, List image) async {
     final TransactionHandler createTransaction = (Transaction tx) async {
       final DocumentSnapshot ds = await tx.get(produtoCollection.document());
