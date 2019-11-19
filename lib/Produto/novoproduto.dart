@@ -145,11 +145,11 @@ class _NovoProdutoState extends State<NovoProduto> {
     String url = (await downloadUrl.ref.getDownloadURL());
 
     //print(url);
-    var decoded = Uri.decodeFull(url);
+    //var decoded = Uri.decodeFull(url);
 //assert(url == decoded);
     
-    if(decoded != null)
-    img.add(decoded);
+    if(url != null)
+    img.add(url);
     print('imag da lista = '+img.map((f){print(f);}).toString());
   }
   // ------------------------------------------------------------------------------------------------------------------------

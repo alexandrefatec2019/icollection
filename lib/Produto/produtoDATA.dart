@@ -32,7 +32,7 @@ class FirebaseFirestoreService {
       final TransactionHandler createTransaction = (Transaction tx) async {
         //Salva um documento na Coleção usuario com o nome id do google (uid)
         final DocumentSnapshot ds =
-            await tx.get(produtoCollection.document(g.emailAuth));
+            await tx.get(produtoCollection.document());
 
         //final ListaProdutoModel produto = ListaProdutoModel(modelo);
         final Map<String, dynamic> data = modelo.toMap();

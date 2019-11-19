@@ -33,6 +33,7 @@ class ListaProdutoModel {
     this._valor = obj['valor'];
     this._troca = obj['troca'];
     this._image = obj['image'];
+    this._usuario = obj['usuario'];
   }
 
   String get id => _id ?? '';
@@ -42,7 +43,9 @@ class ListaProdutoModel {
   String get estado => _estado ?? '';
   String get valor => _valor ?? '';
   bool get troca => _troca ?? '';
-  List get image => _image ?? [];
+  List get image => null;//_image ?? [];
+  String get usuario => _usuario.path;
+
 
   Map<String, dynamic> toMap() {
     var map = new Map<String, dynamic>();
@@ -56,6 +59,7 @@ class ListaProdutoModel {
     map['valor'] = _valor;
     map['troca'] = _troca;
     map['image'] = _image;
+    map['usuario'] = _usuario;
 
     return map;
   }
