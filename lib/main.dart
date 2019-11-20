@@ -12,10 +12,11 @@ void main()  {
   //WidgetsFlutterBinding.ensureInitialized();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final firestore = Firestore.instance;
-  Firestore.instance.settings(
-    persistenceEnabled: true,
-    cacheSizeBytes: 1048576
-  );
+  //TODO reativar cache
+  // Firestore.instance.settings(
+  //   persistenceEnabled: true,
+  //   cacheSizeBytes: 1048576
+  // );
   
   final VerificaAuth _auth = VerificaAuth();
   

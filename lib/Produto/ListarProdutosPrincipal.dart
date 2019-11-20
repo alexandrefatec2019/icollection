@@ -29,7 +29,7 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
 
     items = List();
 
-    noteSub = db.getNoteList().listen((QuerySnapshot snapshot) {
+    noteSub = db.xx().listen((QuerySnapshot snapshot) {
       final List<ListaProdutoModel> notes = snapshot.documents
           .map((documentSnapshot) =>
               ListaProdutoModel.fromMap(documentSnapshot.data))

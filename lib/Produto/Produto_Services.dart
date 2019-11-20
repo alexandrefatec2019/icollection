@@ -1,12 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:icollection/model/listaprodutoModel.dart';
-
+import '../VariaveisGlobais/UsuarioGlobal.dart' as g;
 
 //CRUD PRODUTO
 
 final CollectionReference produtoCollection =
     Firestore.instance.collection('ProdutoLista').reference();
-
 
 class FirebaseFirestoreService {
   static final FirebaseFirestoreService _instance =
@@ -16,13 +15,19 @@ class FirebaseFirestoreService {
 
   FirebaseFirestoreService.internal();
 
-  Future<ListaProdutoModel> cadastrarProduto(String title, String description,
-      String material, String estado, String valor, bool troca, List image) async {
+  Future<ListaProdutoModel> cadastrarProduto(
+      String title,
+      String description,
+      String material,
+      String estado,
+      String valor,
+      bool troca,
+      List image) async {
     final TransactionHandler createTransaction = (Transaction tx) async {
       final DocumentSnapshot ds = await tx.get(produtoCollection.document());
 
-      final ListaProdutoModel produto = ListaProdutoModel(
-          ds.documentID, title, description, material, estado, valor, troca, image,null);
+      final ListaProdutoModel produto = ListaProdutoModel(ds.documentID, title,
+          description, material, estado, valor, troca, image, null);
       final Map<String, dynamic> data = produto.toMap();
 
       await tx.set(ds.reference, data);
@@ -39,8 +44,7 @@ class FirebaseFirestoreService {
   }
   //Leitura do produto na lista geral !!!
 
-  Stream<QuerySnapshot> getNoteList({int offset, int limit}) {
-    
+  Stream<QuerySnapshot> getNoteList2({int offset, int limit}) {
     Stream<QuerySnapshot> snapshots = produtoCollection.snapshots();
     if (offset != null) {
       snapshots = snapshots.skip(offset);
@@ -50,6 +54,22 @@ class FirebaseFirestoreService {
       snapshots = snapshots.take(limit);
     }
 
+    return snapshots;
+  }
+
+  Stream<QuerySnapshot> xx() {
+    Firestore.instance.settings(
+      
+      persistenceEnabled: false
+    );
+    //g.usuarioReferencia = firestore.collection('Usuario').document(_d);
+    g.usuarioReferencia = Firestore.instance
+        .collection('Usuario')
+        .document('gruposjrp@gmail.com');
+    //print('xxx');
+//print('xxxxxxxxxxxxxxxxxxxxxx referencia '+g.usuarioReferencia.toString());
+    Stream<QuerySnapshot> snapshots = Firestore.instance.collection('ProdutoLista').where('usuario', isEqualTo: g.usuarioReferencia).snapshots();
+    print(snapshots.length.toString());
     return snapshots;
   }
 
