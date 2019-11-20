@@ -4,6 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:icollection/Produto/Produto_Services.dart';
+import 'package:icollection/Produto/produto_detalhe.dart';
 import 'package:icollection/model/listaprodutoModel.dart';
 import 'package:icollection/model/usuarioModel.dart';
 
@@ -47,7 +48,6 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) return new Text('Loading...');
         return new ListView(
-          reverse: true,
           children: snapshot.data.documents.map((DocumentSnapshot document) {
             return FutureBuilder(
               future: call(document.data['usuario']),
@@ -84,7 +84,7 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
                         ],
                       ),
 
-                      imagemProduto(document.data['image'])
+                      imagemProduto(document.data['image'], document['id'])
                       //
                     ],
                   ),
@@ -103,7 +103,7 @@ Future<UsuarioModel> call(DocumentReference doc) {
   return doc.get().then((onValue) => UsuarioModel.map(onValue));
 }
 
-Widget imagemProduto(List imgProduto) {
+Widget imagemProduto(List imgProduto, String id) {
   int n = imgProduto.length.toInt();
   return CarouselSlider(
       enlargeCenterPage: true,
@@ -117,15 +117,23 @@ Widget imagemProduto(List imgProduto) {
                   aspectRatio: 500 / 500,
                   child: Stack(children: <Widget>[
                     InkWell(
-                      onTap: (){},
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ProdutoDetalhe(id),
+                              ));
+                          
+                        },
                         child: Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                            fit: BoxFit.fitWidth,
-                            alignment: FractionalOffset.topCenter,
-                            image: CachedNetworkImageProvider(i)),
-                      ),
-                    )),
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                                fit: BoxFit.fitWidth,
+                                alignment: FractionalOffset.topCenter,
+                                image: CachedNetworkImageProvider(i)),
+                          ),
+                        )),
                   ])));
         });
       }).toList());

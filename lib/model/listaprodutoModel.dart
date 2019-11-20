@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 //import '../VariaveisGlobais/UsuarioGlobal.dart' as g;
 
 class ListaProdutoModel {
+  
   String _id; //Codigo do usuario que postou o produto
   String _nomeProduto; //Nome do produto anunciado
   String _descricao; //Descrição do produto anunciado
@@ -43,8 +44,8 @@ class ListaProdutoModel {
   String get estado => _estado ?? '';
   String get valor => _valor ?? '';
   bool get troca => _troca ?? '';
-  List get image => null;//_image ?? [];
-  String get usuario => _usuario.path;
+  List<String> get image => _image;
+  DocumentReference get usuario => _usuario;
 
 
   Map<String, dynamic> toMap() {
@@ -52,6 +53,7 @@ class ListaProdutoModel {
     if (_id != null) {
       map['id'] = _id;
     }
+    map['id'] = _id;
     map['nomeproduto'] = _nomeProduto;
     map['descricao'] = _descricao;
     map['material'] = _material;
@@ -65,6 +67,8 @@ class ListaProdutoModel {
   }
 
   ListaProdutoModel.fromMap(Map<String, dynamic> map) {
+    
+    this._id = map['id'];
     this._nomeProduto = map['nomeproduto'];
     this._descricao = map['descricao'];
     this._material = map['material'];
