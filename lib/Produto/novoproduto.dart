@@ -11,7 +11,7 @@ import 'package:icollection/model/listaprodutoModel.dart';
 
 import '../VariaveisGlobais/UsuarioGlobal.dart' as g;
 import 'package:icollection/VariaveisGlobais/UsuarioGlobal.dart' as g;
- 
+
 class NovoProduto extends StatefulWidget {
   final ListaProdutoModel product;
   NovoProduto(this.product);
@@ -483,11 +483,9 @@ class _NovoProdutoState extends State<NovoProduto> {
           // print(_valor.text);
           //Passando o modelo !!
           // saveImage();
-          //o codigo do produto será 1 ... pq vai incrementar ao novo
           
           db.criarProduto(ListaProdutoModel(
               uid,
-              1,
               _nomeProduto.text,
               _descricao.text,
               _material.text,

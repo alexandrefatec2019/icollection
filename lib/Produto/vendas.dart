@@ -76,6 +76,7 @@ class ListaProdutos extends StatelessWidget {
 
 Widget imageProduto(List url, String id) {
   return SizedBox(
+
     height: 180,
     child: Center(
       child: AspectRatio(
@@ -91,4 +92,5 @@ Widget imageProduto(List url, String id) {
       ),
     ),
   );
+
 }
