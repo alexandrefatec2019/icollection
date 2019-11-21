@@ -2,6 +2,7 @@ import 'package:carousel_pro/carousel_pro.dart';
 // import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:icollection/Usuario/Cadastro.dart';
 import 'package:icollection/datas/produtodata.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -45,7 +46,9 @@ class _ProdutoDetalheState extends State<ProdutoDetalhe>
       ),
       body: _buildProdutoDetalhes(context),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () {
+                
+        },
         backgroundColor: Color.fromRGBO(255, 105, 105, 100),
         label: Text('TENHO INTERESSE'),
         icon: Icon(Icons.thumb_up),
