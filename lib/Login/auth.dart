@@ -35,6 +35,7 @@ class Autentica {
 
   //Login Google
   Future<UsuarioModel> googleLogin() async {
+    print('Entrou no googleLogin');
     try {
       final GoogleSignInAccount googleSignInAccount =
           await _googleSignIn.signIn();
@@ -66,10 +67,13 @@ class Autentica {
       g.email = user.email;
       g.nome = user.displayName;
       g.photourl = user.photoUrl;
+       g.usuarioReferencia =
+           Firestore.instance.collection('Usuario').document(user.email);
 
       return UsuarioModel(
           user.email, user.displayName, user.email, '', '', user.photoUrl);
     } catch (e) {
+      print('Deu erro na autenticacao exeption = '+e.toString());
       googleLogout();
       return null;
     }
@@ -100,10 +104,11 @@ class Autentica {
 
   //Logout Google
   Future<void> googleLogout() async {
+     FirebaseAuth.instance.signOut();
     await _auth.signOut();
     await _googleSignIn.signOut();
     //Fecha app
-    //SystemNavigator.pop();
+    SystemNavigator.pop();
   }
 
   Future<String> googleUser() async {

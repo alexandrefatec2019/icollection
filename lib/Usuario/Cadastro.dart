@@ -20,7 +20,6 @@ class CadDados extends StatefulWidget {
 }
 
 class _CadDadosState extends State<CadDados> {
-  
   FirebaseFirestoreService db = new FirebaseFirestoreService();
   //TODO verificar depois se é possivel diminuir o numero de vars
   String uid;
@@ -61,7 +60,7 @@ class _CadDadosState extends State<CadDados> {
         imageQuality: 100,
         maxHeight: 96,
         maxWidth: 96);
-    
+
     //TODO ver se vem do auth ou do db
     var usuario = g.emailAuth;
 
@@ -99,7 +98,7 @@ class _CadDadosState extends State<CadDados> {
 
   //Verifica
   void verifica() {
-    print('\n\n\n\naueuhaiuhihuih\n\n\n\n');
+    print('\n\n\n\nCadastro - Verifica()\n\n\n\n');
     if (g.dadosUser = true) {
       //print('Primeiro If');
       setState(() {
@@ -113,17 +112,16 @@ class _CadDadosState extends State<CadDados> {
     } else {
       //print('Segundo If');
       //esse email ja vem da autenticação(widget.user.email)
-      
-        setState(() {
-          nome = g.nome;
-          email = g.email;
-          cpfcnpj = '';//_u.cpfcnpj;
-          telefone = '';//_u.telefone;
-          _photoUrl = g.photoAuth;//.photourl;
-        });
-      }
+
+      setState(() {
+        nome = g.nome;
+        email = g.email;
+        cpfcnpj = ''; //_u.cpfcnpj;
+        telefone = ''; //_u.telefone;
+        _photoUrl = g.photoAuth ?? null; //.photourl;
+      });
     }
-  
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -159,12 +157,12 @@ class _CadDadosState extends State<CadDados> {
                             width: 170.0,
                             height: 170.0,
                             decoration: new BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: new DecorationImage(
-                                fit: BoxFit.fill,
-                                image: CachedNetworkImageProvider(_photoUrl),
-                              ),
-                            ),
+                                shape: BoxShape.circle,
+                                image: null //DecorationImage(
+                                //fit: BoxFit.fill,
+                                //image: null,
+
+                                ),
                           ),
                         )),
                   ],

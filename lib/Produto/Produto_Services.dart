@@ -44,7 +44,7 @@ class FirebaseFirestoreService {
   }
   //Leitura do produto na lista geral !!!
 
-  Stream<QuerySnapshot> getNoteList2({int offset, int limit}) {
+  Stream<QuerySnapshot> listarTodosProdutos({int offset, int limit}) {
     Stream<QuerySnapshot> snapshots = produtoCollection.snapshots();
     if (offset != null) {
       snapshots = snapshots.skip(offset);
@@ -58,18 +58,15 @@ class FirebaseFirestoreService {
   }
 
   Stream<QuerySnapshot> xx() {
-    Firestore.instance.settings(
-      
-      persistenceEnabled: false
-    );
+    Firestore.instance.settings(persistenceEnabled: false);
     //g.usuarioReferencia = firestore.collection('Usuario').document(_d);
-    g.usuarioReferencia = Firestore.instance
+    var x = Firestore.instance
         .collection('Usuario')
-        .document('gruposjrp@gmail.com');
-    //print('xxx');
-//print('xxxxxxxxxxxxxxxxxxxxxx referencia '+g.usuarioReferencia.toString());
-    Stream<QuerySnapshot> snapshots = Firestore.instance.collection('ProdutoLista').where('usuario', isEqualTo: g.usuarioReferencia).snapshots();
-    print(snapshots.length.toString());
+        .document('camila.souza.commercial@gmail.com');
+
+    Stream<QuerySnapshot> snapshots = produtoCollection
+        .where("id", isEqualTo: 'aed')
+        .snapshots();
     return snapshots;
   }
 
