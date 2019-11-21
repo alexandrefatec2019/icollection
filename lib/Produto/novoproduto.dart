@@ -483,8 +483,11 @@ class _NovoProdutoState extends State<NovoProduto> {
           // print(_valor.text);
           //Passando o modelo !!
           // saveImage();
+          //o codigo do produto será 1 ... pq vai incrementar ao novo
+          
           db.criarProduto(ListaProdutoModel(
               uid,
+              1,
               _nomeProduto.text,
               _descricao.text,
               _material.text,
