@@ -11,7 +11,7 @@ import 'package:icollection/model/listaprodutoModel.dart';
 
 import '../VariaveisGlobais/UsuarioGlobal.dart' as g;
 import 'package:icollection/VariaveisGlobais/UsuarioGlobal.dart' as g;
-
+ 
 class NovoProduto extends StatefulWidget {
   final ListaProdutoModel product;
   NovoProduto(this.product);
@@ -69,14 +69,9 @@ class _NovoProdutoState extends State<NovoProduto> {
 //     }
 // }
 
-  //File imagem;
-  File imagem1;
-  File imagem2;
-  File imagem3;
-  File imagem4;
-  File imagem5;
-  File imagem6;
-
+  
+  Map<int, File> imagens = Map();
+  
   bool uploading = false;
 
   void _categorySelected(String newValueSelected) {
@@ -129,17 +124,21 @@ class _NovoProdutoState extends State<NovoProduto> {
     );
   }
 
-  // ------------------------------------------------------------------------------------------------------------------------
-  void tirarFoto1(String n) async {
+  
+  
+  void tirarFoto(int n) async {
     var _imagem = await ImagePicker.pickImage(source: ImageSource.camera);
 
     setState(() {
-      this.imagem1 = _imagem;
-      this.uploading = true;
+      //Add o arquivo na lista
+      imagens.putIfAbsent(n, () => _imagem);
+      //this.uploading = true;
     });
-    var endereco = '/Produtos/'+usuario+'/image'+n+'.jpg';
+
+    var endereco = '/Produtos/'+usuario+'/'+_imagem.hashCode.toString()+'.jpg';
 
     var ref = FirebaseStorage().ref().child(endereco);
+    
     StorageUploadTask upload = ref.putFile(_imagem);
     var downloadUrl = await upload.onComplete;
     String url = (await downloadUrl.ref.getDownloadURL());
@@ -148,101 +147,8 @@ class _NovoProdutoState extends State<NovoProduto> {
     img.add(url);
     print('imag da lista = '+img.map((f){print(f);}).toString());
   }
-  // ------------------------------------------------------------------------------------------------------------------------
-  void tirarFoto2(String n) async {
-    var _imagem = await ImagePicker.pickImage(source: ImageSource.camera);
-
-    setState(() {
-      this.imagem2 = _imagem;
-      this.uploading = true;
-    });
-    var endereco = '/Produtos/'+usuario+'/image'+n+'.jpg';
-
-    var ref = FirebaseStorage().ref().child(endereco);
-    StorageUploadTask upload = ref.putFile(_imagem);
-    var downloadUrl = await upload.onComplete;
-    String url = (await downloadUrl.ref.getDownloadURL());
-    
-    if(url != null)
-    img.add(url);
-    print('imag da lista = '+img.map((f){print(f);}).toString());
-  }
-  // // ------------------------------------------------------------------------------------------------------------------------
-  void tirarFoto3(String n) async {
-    var _imagem = await ImagePicker.pickImage(source: ImageSource.camera);
-
-    setState(() {
-      this.imagem3 = _imagem;
-      this.uploading = true;
-    });
-    var endereco = '/Produtos/'+usuario+'/image'+n+'.jpg';
-
-    var ref = FirebaseStorage().ref().child(endereco);
-    StorageUploadTask upload = ref.putFile(_imagem);
-    var downloadUrl = await upload.onComplete;
-    String url = (await downloadUrl.ref.getDownloadURL());
-    
-    if(url != null)
-    img.add(url);
-    print('imag da lista = '+img.map((f){print(f);}).toString());
-  }
-  // ------------------------------------------------------------------------------------------------------------------------
-  void tirarFoto4(String n) async {
-    var _imagem = await ImagePicker.pickImage(source: ImageSource.camera);
-
-    setState(() {
-      this.imagem4 = _imagem;
-      this.uploading = true;
-    });
-    var endereco = '/Produtos/'+usuario+'/image'+n+'.jpg';
-
-    var ref = FirebaseStorage().ref().child(endereco);
-    StorageUploadTask upload = ref.putFile(_imagem);
-    var downloadUrl = await upload.onComplete;
-    String url = (await downloadUrl.ref.getDownloadURL());
-    
-    if(url != null)
-    img.add(url);
-    print('imag da lista = '+img.map((f){print(f);}).toString());
-  }
-  // // ------------------------------------------------------------------------------------------------------------------------
-void tirarFoto5(String n) async {
-    var _imagem = await ImagePicker.pickImage(source: ImageSource.camera);
-
-    setState(() {
-      this.imagem5 = _imagem;
-      this.uploading = true;
-    });
-    var endereco = '/Produtos/'+usuario+'/image'+n+'.jpg';
-
-    var ref = FirebaseStorage().ref().child(endereco);
-    StorageUploadTask upload = ref.putFile(_imagem);
-    var downloadUrl = await upload.onComplete;
-    String url = (await downloadUrl.ref.getDownloadURL());
-    
-    if(url != null)
-    img.add(url);
-    print('imag da lista = '+img.map((f){print(f);}).toString());
-  }
-  // ------------------------------------------------------------------------------------------------------------------------
-  void tirarFoto6(String n) async {
-    var _imagem = await ImagePicker.pickImage(source: ImageSource.camera);
-
-    setState(() {
-      this.imagem6 = _imagem;
-      this.uploading = true;
-    });
-    var endereco = '/Produtos/'+usuario+'/image'+n+'.jpg';
-
-    var ref = FirebaseStorage().ref().child(endereco);
-    StorageUploadTask upload = ref.putFile(_imagem);
-    var downloadUrl = await upload.onComplete;
-    String url = (await downloadUrl.ref.getDownloadURL());
-    
-    if(url != null)
-    img.add(url);
-    print('imag da lista = '+img.map((f){print(f);}).toString());
-  }
+  
+  
 // ------------------------------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------------------------------
 //   Future saveImage() async {
@@ -454,14 +360,14 @@ void tirarFoto5(String n) async {
                     height: MediaQuery.of(context).size.width / 2,
                     width: MediaQuery.of(context).size.width / 2.7,
                     color: Colors.grey[200],
-                    child: this.imagem1 == null
+                    child: this.imagens.containsKey(1) == false 
                         ? IconButton(
                             icon: Icon(Icons.add),
                             onPressed: () {
-                              tirarFoto1('1');
+                              tirarFoto(1);
                             },
                           )
-                        : Image.file(this.imagem1),
+                        : Image.file(imagens[1]),
                   ),
                 ),
               ),
@@ -471,53 +377,14 @@ void tirarFoto5(String n) async {
                     height: MediaQuery.of(context).size.width / 2,
                     width: MediaQuery.of(context).size.width / 2.7,
                     color: Colors.grey[200],
-                    child: this.imagem2 == null
+                    child: this.imagens.containsKey(2) == false
                         ? IconButton(
                             icon: Icon(Icons.add),
                             onPressed: () {
-                              tirarFoto2('2');
+                              tirarFoto(2);
                             },
                           )
-                        : Image.file(this.imagem2),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          new Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Card(
-                child: InkWell(
-                  child: Container(
-                    height: MediaQuery.of(context).size.width / 2,
-                    width: MediaQuery.of(context).size.width / 2.7,
-                    color: Colors.grey[200],
-                    child: this.imagem3 == null
-                        ? IconButton(
-                            icon: Icon(Icons.add),
-                            onPressed: () {
-                              tirarFoto3('3');
-                            },
-                          )
-                        : Image.file(this.imagem3),
-                  ),
-                ),
-              ),
-              Card(
-                child: InkWell(
-                  child: Container(
-                    height: MediaQuery.of(context).size.width / 2,
-                    width: MediaQuery.of(context).size.width / 2.7,
-                    color: Colors.grey[200],
-                    child: this.imagem4 == null
-                        ? IconButton(
-                            icon: Icon(Icons.add),
-                            onPressed: () {
-                              tirarFoto4('4');
-                            },
-                          )
-                        : Image.file(this.imagem4),
+                        : Image.file(imagens[2]),
                   ),
                 ),
               ),
@@ -532,14 +399,14 @@ void tirarFoto5(String n) async {
                     height: MediaQuery.of(context).size.width / 2,
                     width: MediaQuery.of(context).size.width / 2.7,
                     color: Colors.grey[200],
-                    child: this.imagem5 == null
+                    child: this.imagens.containsKey(3) == false
                         ? IconButton(
                             icon: Icon(Icons.add),
                             onPressed: () {
-                              tirarFoto5('5');
+                              tirarFoto(3);
                             },
                           )
-                        : Image.file(this.imagem5),
+                        : Image.file(this.imagens[3]),
                   ),
                 ),
               ),
@@ -549,14 +416,53 @@ void tirarFoto5(String n) async {
                     height: MediaQuery.of(context).size.width / 2,
                     width: MediaQuery.of(context).size.width / 2.7,
                     color: Colors.grey[200],
-                    child: this.imagem6 == null
+                    child: this.imagens.containsKey(4) == false
                         ? IconButton(
                             icon: Icon(Icons.add),
                             onPressed: () {
-                              tirarFoto6('6');
+                              tirarFoto(4);
                             },
                           )
-                        : Image.file(this.imagem6),
+                        : Image.file(this.imagens[4]),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          new Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Card(
+                child: InkWell(
+                  child: Container(
+                    height: MediaQuery.of(context).size.width / 2,
+                    width: MediaQuery.of(context).size.width / 2.7,
+                    color: Colors.grey[200],
+                    child: this.imagens.containsKey(5) == false
+                        ? IconButton(
+                            icon: Icon(Icons.add),
+                            onPressed: () {
+                              tirarFoto(5);
+                            },
+                          )
+                        : Image.file(imagens[5]),
+                  ),
+                ),
+              ),
+              Card(
+                child: InkWell(
+                  child: Container(
+                    height: MediaQuery.of(context).size.width / 2,
+                    width: MediaQuery.of(context).size.width / 2.7,
+                    color: Colors.grey[200],
+                    child: this.imagens.containsKey(6) == false
+                        ? IconButton(
+                            icon: Icon(Icons.add),
+                            onPressed: () {
+                              tirarFoto(6);
+                            },
+                          )
+                        : Image.file(this.imagens[6]),
                   ),
                 ),
               ),

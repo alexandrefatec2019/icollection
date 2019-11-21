@@ -1,14 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:icollection/Usuario/perfil.dart';
 import 'package:icollection/categoria.dart';
-import 'package:icollection/vendas.dart';
+
 import 'Login/auth.dart';
 import 'Principal.dart';
 
 //Teste
+import 'Produto/vendas.dart';
 import 'VariaveisGlobais/UsuarioGlobal.dart' as g;
 import 'package:badges/badges.dart';
 
@@ -61,7 +62,7 @@ class _Header extends State<MenuLateral> {
           ),
         );
     return Drawer(
-child: Stack(children: <Widget>[
+        child: Stack(children: <Widget>[
       _buildDrawerBack(),
       ListView(
         padding: EdgeInsets.zero,
