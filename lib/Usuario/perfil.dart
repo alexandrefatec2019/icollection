@@ -61,6 +61,18 @@ class PerfilState extends State<Perfil> {
             backgroundColor: Color(0xff1c2634),
           ),
         ),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {
+            Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CadDados(),
+                    ));
+          },
+          backgroundColor: Colors.green[400],
+          label: Text('EDITAR DADOS'),
+          icon: Icon(Icons.edit),
+        ),
         body:
             // Container(
             Stack(
@@ -95,102 +107,37 @@ class PerfilState extends State<Perfil> {
                           )
                         ]),
                   ),
-                  //Nome Principal
-                  SizedBox(
-                    height: 90.0,
-                  ),
-                  Text(
-                    _nomeUsuario,
-                    style: TextStyle(
-                      fontSize: 24.0,
-                      fontWeight: FontWeight.bold,
+                  SizedBox(height: 70,),
+                  Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        //Lista
+                  Container(
+                    padding: EdgeInsets.only(left: 15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text("Nome:", style: TextStyle(fontSize: 14),),
+                        SizedBox(height: 2,),
+                        Text (_nomeUsuario, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                        SizedBox(height: 15,),
+
+                        Text("Email:", style: TextStyle(fontSize: 14),),
+                        SizedBox(height: 2,),
+                        Text (_email, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                        SizedBox(height: 15,),
+
+                        Text("Telefone:", style: TextStyle(fontSize: 14),),
+                        SizedBox(height: 2,),
+                        Text (_telefone??'', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                        SizedBox(height: 15,),
+                      ],
                     ),
                   ),
-
-                  //Botoes
-                  ButtonTheme.bar(
-                      child: ButtonBar(
-                    alignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.only(top: 8),
-                        width: 90,
-                        height: 30,
-                        child: RaisedButton(
-                          shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(50)),
-                          color: Color(0xff1c2634),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    //Alterei para CadDados pq a tela sao a mesma !
-                                    //CadDados(UsuarioModel(null, '','','','','')),
-                                    builder: (context) => CadDados()));
-                            // builder: (context) => CadDados(_email,
-                            //     _imagemURL, _nomeUsuario, _telefone)));
-                          },
-                          child: Center(
-                            child: Text(
-                              'Dados',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: 8),
-                        width: 90,
-                        height: 30,
-                        child: RaisedButton(
-                          shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(50)),
-                          color: Color(0xff1c2634),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Historico()));
-                          },
-                          child: Center(
-                            child: Text(
-                              'Histórico',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: 8),
-                        width: 90,
-                        height: 30,
-                        child: RaisedButton(
-                          shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(50)),
-                          color: Colors.red,
-                          onPressed: () {
-                            auth.googleLogout;
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Principal()));
-                          },
-                          child: Center(
-                            child: Text(
-                              'Sair',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ))
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),

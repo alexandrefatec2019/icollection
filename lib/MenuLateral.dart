@@ -1,14 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:icollection/Usuario/perfil.dart';
 import 'package:icollection/categoria.dart';
-import 'package:icollection/vendas.dart';
+
 import 'Login/auth.dart';
 import 'Principal.dart';
 
 //Teste
+import 'Produto/vendas.dart';
 import 'VariaveisGlobais/UsuarioGlobal.dart' as g;
 import 'package:badges/badges.dart';
 
@@ -55,13 +56,14 @@ class _Header extends State<MenuLateral> {
 
   @override
   Widget build(BuildContext context) {
-    Widget _buildDrawerBack() => Container(
+    Widget _buildDrawerBack() => 
+          Container(
           decoration: BoxDecoration(
             color: Color(0xff1c2634),
           ),
         );
     return Drawer(
-child: Stack(children: <Widget>[
+        child: Stack(children: <Widget>[
       _buildDrawerBack(),
       ListView(
         padding: EdgeInsets.zero,
@@ -134,7 +136,7 @@ child: Stack(children: <Widget>[
             indent: 17,
             endIndent: 17,
           ),
-          _criarItemMenu(icon: Icons.bug_report, text: 'Sobre Nós'),
+          _criarItemMenu(icon: Icons.info, text: 'Sobre Nós'),
           Divider(
             color: Colors.white24,
             indent: 17,
@@ -154,59 +156,10 @@ child: Stack(children: <Widget>[
 }
 
 //Fim
-
-// class ItemsMenuLateral extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Drawer(
-//         child: ListView(
-//       padding: EdgeInsets.zero,
-//       children: <Widget>[
-//         _criarCabecalhoMenu(),
-
-//         _criarItemMenu(
-//           icon: Icons.home,
-//           text: 'Página inicial',
-//         ),
-//         _criarItemMenu(icon: Icons.account_box, text: 'Minha Conta'),
-//         _criarItemMenu(
-//           icon: Icons.shopping_cart,
-//           text: 'Vendas',
-//         ),
-//         Divider(),
-//         _criarItemMenu(
-//           icon: Icons.visibility,
-//           text: 'Produtos',
-//         ),
-//         _criarItemMenu(
-//           icon: Icons.collections_bookmark,
-//           text: 'Categorias',
-//           ),
-//         _criarItemMenu(icon: Icons.search, text: 'Procurar'),
-
-//         Divider(),
-//         _criarItemMenu(icon: Icons.bug_report, text: 'Sobre Nós'),
-//         Divider(),
-//         //ao clicar em sair chama a funçao logout do google e sai do app
-//         _criarItemMenu(
-//             icon: Icons.exit_to_app, text: 'Sair', onTap: auth.googleLogout),
-//         // ListTile(
-//         //   title: Text('0.0.1'),
-//         //   onTap: () {},
-//         // ),
-//       ],
-//     ));
-//   }
-// }
-
 //teste de Imagem do usuario
 Widget _buildStack() => Stack(
       alignment: const Alignment(0.6, 0.6),
       children: [
-        // CircleAvatar(
-        //   backgroundImage: NetworkImage(_imagemURL),
-        //   radius: 100,
-        // ),
         Stack(alignment: Alignment.topCenter, children: [
           Container(
             alignment: Alignment.center,
@@ -243,14 +196,16 @@ Widget _criarCabecalhoMenu() {
   return DrawerHeader(
       margin: EdgeInsets.zero,
       padding: EdgeInsets.only(bottom: 15),
-      decoration: BoxDecoration(color: Color(0xff1c2634)),
+      decoration: BoxDecoration(
+        //color: Color(0xff1c2634)
+        image: DecorationImage(
+          image: CachedNetworkImageProvider(g.photourl),
+          fit: BoxFit.cover,
+          colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.dstATop)
+        ),
+        ),
       child: Stack(children: <Widget>[
         Center(child: _buildStack()
-            // Text("Flutter Step-by-Step",
-            //     style: TextStyle(
-            //         color: Colors.white,
-            //         fontSize: 20.0,
-            //         fontWeight: FontWeight.w500))
             ),
       ]));
 }

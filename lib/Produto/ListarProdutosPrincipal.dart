@@ -3,7 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:icollection/Produto/Produto_Services.dart';
+import 'package:icollection/Produto/produtoDATA.dart';
 import 'package:icollection/Produto/produto_detalhe.dart';
 import 'package:icollection/model/listaprodutoModel.dart';
 import 'package:icollection/model/usuarioModel.dart';
@@ -61,6 +61,7 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
                   child: Column(
                     children: <Widget>[
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Padding(
                               padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
@@ -78,14 +79,53 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
                                 ),
                               )),
                           SizedBox(
-                            width: 50,
                             child: botaoPerfil('usuario', context),
                           )
                         ],
                       ),
-
-                      imagemProduto(document.data['image'], document['id'])
-                      //
+                      imagemProduto(document.data['image'], document['id']),
+                      Padding(
+                        padding: EdgeInsets.only(left: 20, bottom: 10, right: 20),
+                        child: Column(
+                        children: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(document.data['nomeproduto'], style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
+                          Text('R\$'+document.data['valor'],  //Text('R\$ ${produto.valor.toStringAsFixed(2)}') -- valor como double, 2 casas depois da virgula
+                        style: TextStyle(
+                          color: Colors.blue[200],
+                          fontSize: 17.0,
+                          fontWeight: FontWeight.bold
+                        ),
+                        )
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Text(document.data['descricao'], style: TextStyle(fontWeight: FontWeight.w300, fontSize: 14),),
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          IconButton(
+                            icon: Icon(Icons.star),
+                            color: Colors.grey[350],
+                            disabledColor: Colors.yellow[300],
+                            highlightColor: Colors.blue,
+                            onPressed: (){
+                            },
+                          )
+                        ],
+                      ),
+                        ],
+                      )
+                      ),
+                      Divider(
+                        color: Colors.grey[300],
+                        indent: 15,
+                        endIndent: 15,
+                        ),
                     ],
                   ),
                 );
@@ -141,7 +181,7 @@ Widget imagemProduto(List imgProduto, String id) {
 
 Widget botaoPerfil(String usuario, BuildContext context) {
   return Container(
-      alignment: Alignment.centerRight,
+      //alignment: Alignment.centerRight,
       child: Padding(
           padding: EdgeInsets.only(right: 0),
           child: IconButton(
@@ -159,7 +199,7 @@ Widget nomeUsuario(String nomeUsuario) {
     padding: EdgeInsets.only(left: 5),
     child: Text(nomeUsuario,
         style: TextStyle(
-            fontWeight: FontWeight.bold, fontSize: 14, color: Colors.black)),
+            fontWeight: FontWeight.bold, fontSize: 14, color: Colors.black87)),
   ));
 }
 

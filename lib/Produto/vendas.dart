@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:icollection/Produto/novoproduto.dart';
 import 'package:icollection/model/listaprodutoModel.dart';
-import 'VariaveisGlobais/UsuarioGlobal.dart' as g;
+import '../VariaveisGlobais/UsuarioGlobal.dart' as g;
 
 class Vendas extends StatelessWidget {
   @override
@@ -49,13 +49,23 @@ class ListaProdutos extends StatelessWidget {
             return new ListView(
               children:
                   snapshot.data.documents.map((DocumentSnapshot document) {
-                return Card(
+                return InkWell(
+                  onTap: (){
+                     Navigator.of(context).pop();
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => NovoProduto(ListaProdutoModel.fromMap(document.data)),
+                              ));
+                  },
+                  child: Card(
                     child: Row(
                   children: <Widget>[
-                    imageProduto(document.data['image']),
-                    Text(document.data['descricao']),
+                    //Text(document.data['descricao']),
+                    imageProduto(document.data['image'], document.data['id'])
                   ],
-                ));
+                )));
+                
               }).toList(),
             );
         }
@@ -64,19 +74,23 @@ class ListaProdutos extends StatelessWidget {
   }
 }
 
-Widget imageProduto(List url) {
+Widget imageProduto(List url, String id) {
   return SizedBox(
-      height: 200,
-      child: GestureDetector(
-        onTap: null,
+
+    height: 180,
+    child: Center(
+      child: AspectRatio(
+        aspectRatio: 420 / 451,
         child: Container(
-          width: 170.0,
-          //height: 170.0,
-          decoration: new BoxDecoration(
-            shape: BoxShape.rectangle,
-            image: DecorationImage(
-                fit: BoxFit.fill, image: CachedNetworkImageProvider(url[0])),
-          ),
-        ),
-      ));
+            decoration: BoxDecoration(
+          image: DecorationImage(
+              
+              fit: BoxFit.cover,
+              alignment: FractionalOffset.center,
+              image: CachedNetworkImageProvider(url[0])),
+        )),
+      ),
+    ),
+  );
+
 }
