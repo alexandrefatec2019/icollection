@@ -72,14 +72,6 @@ class _NovoProdutoState extends State<NovoProduto> {
   
   Map<int, File> imagens = Map();
   
-  //File imagem;
-  File imagem1;
-  File imagem2;
-  File imagem3;
-  File imagem4;
-  File imagem5;
-  File imagem6;
-
   bool uploading = false;
 
   void _categorySelected(String newValueSelected) {
@@ -491,6 +483,7 @@ class _NovoProdutoState extends State<NovoProduto> {
           // print(_valor.text);
           //Passando o modelo !!
           // saveImage();
+          
           db.criarProduto(ListaProdutoModel(
               uid,
               _nomeProduto.text,

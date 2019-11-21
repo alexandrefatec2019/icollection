@@ -52,8 +52,8 @@ class ListaProdutos extends StatelessWidget {
                 return Card(
                     child: Row(
                   children: <Widget>[
+                    imageProduto(document.data['image']),
                     Text(document.data['descricao']),
-                    imageProduto(document.data['image'])
                   ],
                 ));
               }).toList(),
@@ -67,9 +67,16 @@ class ListaProdutos extends StatelessWidget {
 Widget imageProduto(List url) {
   return SizedBox(
       height: 200,
-      child: CachedNetworkImage(
-        imageUrl: url[0],
-       
-       
+      child: GestureDetector(
+        onTap: null,
+        child: Container(
+          width: 170.0,
+          //height: 170.0,
+          decoration: new BoxDecoration(
+            shape: BoxShape.rectangle,
+            image: DecorationImage(
+                fit: BoxFit.fill, image: CachedNetworkImageProvider(url[0])),
+          ),
+        ),
       ));
 }
