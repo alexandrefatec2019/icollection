@@ -136,7 +136,7 @@ class _Header extends State<MenuLateral> {
             indent: 17,
             endIndent: 17,
           ),
-          _criarItemMenu(icon: Icons.bug_report, text: 'Sobre Nós'),
+          _criarItemMenu(icon: Icons.info, text: 'Sobre Nós'),
           Divider(
             color: Colors.white24,
             indent: 17,

@@ -61,6 +61,7 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
                   child: Column(
                     children: <Widget>[
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Padding(
                               padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
@@ -78,7 +79,6 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
                                 ),
                               )),
                           SizedBox(
-                            width: 50,
                             child: botaoPerfil('usuario', context),
                           )
                         ],
@@ -141,7 +141,7 @@ Widget imagemProduto(List imgProduto, String id) {
 
 Widget botaoPerfil(String usuario, BuildContext context) {
   return Container(
-      alignment: Alignment.centerRight,
+      //alignment: Alignment.centerRight,
       child: Padding(
           padding: EdgeInsets.only(right: 0),
           child: IconButton(
