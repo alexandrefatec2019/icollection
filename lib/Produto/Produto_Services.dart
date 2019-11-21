@@ -58,15 +58,8 @@ class FirebaseFirestoreService {
   }
 
   Stream<QuerySnapshot> xx() {
-    Firestore.instance.settings(persistenceEnabled: false);
-    //g.usuarioReferencia = firestore.collection('Usuario').document(_d);
-    var x = Firestore.instance
-        .collection('Usuario')
-        .document('camila.souza.commercial@gmail.com');
-
-    Stream<QuerySnapshot> snapshots = produtoCollection
-        .where("id", isEqualTo: 'aed')
-        .snapshots();
+    Stream<QuerySnapshot> snapshots =
+        produtoCollection.where("id", isEqualTo: 'aed').snapshots();
     return snapshots;
   }
 

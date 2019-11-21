@@ -156,12 +156,12 @@ class _CadDadosState extends State<CadDados> {
                           child: Container(
                             width: 170.0,
                             height: 170.0,
-                            decoration: new BoxDecoration(
+                            decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                image: null //DecorationImage(
-                                //fit: BoxFit.fill,
-                                //image: null,
-
+                                image: DecorationImage(
+                                fit: BoxFit.fill,
+                                image: CachedNetworkImageProvider(this._photoUrl),
+                                )
                                 ),
                           ),
                         )),

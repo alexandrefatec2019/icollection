@@ -11,7 +11,7 @@ import 'package:icollection/model/listaprodutoModel.dart';
 
 import '../VariaveisGlobais/UsuarioGlobal.dart' as g;
 import 'package:icollection/VariaveisGlobais/UsuarioGlobal.dart' as g;
-
+ 
 class NovoProduto extends StatefulWidget {
   final ListaProdutoModel product;
   NovoProduto(this.product);
@@ -72,14 +72,6 @@ class _NovoProdutoState extends State<NovoProduto> {
   
   Map<int, File> imagens = Map();
   
-  //File imagem;
-  File imagem1;
-  File imagem2;
-  File imagem3;
-  File imagem4;
-  File imagem5;
-  File imagem6;
-
   bool uploading = false;
 
   void _categorySelected(String newValueSelected) {
