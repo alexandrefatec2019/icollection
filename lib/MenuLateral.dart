@@ -56,7 +56,8 @@ class _Header extends State<MenuLateral> {
 
   @override
   Widget build(BuildContext context) {
-    Widget _buildDrawerBack() => Container(
+    Widget _buildDrawerBack() => 
+          Container(
           decoration: BoxDecoration(
             color: Color(0xff1c2634),
           ),
@@ -155,59 +156,10 @@ class _Header extends State<MenuLateral> {
 }
 
 //Fim
-
-// class ItemsMenuLateral extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Drawer(
-//         child: ListView(
-//       padding: EdgeInsets.zero,
-//       children: <Widget>[
-//         _criarCabecalhoMenu(),
-
-//         _criarItemMenu(
-//           icon: Icons.home,
-//           text: 'Página inicial',
-//         ),
-//         _criarItemMenu(icon: Icons.account_box, text: 'Minha Conta'),
-//         _criarItemMenu(
-//           icon: Icons.shopping_cart,
-//           text: 'Vendas',
-//         ),
-//         Divider(),
-//         _criarItemMenu(
-//           icon: Icons.visibility,
-//           text: 'Produtos',
-//         ),
-//         _criarItemMenu(
-//           icon: Icons.collections_bookmark,
-//           text: 'Categorias',
-//           ),
-//         _criarItemMenu(icon: Icons.search, text: 'Procurar'),
-
-//         Divider(),
-//         _criarItemMenu(icon: Icons.bug_report, text: 'Sobre Nós'),
-//         Divider(),
-//         //ao clicar em sair chama a funçao logout do google e sai do app
-//         _criarItemMenu(
-//             icon: Icons.exit_to_app, text: 'Sair', onTap: auth.googleLogout),
-//         // ListTile(
-//         //   title: Text('0.0.1'),
-//         //   onTap: () {},
-//         // ),
-//       ],
-//     ));
-//   }
-// }
-
 //teste de Imagem do usuario
 Widget _buildStack() => Stack(
       alignment: const Alignment(0.6, 0.6),
       children: [
-        // CircleAvatar(
-        //   backgroundImage: NetworkImage(_imagemURL),
-        //   radius: 100,
-        // ),
         Stack(alignment: Alignment.topCenter, children: [
           Container(
             alignment: Alignment.center,
@@ -244,14 +196,16 @@ Widget _criarCabecalhoMenu() {
   return DrawerHeader(
       margin: EdgeInsets.zero,
       padding: EdgeInsets.only(bottom: 15),
-      decoration: BoxDecoration(color: Color(0xff1c2634)),
+      decoration: BoxDecoration(
+        //color: Color(0xff1c2634)
+        image: DecorationImage(
+          image: CachedNetworkImageProvider(g.photourl),
+          fit: BoxFit.cover,
+          colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.dstATop)
+        ),
+        ),
       child: Stack(children: <Widget>[
         Center(child: _buildStack()
-            // Text("Flutter Step-by-Step",
-            //     style: TextStyle(
-            //         color: Colors.white,
-            //         fontSize: 20.0,
-            //         fontWeight: FontWeight.w500))
             ),
       ]));
 }
