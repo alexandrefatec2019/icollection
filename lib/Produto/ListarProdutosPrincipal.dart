@@ -85,7 +85,7 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
                       ),
                       imagemProduto(document.data['image'], document['id']),
                       Padding(
-                        padding: EdgeInsets.only(left: 20, bottom: 10, right: 20),
+                        padding: EdgeInsets.only(left: 10, bottom: 5, right: 10),
                         child: Column(
                         children: <Widget>[
                           Row(
@@ -94,8 +94,8 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
                           Text(document.data['nomeproduto'], style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
                           Text('R\$'+document.data['valor'],  //Text('R\$ ${produto.valor.toStringAsFixed(2)}') -- valor como double, 2 casas depois da virgula
                         style: TextStyle(
-                          color: Colors.blue[200],
-                          fontSize: 17.0,
+                          color: Colors.blue[300],
+                          fontSize: 20.0,
                           fontWeight: FontWeight.bold
                         ),
                         )
@@ -106,14 +106,17 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
                           Text(document.data['descricao'], style: TextStyle(fontWeight: FontWeight.w300, fontSize: 14),),
                         ],
                       ),
+                      // TODO - BOTÃO DE ADD AOS FAVORITOS
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           IconButton(
                             icon: Icon(Icons.star),
-                            color: Colors.grey[350],
-                            disabledColor: Colors.yellow[300],
-                            highlightColor: Colors.blue,
+                            highlightColor: Colors.yellow[300],
+                            splashColor: Colors.grey[300],
+                            disabledColor: Colors.grey,
                             onPressed: (){
+                              
                             },
                           )
                         ],
