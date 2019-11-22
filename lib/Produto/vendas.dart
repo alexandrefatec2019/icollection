@@ -11,7 +11,7 @@ class Vendas extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xff1c2634),
-        title: Text('Vendas'),
+        title: Text('Produtos Anunciados'),
         centerTitle: true,
       ),
       body: ListaProdutos(),
@@ -50,22 +50,51 @@ class ListaProdutos extends StatelessWidget {
               children:
                   snapshot.data.documents.map((DocumentSnapshot document) {
                 return InkWell(
-                  onTap: (){
-                     Navigator.of(context).pop();
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => NovoProduto(ListaProdutoModel.fromMap(document.data)),
-                              ));
-                  },
-                  child: Card(
-                    child: Row(
-                  children: <Widget>[
-                    //Text(document.data['descricao']),
-                    imageProduto(document.data['image'], document.data['id'])
-                  ],
-                )));
-                
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NovoProduto(
+                                ListaProdutoModel.fromMap(document.data)),
+                          ));
+                    },
+                    child: Card(
+                        clipBehavior: Clip.antiAlias,
+                        elevation: 5,
+                        child: Row(
+                          children: <Widget>[
+                            Container(
+                              padding: const EdgeInsets.all(4.0),
+                              child: new Column(
+                                children: <Widget>[
+                                  Row(
+                                    children: <Widget>[
+                                      imageProduto(document.data['image'],
+                                          document.documentID),
+                                      Column(
+                                        children: <Widget>[
+                                          Text(document.data['nomeproduto'],
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontSize: 14.0,
+                                                fontWeight: FontWeight.bold,
+                                              )),
+                                          Text(document.data['descricao'],
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontSize: 14.0,
+                                                fontWeight: FontWeight.bold,
+                                              )),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        )));
               }).toList(),
             );
         }
@@ -76,7 +105,6 @@ class ListaProdutos extends StatelessWidget {
 
 Widget imageProduto(List url, String id) {
   return SizedBox(
-
     height: 180,
     child: Center(
       child: AspectRatio(
@@ -84,7 +112,6 @@ Widget imageProduto(List url, String id) {
         child: Container(
             decoration: BoxDecoration(
           image: DecorationImage(
-              
               fit: BoxFit.cover,
               alignment: FractionalOffset.center,
               image: CachedNetworkImageProvider(url[0])),
@@ -92,5 +119,4 @@ Widget imageProduto(List url, String id) {
       ),
     ),
   );
-
 }

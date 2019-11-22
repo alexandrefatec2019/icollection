@@ -25,47 +25,34 @@ class FirebaseFirestoreService {
     });
   }
 
-  
-  Future<ListaProdutoModel> cadastrarProduto(
-      String title,
-      int codigoproduto,
-      String description,
-      String material,
-      String estado,
-      String valor,
-      bool troca,
-      List image) async {
-    final TransactionHandler createTransaction = (Transaction tx) async {
-      final DocumentSnapshot ds = await tx.get(produtoCollection.document());
-      if (ds.data['codigoproduto'] == null) {
-        ds.data['codigoprodto'] = 0;
-      }
-      final ListaProdutoModel produto = ListaProdutoModel(
-          ds.documentID,
-          ds.data['codigoproduto'] + codigoproduto,
-          title,
-          description,
-          material,
-          estado,
-          valor,
-          troca,
-          image,
-          null);
+  // Future<ListaProdutoModel> cadastrarProduto(
+  //     String title,
+  //     int codigoproduto,
+  //     String description,
+  //     String material,
+  //     String estado,
+  //     String valor,
+  //     bool troca,
+  //     List image) async {
+  //   final TransactionHandler createTransaction = (Transaction tx) async {
+  //     final DocumentSnapshot ds = await tx.get(produtoCollection.document());
+  //     final ListaProdutoModel produto = ListaProdutoModel(ds.documentID, title,
+  //         description, material, estado, valor, troca, image, null);
 
-      final Map<String, dynamic> data = produto.toMap();
+  //     final Map<String, dynamic> data = produto.toMap();
 
-      await tx.set(ds.reference, data);
+  //     await tx.set(ds.reference, data);
 
-      return data;
-    };
+  //     return data;
+  //   };
 
-    return Firestore.instance.runTransaction(createTransaction).then((mapData) {
-      return ListaProdutoModel.fromMap(mapData);
-    }).catchError((error) {
-      print('error: $error');
-      return null;
-    });
-  }
+  //   return Firestore.instance.runTransaction(createTransaction).then((mapData) {
+  //     return ListaProdutoModel.fromMap(mapData);
+  //   }).catchError((error) {
+  //     print('error: $error');
+  //     return null;
+  //   });
+  // }
 
   Stream<QuerySnapshot> listarTodosProdutos({int offset, int limit}) {
     Stream<QuerySnapshot> snapshots = produtoCollection.snapshots();
@@ -86,24 +73,21 @@ class FirebaseFirestoreService {
       final TransactionHandler createTransaction = (Transaction tx) async {
         //Salva um documento na Coleção usuario com o nome id do google (uid)
         final DocumentSnapshot ds = await tx.get(produtoCollection.document());
-        
-        // if (ds.data['codigoproduto'] == null) {
-        //   ds.data['codigoprodto'] = 0;
-        // }
 
-        //final ListaProdutoModel produto = ListaProdutoModel(modelo);
-        print('criarproduto id = ' + ds.documentID);
         final ListaProdutoModel produto = ListaProdutoModel(
-          
             ds.documentID,
-            l.codigoproduto,
             l.nomeproduto,
             l.descricao,
             l.material,
             l.estado,
             l.valor,
             l.troca,
+            l.status,
+            l.criacao,
+            l.modificado,
+            l.like,
             l.image,
+            l.obs,
             l.usuario);
 
         final Map<String, dynamic> data = produto.toMap();

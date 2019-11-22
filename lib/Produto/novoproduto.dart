@@ -127,7 +127,9 @@ class _NovoProdutoState extends State<NovoProduto> {
   
   
   void tirarFoto(int n) async {
-    var _imagem = await ImagePicker.pickImage(source: ImageSource.camera);
+    var _imagem = await ImagePicker.pickImage(source: ImageSource.camera,imageQuality: 100,
+    maxHeight: 1280,
+    maxWidth: 720);
 
     setState(() {
       //Add o arquivo na lista
@@ -492,7 +494,12 @@ class _NovoProdutoState extends State<NovoProduto> {
               _estado,
               _valor.text,
               troca,
+              true,
+              Timestamp.now(),
+              Timestamp.now(),
+              0,
               img,
+              'obs',
               g.usuarioReferencia));
           Navigator.of(context).pop();
           Navigator.push(

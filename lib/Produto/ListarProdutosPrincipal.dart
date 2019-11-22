@@ -7,7 +7,6 @@ import 'package:icollection/Produto/produtoDATA.dart';
 import 'package:icollection/Produto/produto_detalhe.dart';
 import 'package:icollection/model/listaprodutoModel.dart';
 import 'package:icollection/model/usuarioModel.dart';
-
 import 'package:show_dialog/show_dialog.dart' as dialog;
 //Futuramente será formatado, mas ja traz a lista dos produtos do firabase e a rolagem funciona
 
@@ -21,30 +20,19 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
   List<ListaProdutoModel> items;
   FirebaseFirestoreService db = new FirebaseFirestoreService();
 
-  StreamSubscription<QuerySnapshot> noteSub;
-
   @override
   initState() {
     super.initState();
-
-    items = List();
-
-    noteSub = db.listarTodosProdutos().listen((QuerySnapshot snapshot) {
-      final List<ListaProdutoModel> notes = snapshot.documents
-          .map((documentSnapshot) =>
-              ListaProdutoModel.fromMap(documentSnapshot.data))
-          .toList();
-
-      setState(() {
-        this.items = notes;
-      });
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('ProdutoLista').snapshots(),
+      stream: Firestore.instance
+          .collection('ProdutoLista')
+          .
+          //.where('status', isEqualTo: true).
+          snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) return new Text('Loading...');
         return new ListView(
@@ -85,47 +73,61 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
                       ),
                       imagemProduto(document.data['image'], document['id']),
                       Padding(
-                        padding: EdgeInsets.only(left: 20, bottom: 10, right: 20),
-                        child: Column(
-                        children: <Widget>[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(document.data['nomeproduto'], style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
-                          Text('R\$'+document.data['valor'],  //Text('R\$ ${produto.valor.toStringAsFixed(2)}') -- valor como double, 2 casas depois da virgula
-                        style: TextStyle(
-                          color: Colors.blue[200],
-                          fontSize: 17.0,
-                          fontWeight: FontWeight.bold
-                        ),
-                        )
-                        ],
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Text(document.data['descricao'], style: TextStyle(fontWeight: FontWeight.w300, fontSize: 14),),
-                        ],
-                      ),
-                      Row(
-                        children: <Widget>[
-                          IconButton(
-                            icon: Icon(Icons.star),
-                            color: Colors.grey[350],
-                            disabledColor: Colors.yellow[300],
-                            highlightColor: Colors.blue,
-                            onPressed: (){
-                            },
-                          )
-                        ],
-                      ),
-                        ],
-                      )
-                      ),
+                          padding:
+                              EdgeInsets.only(left: 20, bottom: 10, right: 20),
+                          child: Column(
+                            children: <Widget>[
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(document.data['nomeproduto'],
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 16)),
+                                  Text(
+                                    'R\$' +
+                                        document.data[
+                                            'valor'], //Text('R\$ ${produto.valor.toStringAsFixed(2)}') -- valor como double, 2 casas depois da virgula
+                                    style: TextStyle(
+                                        color: Colors.blue[200],
+                                        fontSize: 17.0,
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                ],
+                              ),
+                              Row(
+                                children: <Widget>[
+                                  Text(
+                                    document.data['descricao'],
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w300,
+                                        fontSize: 14),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: <Widget>[
+                                  IconButton(
+                                    icon: Icon(Icons.star, size: 40),
+                                    color: Colors.grey[350],
+                                    disabledColor: Colors.yellow[300],
+                                    highlightColor: Colors.blue,
+                                    onPressed: () {
+                                      var email = snapshot.data.id;
+                                      print(email);
+                                      likebutton(document.reference ,email);
+                                    },
+                                  )
+                                ],
+                              ),
+                            ],
+                          )),
                       Divider(
                         color: Colors.grey[300],
                         indent: 15,
                         endIndent: 15,
-                        ),
+                      ),
                     ],
                   ),
                 );
@@ -136,6 +138,27 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
       },
     );
   }
+}
+
+Future<void> likebutton(DocumentReference u,String idProduto) async {
+  final TransactionHandler transaction = (Transaction tx) async {
+    DocumentSnapshot freshSnap = await tx.get(u);
+    await tx.update(freshSnap.reference, {
+      'like': freshSnap['like'] ?? 0 + 1,
+    });
+    List<String> users = [idProduto]; //userId
+    await tx.update(freshSnap.reference, {
+      'userLike': FieldValue.arrayUnion(users),
+    });
+  };
+
+  return Firestore.instance
+        .runTransaction(transaction)
+        .then((result) => result['updated'])
+        .catchError((error) {
+      print('error: $error');
+      return false;
+    });
 }
 
 //Faz a leitura da referencia e traz em lista
@@ -164,7 +187,6 @@ Widget imagemProduto(List imgProduto, String id) {
                               MaterialPageRoute(
                                 builder: (context) => ProdutoDetalhe(id),
                               ));
-                          
                         },
                         child: Container(
                           decoration: BoxDecoration(
