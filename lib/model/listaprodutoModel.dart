@@ -17,6 +17,7 @@ class ListaProdutoModel {
   int _like;
   String _obs;
   List _image;
+  Map rr;
 
   ListaProdutoModel(
       this._id,
