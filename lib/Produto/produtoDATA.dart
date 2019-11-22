@@ -25,35 +25,6 @@ class FirebaseFirestoreService {
     });
   }
 
-  // Future<ListaProdutoModel> cadastrarProduto(
-  //     String title,
-  //     int codigoproduto,
-  //     String description,
-  //     String material,
-  //     String estado,
-  //     String valor,
-  //     bool troca,
-  //     List image) async {
-  //   final TransactionHandler createTransaction = (Transaction tx) async {
-  //     final DocumentSnapshot ds = await tx.get(produtoCollection.document());
-  //     final ListaProdutoModel produto = ListaProdutoModel(ds.documentID, title,
-  //         description, material, estado, valor, troca, image, null);
-
-  //     final Map<String, dynamic> data = produto.toMap();
-
-  //     await tx.set(ds.reference, data);
-
-  //     return data;
-  //   };
-
-  //   return Firestore.instance.runTransaction(createTransaction).then((mapData) {
-  //     return ListaProdutoModel.fromMap(mapData);
-  //   }).catchError((error) {
-  //     print('error: $error');
-  //     return null;
-  //   });
-  // }
-
   Stream<QuerySnapshot> listarTodosProdutos({int offset, int limit}) {
     Stream<QuerySnapshot> snapshots = produtoCollection.snapshots();
     if (offset != null) {
@@ -73,7 +44,6 @@ class FirebaseFirestoreService {
       final TransactionHandler createTransaction = (Transaction tx) async {
         //Salva um documento na Coleção usuario com o nome id do google (uid)
         final DocumentSnapshot ds = await tx.get(produtoCollection.document());
-
         final ListaProdutoModel produto = ListaProdutoModel(
             ds.documentID,
             l.nomeproduto,
@@ -101,34 +71,6 @@ class FirebaseFirestoreService {
       return false;
     }
   }
-
-  // Future<ListaProdutoModel> cadastrarProduto(
-  //     String title,
-  //     String description,
-  //     String material,
-  //     String estado,
-  //     String valor,
-  //     bool troca,
-  //     List image) async {
-  //   final TransactionHandler createTransaction = (Transaction tx) async {
-  //     final DocumentSnapshot ds = await tx.get(produtoCollection.document());
-
-  //     final ListaProdutoModel produto = ListaProdutoModel(ds.documentID, title,
-  //         description, material, estado, valor, troca, image, null);
-  //     final Map<String, dynamic> data = produto.toMap();
-
-  //     await tx.set(ds.reference, data);
-
-  //     return data;
-  //   };
-
-  //   return Firestore.instance.runTransaction(createTransaction).then((mapData) {
-  //     return ListaProdutoModel.fromMap(mapData);
-  //   }).catchError((error) {
-  //     print('error: $error');
-  //     return null;
-  //   });
-  // }
 
   Future<dynamic> updateProduto(ListaProdutoModel produto) async {
     final TransactionHandler updateTransaction = (Transaction tx) async {
