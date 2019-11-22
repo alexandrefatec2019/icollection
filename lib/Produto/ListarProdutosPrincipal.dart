@@ -73,56 +73,45 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
                       ),
                       imagemProduto(document.data['image'], document['id']),
                       Padding(
-                          padding:
-                              EdgeInsets.only(left: 20, bottom: 10, right: 20),
-                          child: Column(
-                            children: <Widget>[
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(document.data['nomeproduto'],
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 16)),
-                                  Text(
-                                    'R\$' +
-                                        document.data[
-                                            'valor'], //Text('R\$ ${produto.valor.toStringAsFixed(2)}') -- valor como double, 2 casas depois da virgula
-                                    style: TextStyle(
-                                        color: Colors.blue[200],
-                                        fontSize: 17.0,
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                ],
-                              ),
-                              Row(
-                                children: <Widget>[
-                                  Text(
-                                    document.data['descricao'],
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w300,
-                                        fontSize: 14),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: <Widget>[
-                                  IconButton(
-                                    icon: Icon(Icons.star, size: 40),
-                                    color: Colors.grey[350],
-                                    disabledColor: Colors.yellow[300],
-                                    highlightColor: Colors.blue,
-                                    onPressed: () {
-                                      var email = snapshot.data.id;
-                                      print(email);
-                                      likebutton(document.reference ,email);
-                                    },
-                                  )
-                                ],
-                              ),
-                            ],
-                          )),
+                        padding: EdgeInsets.only(left: 10, bottom: 5, right: 10),
+                        child: Column(
+                        children: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(document.data['nomeproduto'], style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
+                          Text('R\$'+document.data['valor'],  //Text('R\$ ${produto.valor.toStringAsFixed(2)}') -- valor como double, 2 casas depois da virgula
+                        style: TextStyle(
+                          color: Colors.blue[300],
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold
+                        ),
+                        )
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Text(document.data['descricao'], style: TextStyle(fontWeight: FontWeight.w300, fontSize: 14),),
+                        ],
+                      ),
+                      // TODO - BOTÃO DE ADD AOS FAVORITOS
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          IconButton(
+                            icon: Icon(Icons.star),
+                            highlightColor: Colors.yellow[300],
+                            splashColor: Colors.grey[300],
+                            disabledColor: Colors.grey,
+                            onPressed: (){
+                              
+                            },
+                          )
+                        ],
+                      ),
+                        ],
+                      )
+                      ),
                       Divider(
                         color: Colors.grey[300],
                         indent: 15,

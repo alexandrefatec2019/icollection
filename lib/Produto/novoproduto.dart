@@ -213,7 +213,7 @@ class _NovoProdutoState extends State<NovoProduto> {
 
     //---------- DESCRIÇÃO ----------
     formWidget.add(new TextFormField(
-      keyboardType: TextInputType.text,
+      keyboardType: TextInputType.multiline,
       decoration: InputDecoration(
         labelText: 'Descrição:',
       ),
@@ -265,7 +265,7 @@ class _NovoProdutoState extends State<NovoProduto> {
 
     //---------- VALOR R$ ----------
     formWidget.add(new TextFormField(
-      keyboardType: TextInputType.text,
+      keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
       decoration: InputDecoration(
         labelText: 'Valor (R\$):',
       ),

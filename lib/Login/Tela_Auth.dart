@@ -14,27 +14,27 @@ class LoginPage extends StatelessWidget {
     return Drawer(
       child: Center(
           child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          GoogleSignInButton(
-            text: 'Google Login',
-              darkMode: true,
-              onPressed: () async {
-                await auth.googleLogin().then((value) {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => CadDados()));
-                });
-              }),
-          FacebookSignInButton(
-            text: 'Facebook Login',
-            onPressed: () {
-            auth.facebookLogin().whenComplete(() {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => Principal()));
-            });
-          }),
-        ],
-      )),
+            mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                GoogleSignInButton(
+                  text: 'Google Login',
+                    darkMode: true,
+                    onPressed: () async {
+                      await auth.googleLogin().then((value) {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => CadDados()));
+                      });
+                    }),
+                FacebookSignInButton(
+                  text: 'Facebook Login',
+                  onPressed: () {
+                  auth.facebookLogin().whenComplete(() {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) => Principal()));
+                  });
+                }),
+              ],
+          )),
     );
   }
 }
