@@ -7,6 +7,7 @@ import 'package:icollection/Produto/produtoDATA.dart';
 import 'package:icollection/Produto/produto_detalhe.dart';
 import 'package:icollection/model/listaprodutoModel.dart';
 import 'package:icollection/model/usuarioModel.dart';
+import 'package:like_button/like_button.dart';
 import 'package:show_dialog/show_dialog.dart' as dialog;
 
 import '../VariaveisGlobais/UsuarioGlobal.dart' as g;
@@ -112,17 +113,19 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  IconButton(
-                                    icon: Icon(Icons.star),
-                                    highlightColor: Colors.yellow[300],
-                                    splashColor: Colors.grey[300],
-                                    disabledColor: Colors.grey,
-                                    onPressed: () {
-                                      var userRef = g.usuarioReferencia;
-                                      var prodRef = document.documentID;
-                                      likebutton(userRef, prodRef);
-                                    },
-                                  )
+                                  buttonLike(),
+                                  // // IconButton(
+                                  // //   icon: Icon(Icons.star),
+                                  // //   highlightColor: Colors.yellow[300],
+                                  // //   splashColor: Colors.grey[300],
+                                  // //   disabledColor: Colors.grey,
+                                  // //   onPressed: () {
+                                  // //     var userRef = g.usuarioReferencia;
+                                  // //     var prodRef = document.documentID;
+                                  // //     checkUserLike(prodRef);
+                                  // //     //likebutton(userRef, prodRef);
+                                  // //   },
+                                  // )
                                 ],
                               ),
                             ],
@@ -142,6 +145,25 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
       },
     );
   }
+}
+
+//Verifica se o usuario já curtiu o produto
+Future<bool> checkUserLike(String produtoid) async {
+  DocumentReference result = Firestore.instance.collection('Usuario').document(g.email);
+  return result.get().then((onValue){
+List<dynamic> l =[];
+l.addAll(onValue.data['produtosLike']);
+if(l.contains(produtoid)){
+
+  //Returna true se o produto id ja foi curtido
+  return true;
+}else{
+  print('nao tem');
+  return false;
+}
+//print(l.map((f)=> f));
+  });
+  
 }
 
 Future<void> likebutton(DocumentReference u, String idProduto) async {
@@ -240,4 +262,40 @@ Widget avatar(String imagemUsuario) {
           image: CachedNetworkImageProvider(imagemUsuario),
         ),
       ));
+}
+
+Widget buttonLike(){
+  double buttonSize = 40.0;
+  return   LikeButton(
+          size: buttonSize,
+          circleColor:
+              CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
+          bubblesColor: BubblesColor(
+            dotPrimaryColor: Color(0xff33b5e5),
+            dotSecondaryColor: Color(0xff0099cc),
+          ),
+          likeBuilder: (bool isLiked) {
+            return Icon(
+              Icons.star_border,
+              color: isLiked ? Colors.deepPurpleAccent : Colors.grey,
+              size: buttonSize,
+            );
+          },
+          likeCount: 665,
+          countBuilder: (int count, bool isLiked, String text) {
+            var color = isLiked ? Colors.deepPurpleAccent : Colors.grey;
+            Widget result;
+            if (count == 0) {
+              result = Text(
+                "love",
+                style: TextStyle(color: color),
+              );
+            } else
+              result = Text(
+                text,
+                style: TextStyle(color: color),
+              );
+            return result;
+          },
+        );
 }

@@ -36,6 +36,7 @@ dependencies:
   show_dialog: 1.0.3
   cached_network_image: ^1.1.3
   badges: ^1.1.0 #notificacao no icone
+  like_button: ^0.1.9
 
   
 dev_dependencies:
