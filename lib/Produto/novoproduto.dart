@@ -35,7 +35,7 @@ class _NovoProdutoState extends State<NovoProduto> {
 
   bool troca = false;
   //alterei para string
-  String estadoSelecionado; // ainda não inserido
+  String estadoSelecionado;  // ainda não inserido
   String _categoriaSelecionada;
 
   List<DropdownMenuItem<int>> estadoList = [];
@@ -61,7 +61,7 @@ class _NovoProdutoState extends State<NovoProduto> {
     _valor = new TextEditingController(text: widget.product?.valor);
     _material = new TextEditingController(text: widget.product?.material);
     //_estadoSelecionado =  TextEditingController(text: widget.product?.estado);
-    estadoSelecionado = widget.product?.estado;
+    estadoSelecionado = widget.product?.estado ?? '';
   }
 //     if (widget.product.id == null) {
 //       _nomeProduto = new TextEditingController(text: widget.product.nomeproduto);
@@ -81,18 +81,15 @@ class _NovoProdutoState extends State<NovoProduto> {
     });
   }
 
-  // @override
-  // void initState() {
-  //   SystemChrome.setEnabledSystemUIOverlays([]);
-  //   super.initState();
 
-  // }
   @override
   Widget build(BuildContext context) {
+    String appBarText;
+    if(widget.product?.id != null) appBarText = 'Editar Produto';
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xff1c2634),
-        title: Text('Novo Anúncio'),
+        title: Text(appBarText ?? 'Novo Produto'),
         centerTitle: true,
       ),
       body: Form(
@@ -216,8 +213,9 @@ class _NovoProdutoState extends State<NovoProduto> {
     formWidget.add(new Padding(padding: EdgeInsets.all(5)));
     //---------- ESTADO DO PRODUTO ----------
     formWidget.add(DropdownButton<String>(
-      value: widget.product.estado,
-      hint: Text(estadoSelecionado ?? 'Estado do Produto'),
+      value: widget.product?.estado,
+      hint: Text(estadoSelecionado
+       ?? 'Estado do Produto'),
       items: <String>['Novo', 'Usado', 'Seminovo', 'Restaurado']
           .map((String value) {
         return new DropdownMenuItem<String>(

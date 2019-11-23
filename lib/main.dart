@@ -9,14 +9,12 @@ import 'Usuario/UsuarioDATA.dart';
 import 'VariaveisGlobais/UsuarioGlobal.dart' as g;
 
 void main()  {
-  //WidgetsFlutterBinding.ensureInitialized();
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final firestore = Firestore.instance;
   //TODO reativar cache
-  // Firestore.instance.settings(
-  //   persistenceEnabled: true,
-  //   cacheSizeBytes: 1048576
-  // );
+   Firestore.instance.settings(
+     persistenceEnabled: true,
+     cacheSizeBytes: 1048576
+   );
   
   final VerificaAuth _auth = VerificaAuth();
   

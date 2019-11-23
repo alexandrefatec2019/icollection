@@ -39,7 +39,7 @@ dependencies:
   like_button: ^0.1.9 #testee
   flutter_staggered_animations: "^0.1.2" #tesssssssssst
   #multi_image_picker: ^4.5.9 #teste imagem do produto
-
+  
   
 dev_dependencies:
   flutter_test:

@@ -40,10 +40,11 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
         if (!snapshot.hasData) return Text('Loading...');
         return 
         ListView(
+          physics: BouncingScrollPhysics(),
           children: snapshot.data.documents.map((DocumentSnapshot document) {
             return FutureBuilder(
               //passa a referencia do usuario e retorna dados do usuario que postou o produto
-              future: call(document.data['usuario']),
+              future: readDadosUsuario(document.data['usuario']),
               builder: (ctx, snapshot) {
                 if (!snapshot.hasData)
                 //aqui pode se carregar alguma animação para quando estiver carregando a lista
@@ -116,19 +117,19 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  buttonLike(),
-                                  // // IconButton(
-                                  // //   icon: Icon(Icons.star),
-                                  // //   highlightColor: Colors.yellow[300],
-                                  // //   splashColor: Colors.grey[300],
-                                  // //   disabledColor: Colors.grey,
-                                  // //   onPressed: () {
-                                  // //     var userRef = g.usuarioReferencia;
-                                  // //     var prodRef = document.documentID;
-                                  // //     checkUserLike(prodRef);
-                                  // //     //likebutton(userRef, prodRef);
-                                  // //   },
-                                  // )
+                                  //buttonLike(),
+                                  IconButton(
+                                    icon: Icon(Icons.star),
+                                    highlightColor: Colors.yellow[300],
+                                    splashColor: Colors.grey[300],
+                                    disabledColor: Colors.grey,
+                                    onPressed: () {
+                                      var userRef = g.usuarioReferencia;
+                                      var prodRef = document.documentID;
+                                      //checkUserLike(prodRef);
+                                      likebutton(userRef, prodRef);
+                                    },
+                                  )
                                 ],
                               ),
                             ],
@@ -191,7 +192,7 @@ Future<bool> likebutton(DocumentReference u, String idProduto) {
 }
 
 //Faz a leitura da referencia e traz em lista
-Future<UsuarioModel> call(DocumentReference doc) {
+Future<UsuarioModel> readDadosUsuario(DocumentReference doc) {
   return doc.get().then((onValue) => UsuarioModel.map(onValue));
 }
 
