@@ -160,7 +160,7 @@ class _CadDadosState extends State<CadDados> {
                               shape: BoxShape.circle,
                               image: DecorationImage(
                                   fit: BoxFit.fill,
-                                  image: CachedNetworkImageProvider(_photoUrl)),
+                                  image: CachedNetworkImageProvider(_photoUrl?? null)),
                             ),
                           ),
                         )),

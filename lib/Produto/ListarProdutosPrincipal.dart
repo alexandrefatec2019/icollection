@@ -37,15 +37,18 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
           //.where('userLike',arrayContains:  'gruposjrp@gmail.com').
           snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (!snapshot.hasData) return new Text('Loading...');
-        return new ListView(
+        if (!snapshot.hasData) return Text('Loading...');
+        return 
+        ListView(
           children: snapshot.data.documents.map((DocumentSnapshot document) {
             return FutureBuilder(
+              //passa a referencia do usuario e retorna dados do usuario que postou o produto
               future: call(document.data['usuario']),
               builder: (ctx, snapshot) {
                 if (!snapshot.hasData)
+                //aqui pode se carregar alguma animação para quando estiver carregando a lista
                   return Center(
-                    child: CircularProgressIndicator(),
+                    child: null,
                   );
 
                 return Center(
@@ -148,25 +151,24 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
 }
 
 //Verifica se o usuario já curtiu o produto
-Future<bool> checkUserLike(String produtoid) async {
-  DocumentReference result = Firestore.instance.collection('Usuario').document(g.email);
-  return result.get().then((onValue){
-List<dynamic> l =[];
-l.addAll(onValue.data['produtosLike']);
-if(l.contains(produtoid)){
-
-  //Returna true se o produto id ja foi curtido
-  return true;
-}else{
-  print('nao tem');
-  return false;
-}
+checkUserLike(String produtoid) async {
+  DocumentReference result =
+      Firestore.instance.collection('Usuario').document(g.email);
+  return result.get().then((onValue) {
+    List<dynamic> l = [];
+    l.addAll(onValue.data['produtosLike']);
+    if (l.contains(produtoid)) {
+      //Returna true se o produto id ja foi curtido
+      return true;
+    } else {
+      print('nao tem');
+      return false;
+    }
 //print(l.map((f)=> f));
   });
-  
 }
 
-Future<void> likebutton(DocumentReference u, String idProduto) async {
+Future<bool> likebutton(DocumentReference u, String idProduto) {
   final TransactionHandler transaction = (Transaction tx) async {
     DocumentSnapshot user = await tx.get(u);
 
@@ -264,38 +266,37 @@ Widget avatar(String imagemUsuario) {
       ));
 }
 
-Widget buttonLike(){
+Widget buttonLike() {
   double buttonSize = 40.0;
-  return   LikeButton(
-          size: buttonSize,
-          circleColor:
-              CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
-          bubblesColor: BubblesColor(
-            dotPrimaryColor: Color(0xff33b5e5),
-            dotSecondaryColor: Color(0xff0099cc),
-          ),
-          likeBuilder: (bool isLiked) {
-            return Icon(
-              Icons.star_border,
-              color: isLiked ? Colors.deepPurpleAccent : Colors.grey,
-              size: buttonSize,
-            );
-          },
-          likeCount: 665,
-          countBuilder: (int count, bool isLiked, String text) {
-            var color = isLiked ? Colors.deepPurpleAccent : Colors.grey;
-            Widget result;
-            if (count == 0) {
-              result = Text(
-                "love",
-                style: TextStyle(color: color),
-              );
-            } else
-              result = Text(
-                text,
-                style: TextStyle(color: color),
-              );
-            return result;
-          },
+  return LikeButton(
+    size: buttonSize,
+    circleColor: CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
+    bubblesColor: BubblesColor(
+      dotPrimaryColor: Color(0xff33b5e5),
+      dotSecondaryColor: Color(0xff0099cc),
+    ),
+    likeBuilder: (bool isLiked) {
+      return Icon(
+        Icons.star_border,
+        color: isLiked ? Colors.deepPurpleAccent : Colors.grey,
+        size: buttonSize,
+      );
+    },
+    likeCount: 665,
+    countBuilder: (int count, bool isLiked, String text) {
+      var color = isLiked ? Colors.deepPurpleAccent : Colors.grey;
+      Widget result;
+      if (count == 0) {
+        result = Text(
+          "love",
+          style: TextStyle(color: color),
         );
+      } else
+        result = Text(
+          text,
+          style: TextStyle(color: color),
+        );
+      return result;
+    },
+  );
 }

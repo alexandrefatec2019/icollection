@@ -32,16 +32,15 @@ class _NovoProdutoState extends State<NovoProduto> {
   String descricao;
   String valor;
   String material;
-  String _estado;
+
   bool troca = false;
-  int _estadoSelecionado = null; // ainda não inserido
+  //alterei para string
+  String estadoSelecionado; // ainda não inserido
   String _categoriaSelecionada;
 
   List<DropdownMenuItem<int>> estadoList = [];
   // List<DropdownMenuItem<int>> categoriaList = [];
-  List<String> img = [
-    // 'https://cdn.shopify.com/s/files/1/0973/0376/products/mail_b48a54fc-2368-4e05-ae2d-fe8a4f4dcb39.jpg?v=1548118355'
-  ];
+  List<String> img = [];
   //teste
   String urlphoto;
 
@@ -49,6 +48,7 @@ class _NovoProdutoState extends State<NovoProduto> {
   TextEditingController _descricao;
   TextEditingController _valor;
   TextEditingController _material;
+  //TextEditingController _estadoSelecionado;
   TextEditingController _troca;
 
   @override
@@ -60,6 +60,8 @@ class _NovoProdutoState extends State<NovoProduto> {
     _descricao = new TextEditingController(text: widget.product?.descricao);
     _valor = new TextEditingController(text: widget.product?.valor);
     _material = new TextEditingController(text: widget.product?.material);
+    //_estadoSelecionado =  TextEditingController(text: widget.product?.estado);
+    estadoSelecionado = widget.product?.estado;
   }
 //     if (widget.product.id == null) {
 //       _nomeProduto = new TextEditingController(text: widget.product.nomeproduto);
@@ -69,35 +71,14 @@ class _NovoProdutoState extends State<NovoProduto> {
 //     }
 // }
 
-  
   Map<int, File> imagens = Map();
-  
+
   bool uploading = false;
 
   void _categorySelected(String newValueSelected) {
     setState(() {
       this._categoriaSelecionada = newValueSelected;
     });
-  }
-
-  void loadEstadoList() {
-    estadoList = [];
-    estadoList.add(new DropdownMenuItem(
-      child: new Text('Novo'),
-      value: 0,
-    ));
-    estadoList.add(new DropdownMenuItem(
-      child: new Text('Usado'),
-      value: 1,
-    ));
-    estadoList.add(new DropdownMenuItem(
-      child: new Text('Seminovo'),
-      value: 2,
-    ));
-    estadoList.add(new DropdownMenuItem(
-      child: new Text('Restaurado'),
-      value: 3,
-    ));
   }
 
   // @override
@@ -108,7 +89,6 @@ class _NovoProdutoState extends State<NovoProduto> {
   // }
   @override
   Widget build(BuildContext context) {
-    loadEstadoList();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xff1c2634),
@@ -124,12 +104,12 @@ class _NovoProdutoState extends State<NovoProduto> {
     );
   }
 
-  
-  
   void tirarFoto(int n) async {
-    var _imagem = await ImagePicker.pickImage(source: ImageSource.camera,imageQuality: 100,
-    maxHeight: 1280,
-    maxWidth: 720);
+    var _imagem = await ImagePicker.pickImage(
+        source: ImageSource.camera,
+        imageQuality: 100,
+        maxHeight: 1280,
+        maxWidth: 720);
 
     setState(() {
       //Add o arquivo na lista
@@ -137,28 +117,21 @@ class _NovoProdutoState extends State<NovoProduto> {
       //this.uploading = true;
     });
 
-    var endereco = '/Produtos/'+usuario+'/'+_imagem.hashCode.toString()+'.jpg';
+    var endereco =
+        '/Produtos/' + usuario + '/' + _imagem.hashCode.toString() + '.jpg';
 
     var ref = FirebaseStorage().ref().child(endereco);
-    
+
     StorageUploadTask upload = ref.putFile(_imagem);
     var downloadUrl = await upload.onComplete;
     String url = (await downloadUrl.ref.getDownloadURL());
-    
-    if(url != null)
-    img.add(url);
-    print('imag da lista = '+img.map((f){print(f);}).toString());
+
+    if (url != null) img.add(url);
+    print('imag da lista = ' +
+        img.map((f) {
+          print(f);
+        }).toString());
   }
-  
-  
-// ------------------------------------------------------------------------------------------------------------------------
-// ------------------------------------------------------------------------------------------------------------------------
-//   Future saveImage() async {
-//   final StorageReference ref = FirebaseStorage().ref().child('/Produtos/$usuario/imagem1');
-//   StorageUploadTask upload = ref.putFile(imagem1);
-//   var downloadUrl = await upload.onComplete;
-//   var url = await downloadUrl.ref.getDownloadURL();
-// }
 
   List<Widget> getFormWidget() {
     List<Widget> formWidget = new List();
@@ -242,30 +215,48 @@ class _NovoProdutoState extends State<NovoProduto> {
     ));
     formWidget.add(new Padding(padding: EdgeInsets.all(5)));
     //---------- ESTADO DO PRODUTO ----------
-    formWidget.add(new DropdownButton(
-      hint: new Text('Estado do Produto:'),
-      items: estadoList,
-      value: _estadoSelecionado,
-      onChanged: (value) {
+    formWidget.add(DropdownButton<String>(
+      value: widget.product.estado,
+      hint: Text(estadoSelecionado ?? 'Estado do Produto'),
+      items: <String>['Novo', 'Usado', 'Seminovo', 'Restaurado']
+          .map((String value) {
+        return new DropdownMenuItem<String>(
+          value: value,
+          child: new Text(value),
+        );
+      }).toList(),
+      onChanged: (_) {
         setState(() {
-          if (value == 0) {
-            _estado = 'Novo';
-          } else if (value == 1) {
-            _estado = 'Usado';
-          } else if (value == 2) {
-            _estado = 'Seminovo';
-          } else if (value == 3) {
-            _estado = 'Restaurado';
-          }
-          _estadoSelecionado = value;
+          estadoSelecionado = _;
         });
       },
       isExpanded: true,
     ));
+    // formWidget.add(DropdownButton(
+    //   hint: new Text('Estado do Produto:'),
+    //   items: estadoList,
+    //   value: _estadoSelecionado,
+    //   onChanged: (value) {
+    //     setState(() {
+    //       if (value == 0) {
+    //         _estado = 'Novo';
+    //       } else if (value == 1) {
+    //         _estado = 'Usado';
+    //       } else if (value == 2) {
+    //         _estado = 'Seminovo';
+    //       } else if (value == 3) {
+    //         _estado = 'Restaurado';
+    //       }
+    //       _estadoSelecionado = value;
+    //     });
+    //   },
+    //   isExpanded: true,
+    // ));
 
     //---------- VALOR R$ ----------
     formWidget.add(new TextFormField(
-      keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
+      keyboardType:
+          TextInputType.numberWithOptions(signed: true, decimal: true),
       decoration: InputDecoration(
         labelText: 'Valor (R\$):',
       ),
@@ -362,7 +353,7 @@ class _NovoProdutoState extends State<NovoProduto> {
                     height: MediaQuery.of(context).size.width / 2,
                     width: MediaQuery.of(context).size.width / 2.7,
                     color: Colors.grey[200],
-                    child: this.imagens.containsKey(1) == false 
+                    child: this.imagens.containsKey(1) == false
                         ? IconButton(
                             icon: Icon(Icons.add),
                             onPressed: () {
@@ -485,13 +476,13 @@ class _NovoProdutoState extends State<NovoProduto> {
           // print(_valor.text);
           //Passando o modelo !!
           // saveImage();
-          
+
           db.criarProduto(ListaProdutoModel(
               uid,
               _nomeProduto.text,
               _descricao.text,
               _material.text,
-              _estado,
+              estadoSelecionado,
               _valor.text,
               troca,
               true,
