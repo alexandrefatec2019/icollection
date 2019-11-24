@@ -7,6 +7,7 @@ import 'package:icollection/Principal.dart';
 import 'package:icollection/Usuario/Cadastro.dart';
 import 'package:icollection/Usuario/historico.dart';
 import 'package:icollection/model/usuarioModel.dart';
+import 'package:page_transition/page_transition.dart';
 
 //Classe autenticação
 Autentica auth = Autentica();
@@ -65,9 +66,7 @@ class PerfilState extends State<Perfil> {
           onPressed: () {
             Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => CadDados(),
-                    ));
+                    PageTransition(type: PageTransitionType.rightToLeft, child: CadDados()));
           },
           backgroundColor: Colors.green[400],
           label: Text('EDITAR DADOS'),

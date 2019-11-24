@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:icollection/Produto/produto.dart';
 
 import 'package:icollection/categoria.dart';
+import 'package:page_transition/page_transition.dart';
 
 class CategoriaTile extends StatelessWidget {
 
@@ -23,7 +24,7 @@ class CategoriaTile extends StatelessWidget {
       trailing: Icon(Icons.keyboard_arrow_right),
       onTap: (){
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context)=> Produto(snapshot))
+          PageTransition(type: PageTransitionType.rightToLeft, child: Produto(snapshot))
         );
       },
     );

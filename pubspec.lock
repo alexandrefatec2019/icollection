@@ -98,7 +98,7 @@ packages:
       name: firebase_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.1+5"
+    version: "0.4.0+9"
   firebase_database:
     dependency: "direct main"
     description:
@@ -207,6 +207,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.7"
+  page_transition:
+    dependency: "direct main"
+    description:
+      name: page_transition
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.5"
   path:
     dependency: transitive
     description:
@@ -340,4 +347,4 @@ packages:
     version: "2.0.8"
 sdks:
   dart: ">=2.5.0 <3.0.0"
-  flutter: ">=1.9.1+hotfix.5 <2.0.0"
+  flutter: ">=1.9.1+hotfix.2 <2.0.0"

@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:icollection/Usuario/perfil.dart';
 import 'package:icollection/categoria.dart';
+import 'package:page_transition/page_transition.dart';
 
 import 'Login/auth.dart';
 import 'Principal.dart';
@@ -87,26 +88,20 @@ class _Header extends State<MenuLateral> {
               icon: Icons.account_box,
               text: 'Minha Conta',
               onTap: () {
-                Navigator.of(context).pop();
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        Perfil(_email, _imagemURL, _nomeUsuario, _telefone),
-                  ),
+                  PageTransition(type: PageTransitionType.leftToRight, child: Perfil(_email, _imagemURL, _nomeUsuario, _telefone))
                 );
               }),
 
           _criarItemMenu(
               icon: Icons.shopping_cart,
-              text: 'Vendas',
+              text: 'Anúncios',
               onTap: () {
-                Navigator.of(context).pop();
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Vendas(),
-                    ));
+                  context,
+                  PageTransition(type: PageTransitionType.leftToRight, child: Vendas())
+                );
               }),
           Divider(
             color: Colors.white24,
@@ -121,12 +116,9 @@ class _Header extends State<MenuLateral> {
               icon: Icons.collections_bookmark,
               text: 'Categorias',
               onTap: () {
-                Navigator.of(context).pop();
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => Categoria(snapshot),
-                  ),
+                  PageTransition(type: PageTransitionType.leftToRight, child: Categoria(snapshot))
                 );
               }),
           _criarItemMenu(icon: Icons.search, text: 'Procurar'),

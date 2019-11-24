@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:icollection/Produto/novoproduto.dart';
 import 'package:icollection/model/listaprodutoModel.dart';
+import 'package:page_transition/page_transition.dart';
 import '../VariaveisGlobais/UsuarioGlobal.dart' as g;
 
 class Vendas extends StatelessWidget {
@@ -20,9 +21,8 @@ class Vendas extends StatelessWidget {
         onPressed: () {
           Navigator.push(
               context,
-              MaterialPageRoute(
-                builder: (context) => NovoProduto(null),
-              ));
+              PageTransition(type: PageTransitionType.downToUp, child: NovoProduto(null))
+              );
         },
         icon: Icon(Icons.add),
         label: Text('Novo Anúncio'),
