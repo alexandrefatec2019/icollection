@@ -64,7 +64,7 @@ class ListaProdutoModel {
   Timestamp get modificado => _modificado ?? '';
   int get like => _like ?? 0;
   String get obs => _obs ?? '';
-  List<String> get image => _image;
+  List<dynamic> get image => _image ?? '';
   DocumentReference get usuario => _usuario;
 
   Map<String, dynamic> toMap() {

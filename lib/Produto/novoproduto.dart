@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,6 +13,9 @@ import 'package:icollection/model/listaprodutoModel.dart';
 import '../VariaveisGlobais/UsuarioGlobal.dart' as g;
 import 'package:icollection/VariaveisGlobais/UsuarioGlobal.dart' as g;
 
+
+List<dynamic> img = List();
+
 class NovoProduto extends StatefulWidget {
   final ListaProdutoModel product;
   NovoProduto(this.product);
@@ -22,7 +26,7 @@ class NovoProduto extends StatefulWidget {
 
 class _NovoProdutoState extends State<NovoProduto> {
   prefix0.FirebaseFirestoreService db = new prefix0.FirebaseFirestoreService();
-  var usuario = g.email;
+  
   final _formKey = GlobalKey<FormState>();
   DocumentSnapshot snapshot;
 
@@ -35,12 +39,12 @@ class _NovoProdutoState extends State<NovoProduto> {
 
   bool troca = false;
   //alterei para string
-  String estadoSelecionado;  // ainda não inserido
+  String estadoSelecionado; // ainda não inserido
   String _categoriaSelecionada;
 
   List<DropdownMenuItem<int>> estadoList = [];
   // List<DropdownMenuItem<int>> categoriaList = [];
-  List<String> img = [];
+  
   //teste
   String urlphoto;
 
@@ -62,6 +66,15 @@ class _NovoProdutoState extends State<NovoProduto> {
     _material = new TextEditingController(text: widget.product?.material);
     //_estadoSelecionado =  TextEditingController(text: widget.product?.estado);
     estadoSelecionado = widget.product?.estado ?? '';
+    //if (widget.product.image.length != 0) img.addAll(widget.product.image.toList());
+    //widget.product.image.map((f) => img);
+    setState(() {
+    img = widget.product.image;  
+    });
+    
+
+    //print(img[0]);
+    //img = widget.product?.image;
   }
 //     if (widget.product.id == null) {
 //       _nomeProduto = new TextEditingController(text: widget.product.nomeproduto);
@@ -81,11 +94,10 @@ class _NovoProdutoState extends State<NovoProduto> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     String appBarText;
-    if(widget.product?.id != null) appBarText = 'Editar Produto';
+    if (widget.product?.id != null) appBarText = 'Editar Produto';
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xff1c2634),
@@ -99,35 +111,6 @@ class _NovoProdutoState extends State<NovoProduto> {
             children: getFormWidget(),
           )),
     );
-  }
-
-  void tirarFoto(int n) async {
-    var _imagem = await ImagePicker.pickImage(
-        source: ImageSource.camera,
-        imageQuality: 100,
-        maxHeight: 1280,
-        maxWidth: 720);
-
-    setState(() {
-      //Add o arquivo na lista
-      imagens.putIfAbsent(n, () => _imagem);
-      //this.uploading = true;
-    });
-
-    var endereco =
-        '/Produtos/' + usuario + '/' + _imagem.hashCode.toString() + '.jpg';
-
-    var ref = FirebaseStorage().ref().child(endereco);
-
-    StorageUploadTask upload = ref.putFile(_imagem);
-    var downloadUrl = await upload.onComplete;
-    String url = (await downloadUrl.ref.getDownloadURL());
-
-    if (url != null) img.add(url);
-    print('imag da lista = ' +
-        img.map((f) {
-          print(f);
-        }).toString());
   }
 
   List<Widget> getFormWidget() {
@@ -214,8 +197,7 @@ class _NovoProdutoState extends State<NovoProduto> {
     //---------- ESTADO DO PRODUTO ----------
     formWidget.add(DropdownButton<String>(
       value: widget.product?.estado,
-      hint: Text(estadoSelecionado
-       ?? 'Estado do Produto'),
+      hint: Text(estadoSelecionado ?? 'Estado do Produto'),
       items: <String>['Novo', 'Usado', 'Seminovo', 'Restaurado']
           .map((String value) {
         return new DropdownMenuItem<String>(
@@ -345,118 +327,13 @@ class _NovoProdutoState extends State<NovoProduto> {
           new Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Card(
-                child: InkWell(
-                  child: Container(
-                    height: MediaQuery.of(context).size.width / 2,
-                    width: MediaQuery.of(context).size.width / 2.7,
-                    color: Colors.grey[200],
-                    child: this.imagens.containsKey(1) == false
-                        ? IconButton(
-                            icon: Icon(Icons.add),
-                            onPressed: () {
-                              tirarFoto(1);
-                            },
-                          )
-                        : Image.file(imagens[1]),
-                  ),
-                ),
-              ),
-              Card(
-                child: InkWell(
-                  child: Container(
-                    height: MediaQuery.of(context).size.width / 2,
-                    width: MediaQuery.of(context).size.width / 2.7,
-                    color: Colors.grey[200],
-                    child: this.imagens.containsKey(2) == false
-                        ? IconButton(
-                            icon: Icon(Icons.add),
-                            onPressed: () {
-                              tirarFoto(2);
-                            },
-                          )
-                        : Image.file(imagens[2]),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          new Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Card(
-                child: InkWell(
-                  child: Container(
-                    height: MediaQuery.of(context).size.width / 2,
-                    width: MediaQuery.of(context).size.width / 2.7,
-                    color: Colors.grey[200],
-                    child: this.imagens.containsKey(3) == false
-                        ? IconButton(
-                            icon: Icon(Icons.add),
-                            onPressed: () {
-                              tirarFoto(3);
-                            },
-                          )
-                        : Image.file(this.imagens[3]),
-                  ),
-                ),
-              ),
-              Card(
-                child: InkWell(
-                  child: Container(
-                    height: MediaQuery.of(context).size.width / 2,
-                    width: MediaQuery.of(context).size.width / 2.7,
-                    color: Colors.grey[200],
-                    child: this.imagens.containsKey(4) == false
-                        ? IconButton(
-                            icon: Icon(Icons.add),
-                            onPressed: () {
-                              tirarFoto(4);
-                            },
-                          )
-                        : Image.file(this.imagens[4]),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          new Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Card(
-                child: InkWell(
-                  child: Container(
-                    height: MediaQuery.of(context).size.width / 2,
-                    width: MediaQuery.of(context).size.width / 2.7,
-                    color: Colors.grey[200],
-                    child: this.imagens.containsKey(5) == false
-                        ? IconButton(
-                            icon: Icon(Icons.add),
-                            onPressed: () {
-                              tirarFoto(5);
-                            },
-                          )
-                        : Image.file(imagens[5]),
-                  ),
-                ),
-              ),
-              Card(
-                child: InkWell(
-                  child: Container(
-                    height: MediaQuery.of(context).size.width / 2,
-                    width: MediaQuery.of(context).size.width / 2.7,
-                    color: Colors.grey[200],
-                    child: this.imagens.containsKey(6) == false
-                        ? IconButton(
-                            icon: Icon(Icons.add),
-                            onPressed: () {
-                              tirarFoto(6);
-                            },
-                          )
-                        : Image.file(this.imagens[6]),
-                  ),
-                ),
-              ),
+              
+              imgProduto(context, img[0], 0),
+              imgProduto(context, img[1]?? '', 1),
+              // imgProduto(context, img.contains(2), 2),
+              // imgProduto(context, img.contains(3), 3),
+              // imgProduto(context, img.contains(4), 4),
+              // imgProduto(context, img.contains(5), 5),
             ],
           )
         ],
@@ -501,4 +378,54 @@ class _NovoProdutoState extends State<NovoProduto> {
     );
     return formWidget;
   }
+}
+
+Widget imgProduto(BuildContext context, String url, int n) {
+  print('n ='+n.toString()+ ' '+'bool = ' +url.toString()+ ' '+img[0]);
+  return Card(
+    // child: InkWell(
+    //   child: Container(
+    //     height: MediaQuery.of(context).size.width / 2,
+    //     width: MediaQuery.of(context).size.width / 2.7,
+    //     color: Colors.grey[200],
+    //     child: url == true
+    //         ? IconButton(
+    //             icon: Icon(Icons.add),
+    //             onPressed: () {
+    //               tirarFoto(n);
+    //             },
+    //           )
+    //         : CachedNetworkImage(imageUrl: img[n]),
+    //   ),
+    // ),
+  );
+}
+
+void tirarFoto(int n) async {
+  var _imagem = await ImagePicker.pickImage(
+      source: ImageSource.camera,
+      imageQuality: 100,
+      maxHeight: 1280,
+      maxWidth: 720);
+
+  // setState(() {
+  //   //Add o arquivo na lista
+  //   imagens.putIfAbsent(n, () => _imagem);
+  //   //this.uploading = true;
+  // });
+
+  var endereco =
+      '/Produtos/' + g.email + '/' + _imagem.hashCode.toString() + '.jpg';
+
+  var ref = FirebaseStorage().ref().child(endereco);
+
+  StorageUploadTask upload = ref.putFile(_imagem);
+  var downloadUrl = await upload.onComplete;
+  String url = (await downloadUrl.ref.getDownloadURL());
+
+  if (url != null) img.add(url);
+  // print('imag da lista = ' +
+  //     img.map((f) {
+  //       print(f);
+  //     }).toString());
 }
