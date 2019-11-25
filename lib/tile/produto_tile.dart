@@ -31,7 +31,7 @@ class ProdutoTile extends StatelessWidget {
                         fontWeight: FontWeight.w200
                       ),
                     ),
-                    Text('R\$ ${produto.valor}',  //Text('R\$ ${produto.valor.toStringAsFixed(2)}') -- valor como double, 2 casas depois da virgula
+                    Text('R\$ ${produto.valor}',
                         style: TextStyle(
                           color: Colors.blue[200],
                           fontSize: 17.0,
@@ -45,7 +45,38 @@ class ProdutoTile extends StatelessWidget {
           ],
         )
         : Row(
-
+          children: <Widget>[
+            Flexible(
+              flex: 1,
+              child: Image.network(
+                produto.imagens[0],
+                fit: BoxFit.cover,
+                height: 250.0,
+              ),
+            ),
+            Flexible(
+              flex: 1,
+              child: Container(
+                padding: EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(produto.nome, style: TextStyle(
+                        fontWeight: FontWeight.w200
+                      ),
+                    ),
+                    Text('R\$ ${produto.valor}',
+                        style: TextStyle(
+                          color: Colors.blue[200],
+                          fontSize: 17.0,
+                          fontWeight: FontWeight.bold
+                        ),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ],
         )
       ),
     );
