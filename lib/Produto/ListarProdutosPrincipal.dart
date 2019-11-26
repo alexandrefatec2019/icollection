@@ -39,8 +39,7 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
           snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) return Text('Loading...');
-        return 
-        ListView(
+        return ListView(
           physics: BouncingScrollPhysics(),
           children: snapshot.data.documents.map((DocumentSnapshot document) {
             return FutureBuilder(
@@ -48,7 +47,7 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
               future: readDadosUsuario(document.data['usuario']),
               builder: (ctx, snapshot) {
                 if (!snapshot.hasData)
-                //aqui pode se carregar alguma animação para quando estiver carregando a lista
+                  //aqui pode se carregar alguma animação para quando estiver carregando a lista
                   return Center(
                     child: null,
                   );
@@ -214,7 +213,9 @@ Widget imagemProduto(List imgProduto, String id) {
                         onTap: () {
                           Navigator.push(
                               context,
-                              PageTransition(type: PageTransitionType.rightToLeft, child: ProdutoDetalhe(id))
+                              PageTransition(
+                                  type: PageTransitionType.rightToLeft,
+                                  child: ProdutoDetalhe(id))
                               // MaterialPageRoute(
                               //   builder: (context, ) => ProdutoDetalhe(id),
                               // )

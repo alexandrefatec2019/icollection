@@ -35,7 +35,27 @@ class FirebaseFirestoreService {
 
     return snapshots;
   }
-  //TODO passar o model em vez de variaveis !!!!!!!!!!!!!!!
+
+//remove imagem do produto (lista)
+  Future<bool> removeImagem(String produtoId, String url) {
+    final TransactionHandler removeImageTrans = (Transaction tx) async {
+      final DocumentSnapshot ds =
+          await tx.get(produtoCollection.document(produtoId));
+
+      List<String> imgproduto = [url]; //userId
+      await tx.update(ds.reference, {
+        'image': FieldValue.arrayRemove(imgproduto),
+      });
+    };
+
+    return Firestore.instance
+        .runTransaction(removeImageTrans)
+        .then((result) => result['updated'])
+        .catchError((error) {
+      print('error: $error');
+      return false;
+    });
+  }
 
   Future<bool> criarProduto(ListaProdutoModel l) async {
     try {
@@ -70,12 +90,23 @@ class FirebaseFirestoreService {
     }
   }
 
-  Future<dynamic> updateProduto(ListaProdutoModel produto) async {
+  Future<bool> updateProduto(ListaProdutoModel produto) async {
+    print('updateeeeeeeeeeed' + produto.id);
     final TransactionHandler updateTransaction = (Transaction tx) async {
       final DocumentSnapshot ds =
           await tx.get(produtoCollection.document(produto.id));
 
-      await tx.update(ds.reference, produto.toMap());
+      await tx.update(ds.reference, {
+        'estado': produto.estado,
+        'image': produto.image,
+        'material' : produto.material,
+        'modificado': Timestamp.now(),
+        'status': produto.status,
+        'troca': produto.troca,
+        'valor': produto.valor,
+        'nomeproduto': produto.nomeproduto
+      });
+      //await tx.update(ds.reference, produto.toMap());
       return {'updated': true};
     };
 

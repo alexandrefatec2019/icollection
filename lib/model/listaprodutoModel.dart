@@ -84,7 +84,7 @@ class ListaProdutoModel {
     map['criacao'] = _criacao;
     map['modificado'] = _modificado;
     map['like'] = _like;
-    map['image'] = _image;
+    map['image'] = _image ?? '';
     map['usuario'] = _usuario;
 
     return map;
