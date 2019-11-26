@@ -104,7 +104,8 @@ class FirebaseFirestoreService {
         'status': produto.status,
         'troca': produto.troca,
         'valor': produto.valor,
-        'nomeproduto': produto.nomeproduto
+        'nomeproduto': produto.nomeproduto,
+        'descricao': produto.descricao
       });
       //await tx.update(ds.reference, produto.toMap());
       return {'updated': true};
