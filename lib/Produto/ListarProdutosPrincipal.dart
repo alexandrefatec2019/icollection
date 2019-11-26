@@ -40,7 +40,6 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) return Text('Loading...');
         return ListView(
-          physics: BouncingScrollPhysics(),
           children: snapshot.data.documents.map((DocumentSnapshot document) {
             return FutureBuilder(
               //passa a referencia do usuario e retorna dados do usuario que postou o produto
@@ -78,7 +77,9 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
                           )
                         ],
                       ),
+                      
                       imagemProduto(document.data['image'], document['id']),
+                                            
                       Padding(
                           padding:
                               EdgeInsets.only(left: 10, bottom: 5, right: 10),
@@ -196,6 +197,7 @@ Future<UsuarioModel> readDadosUsuario(DocumentReference doc) {
   return doc.get().then((onValue) => UsuarioModel.map(onValue));
 }
 
+
 Widget imagemProduto(List imgProduto, String id) {
   int n = imgProduto.length.toInt();
   return CarouselSlider(
@@ -222,10 +224,11 @@ Widget imagemProduto(List imgProduto, String id) {
                               );
                         },
                         child: Container(
+                          margin: EdgeInsets.symmetric(horizontal: 5),
                           decoration: BoxDecoration(
                             image: DecorationImage(
                                 fit: BoxFit.fitWidth,
-                                alignment: FractionalOffset.topCenter,
+                                alignment: FractionalOffset.center,
                                 image: CachedNetworkImageProvider(i)),
                           ),
                         )),
@@ -242,7 +245,7 @@ Widget botaoPerfil(String usuario, BuildContext context) {
           child: IconButton(
               icon: Icon(Icons.more_vert),
               iconSize: 30,
-              tooltip: 'Increase volume by 10',
+              tooltip: '',
               onPressed: () {
                 dialog.aboutDialog(context, usuario.toString(), 'xxxx');
               })));
