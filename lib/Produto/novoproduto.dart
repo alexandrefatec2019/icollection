@@ -13,8 +13,7 @@ import 'package:icollection/model/listaprodutoModel.dart';
 import '../VariaveisGlobais/UsuarioGlobal.dart' as g;
 import 'package:icollection/VariaveisGlobais/UsuarioGlobal.dart' as g;
 
-
-List<dynamic> img = List();
+Map<int, dynamic> imgl;
 
 class NovoProduto extends StatefulWidget {
   final ListaProdutoModel product;
@@ -26,9 +25,11 @@ class NovoProduto extends StatefulWidget {
 
 class _NovoProdutoState extends State<NovoProduto> {
   prefix0.FirebaseFirestoreService db = new prefix0.FirebaseFirestoreService();
-  
+
   final _formKey = GlobalKey<FormState>();
   DocumentSnapshot snapshot;
+
+  List<dynamic> img = List();
 
   //TODO - Pagina NovoProduto - Pegar info do Model ou Data do Produto
   String uid;
@@ -44,7 +45,7 @@ class _NovoProdutoState extends State<NovoProduto> {
 
   List<DropdownMenuItem<int>> estadoList = [];
   // List<DropdownMenuItem<int>> categoriaList = [];
-  
+
   //teste
   String urlphoto;
 
@@ -66,23 +67,41 @@ class _NovoProdutoState extends State<NovoProduto> {
     _material = new TextEditingController(text: widget.product?.material);
     //_estadoSelecionado =  TextEditingController(text: widget.product?.estado);
     estadoSelecionado = widget.product?.estado ?? '';
-    //if (widget.product.image.length != 0) img.addAll(widget.product.image.toList());
-    //widget.product.image.map((f) => img);
-    setState(() {
-    img = widget.product.image;  
-    });
-    
 
-    //print(img[0]);
-    //img = widget.product?.image;
+    widget.product?.image?.forEach((f) {
+      img.add(f);
+    });
   }
-//     if (widget.product.id == null) {
-//       _nomeProduto = new TextEditingController(text: widget.product.nomeproduto);
-//       _descricao = new TextEditingController(text: widget.product.descricao);
-//       _valor = new TextEditingController(text: widget.product.valor);
-//       _material = new TextEditingController(text: widget.product.material);
-//     }
-// }
+
+  void tirarFoto(int n) async {
+    var _imagem = await ImagePicker.pickImage(
+        source: ImageSource.camera,
+        imageQuality: 100,
+        maxHeight: 1280,
+        maxWidth: 720);
+
+    // setState(() {
+    //   //Add o arquivo na lista
+    //   imagens.putIfAbsent(n, () => _imagem);
+    //   //this.uploading = true;
+    // });
+
+    var endereco =
+        '/Produtos/' + g.email + '/' + _imagem.hashCode.toString() + '.jpg';
+
+    var ref = FirebaseStorage().ref().child(endereco);
+
+    StorageUploadTask upload = ref.putFile(_imagem);
+    var downloadUrl = await upload.onComplete;
+    String url = (await downloadUrl.ref.getDownloadURL());
+
+    setState(() {
+      if (url != null) {
+        img.add(url);
+        //}img.insert(img.length+1, url);
+      }
+    });
+  }
 
   Map<int, File> imagens = Map();
 
@@ -327,13 +346,19 @@ class _NovoProdutoState extends State<NovoProduto> {
           new Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              
-              imgProduto(context, img[0], 0),
-              imgProduto(context, img[1]?? '', 1),
-              // imgProduto(context, img.contains(2), 2),
-              // imgProduto(context, img.contains(3), 3),
-              // imgProduto(context, img.contains(4), 4),
-              // imgProduto(context, img.contains(5), 5),
+              //Lista das imagem do produto
+
+              Expanded(
+                child: GridView.count(
+                  primary: false,
+                  shrinkWrap: true,
+                  crossAxisCount: 2,
+                  childAspectRatio: 1,
+                  children: List.generate(6, (index) {
+                    return Center(child: imgProduto(context, index));
+                  }),
+                ),
+              )
             ],
           )
         ],
@@ -351,22 +376,40 @@ class _NovoProdutoState extends State<NovoProduto> {
           // print(_valor.text);
           //Passando o modelo !!
           // saveImage();
+          if (widget.product?.id == null) {
+            db.criarProduto(ListaProdutoModel(
+                uid,
+                _nomeProduto.text,
+                _descricao.text,
+                _material.text,
+                estadoSelecionado,
+                _valor.text,
+                troca,
+                true,
+                Timestamp.now(),
+                Timestamp.now(),
+                0,
+                img,
+                'obs',
+                g.usuarioReferencia));
+          }else{
+              db.updateProduto(ListaProdutoModel(
+                widget.product.id,
+                _nomeProduto.text,
+                _descricao.text,
+                _material.text,
+                estadoSelecionado,
+                _valor.text,
+                troca,
+                true,
+                Timestamp.now(),
+                Timestamp.now(),
+                0,
+                img,
+                'obs',
+                g.usuarioReferencia));
+          }
 
-          db.criarProduto(ListaProdutoModel(
-              uid,
-              _nomeProduto.text,
-              _descricao.text,
-              _material.text,
-              estadoSelecionado,
-              _valor.text,
-              troca,
-              true,
-              Timestamp.now(),
-              Timestamp.now(),
-              0,
-              img,
-              'obs',
-              g.usuarioReferencia));
           Navigator.of(context).pop();
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => Principal()));
@@ -378,54 +421,52 @@ class _NovoProdutoState extends State<NovoProduto> {
     );
     return formWidget;
   }
-}
 
-Widget imgProduto(BuildContext context, String url, int n) {
-  print('n ='+n.toString()+ ' '+'bool = ' +url.toString()+ ' '+img[0]);
-  return Card(
-    // child: InkWell(
-    //   child: Container(
-    //     height: MediaQuery.of(context).size.width / 2,
-    //     width: MediaQuery.of(context).size.width / 2.7,
-    //     color: Colors.grey[200],
-    //     child: url == true
-    //         ? IconButton(
-    //             icon: Icon(Icons.add),
-    //             onPressed: () {
-    //               tirarFoto(n);
-    //             },
-    //           )
-    //         : CachedNetworkImage(imageUrl: img[n]),
-    //   ),
-    // ),
-  );
-}
-
-void tirarFoto(int n) async {
-  var _imagem = await ImagePicker.pickImage(
-      source: ImageSource.camera,
-      imageQuality: 100,
-      maxHeight: 1280,
-      maxWidth: 720);
-
-  // setState(() {
-  //   //Add o arquivo na lista
-  //   imagens.putIfAbsent(n, () => _imagem);
-  //   //this.uploading = true;
-  // });
-
-  var endereco =
-      '/Produtos/' + g.email + '/' + _imagem.hashCode.toString() + '.jpg';
-
-  var ref = FirebaseStorage().ref().child(endereco);
-
-  StorageUploadTask upload = ref.putFile(_imagem);
-  var downloadUrl = await upload.onComplete;
-  String url = (await downloadUrl.ref.getDownloadURL());
-
-  if (url != null) img.add(url);
-  // print('imag da lista = ' +
-  //     img.map((f) {
-  //       print(f);
-  //     }).toString());
+  Widget imgProduto(BuildContext context, int n) {
+    if (img.length > n)
+      return SizedBox(
+          //height: 250,
+          width: 140,
+          child: Stack(
+            children: <Widget>[
+              Card(
+                  semanticContainer: true,
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  child: CachedNetworkImage(imageUrl: img[n])),
+              Positioned(
+                  right: 10,
+                  top: 6,
+                  child: InkWell(
+                    child: Icon(
+                      Icons.remove_circle,
+                      size: 20,
+                      color: Colors.red,
+                    ),
+                    onTap: () {
+                      setState(() {
+                        db
+                            .removeImagem(widget.product.id, img[n])
+                            .then((action) {
+                          if (action) img.remove(img[n]);
+                        });
+                      });
+                    },
+                  )),
+            ],
+          ));
+    else
+      //se nao tiver foto mostra isso
+      return SizedBox(
+          height: 200,
+          width: 140,
+          child: Card(
+            elevation: 10,
+            child: IconButton(
+              icon: Icon(Icons.add_a_photo),
+              onPressed: () {
+                tirarFoto(n);
+              },
+            ),
+          ));
+  }
 }
