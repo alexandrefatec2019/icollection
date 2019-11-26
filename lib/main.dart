@@ -72,7 +72,7 @@ class Icollection extends StatelessWidget {
         '/': (context) => Principal(),
         //Tela de login ao clicar no botao menu
         '/Login': (context) => LoginPage(),
-        '/CadastroUsuario': (context) => CadDados(),
+        '/CadastroUsuario': (context) => CadDados(false),
       },
     );
   }

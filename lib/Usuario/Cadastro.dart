@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:icollection/Principal.dart';
+import 'package:icollection/Produto/ListarProdutosPrincipal.dart';
 import 'package:icollection/Usuario/UsuarioDATA.dart';
+import 'package:icollection/Usuario/dadosuser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -15,6 +17,8 @@ import 'package:icollection/VariaveisGlobais/UsuarioGlobal.dart' as g;
 import 'package:cached_network_image/cached_network_image.dart';
 
 class CadDados extends StatefulWidget {
+  final bool authUser;
+  CadDados(this.authUser);
   @override
   _CadDadosState createState() => new _CadDadosState();
 }
@@ -125,211 +129,216 @@ class _CadDadosState extends State<CadDados> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: true,
-        title: Text('Dados do Usuário'),
-        centerTitle: true,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
+    if (widget.authUser) {
+      return new Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: true,
+          title: Text('Dados do Usuário'),
+          centerTitle: true,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pop(context),
+          ),
+          backgroundColor: Color(0xff1c2634),
         ),
-        backgroundColor: Color(0xff1c2634),
-      ),
-      body: new SafeArea(
-        top: false,
-        bottom: false,
-        child: new Form(
-          key: _formKey,
-          child: new SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: new Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Padding(
-                        padding: EdgeInsets.only(top: 10),
-                        child: GestureDetector(
-                          onTap: tirarFoto,
-                          child: Container(
-                            width: 170.0,
-                            height: 170.0,
-                            decoration: new BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                  fit: BoxFit.fill,
-                                  image: CachedNetworkImageProvider(_photoUrl?? null)),
+        body: new SafeArea(
+          top: false,
+          bottom: false,
+          child: new Form(
+            key: _formKey,
+            child: new SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: new Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Padding(
+                          padding: EdgeInsets.only(top: 10),
+                          child: GestureDetector(
+                            onTap: tirarFoto,
+                            child: Container(
+                              width: 170.0,
+                              height: 170.0,
+                              decoration: new BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                    fit: BoxFit.fill,
+                                    image: CachedNetworkImageProvider(
+                                        _photoUrl ?? null)),
+                              ),
                             ),
-                          ),
-                        )),
-                  ],
-                ),
+                          )),
+                    ],
+                  ),
 
-                Align(
-                  alignment: Alignment.center,
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      top: 18,
-                    ),
-                    child: Text(
-                      'Confirme seus dados:',
-                      style: TextStyle(
-                        fontSize: 16,
+                  Align(
+                    alignment: Alignment.center,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        top: 18,
+                      ),
+                      child: Text(
+                        'Confirme seus dados:',
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
                       ),
                     ),
                   ),
-                ),
 
-                //Campo nome
-                EnsureVisibleWhenFocused(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width / 1.1,
-                    height: 90,
-                    padding:
-                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
-                    //Nome
-                    child: TextFormField(
-                      //passa para o proximo campo
-                      textInputAction: TextInputAction.next,
-                      onFieldSubmitted: (term) {
-                        _proximoCampo(context, _focusNome, _focusEmail);
-                      },
-                      focusNode: _focusNome,
-                      onSaved: (value) {
-                        setState(() {
-                          nome = value;
-                        });
-                      },
-                      validator: (val) =>
-                          val.isEmpty ? 'Nome não pode ser vazio.' : null,
-                      keyboardType: TextInputType.text,
-                      controller: _nome,
-                      decoration: InputDecoration(
-                        labelText: 'Nome *',
-                        icon: Icon(Icons.person),
-                      ),
-                    ),
-                  ),
-                  focusNode: _focusNome,
-                ),
-                //Fim campo nome
-
-                //Campo Email
-                EnsureVisibleWhenFocused(
-                  focusNode: _focusEmail,
-                  child: Container(
-                    width: MediaQuery.of(context).size.width / 1.1,
-                    height: 90,
-                    padding:
-                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
-                    //Email
-                    child: TextFormField(
-                      textInputAction: TextInputAction.next,
-                      onFieldSubmitted: (term) {
-                        _proximoCampo(context, _focusEmail, _focusCPFCNPJ);
-                      },
-                      onSaved: (value) => email = value,
-                      controller: _email,
-                      validator: (val) =>
-                          !val.contains('@') ? 'Endereço invalido.' : null,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                          labelText: 'E-mail *',
-                          hintText: 'email@exemplo.com',
-                          icon: Icon(Icons.email)),
-                      focusNode: _focusEmail,
-                    ),
-                  ),
-                ),
-                //Fim campo Email
-
-                //Campo CPF CNPJ
-                EnsureVisibleWhenFocused(
-                  focusNode: _focusCPFCNPJ,
-                  child: Container(
-                    width: MediaQuery.of(context).size.width / 1.1,
-                    height: 90,
-                    padding:
-                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
-                    //CPF/CNPJ
-                    child: TextFormField(
-                      textInputAction: TextInputAction.next,
-                      onFieldSubmitted: (term) {
-                        _proximoCampo(context, _focusCPFCNPJ, _focusTelefone);
-                      },
-                      keyboardType: TextInputType.number,
-                      onSaved: (value) => cpfcnpj = value,
-                      controller: _cpfcnpj,
-                      decoration: InputDecoration(
-                          labelText: 'CPF/CNPJ *', icon: Icon(Icons.dehaze)),
-                      focusNode: _focusCPFCNPJ,
-                    ),
-                  ),
-                ),
-                //Fim Campo CPF CNPJ
-
-                //Campo telefone
-                EnsureVisibleWhenFocused(
-                  focusNode: _focusTelefone,
-                  child: Container(
+                  //Campo nome
+                  EnsureVisibleWhenFocused(
+                    child: Container(
                       width: MediaQuery.of(context).size.width / 1.1,
                       height: 90,
                       padding: EdgeInsets.only(
                           top: 4, left: 16, right: 16, bottom: 4),
+                      //Nome
                       child: TextFormField(
-                        keyboardType: TextInputType.phone,
-                        onSaved: (value) => telefone = value,
-                        controller: _telefone,
+                        //passa para o proximo campo
+                        textInputAction: TextInputAction.next,
+                        onFieldSubmitted: (term) {
+                          _proximoCampo(context, _focusNome, _focusEmail);
+                        },
+                        focusNode: _focusNome,
+                        onSaved: (value) {
+                          setState(() {
+                            nome = value;
+                          });
+                        },
+                        validator: (val) =>
+                            val.isEmpty ? 'Nome não pode ser vazio.' : null,
+                        keyboardType: TextInputType.text,
+                        controller: _nome,
                         decoration: InputDecoration(
-                            labelText: 'Telefone *', icon: Icon(Icons.phone)),
-                      )),
-                ),
-                //Fim campo telefone
+                          labelText: 'Nome *',
+                          icon: Icon(Icons.person),
+                        ),
+                      ),
+                    ),
+                    focusNode: _focusNome,
+                  ),
+                  //Fim campo nome
 
-                const SizedBox(height: 24.0),
-
-                Container(
-                  margin: EdgeInsets.only(top: 16, bottom: 12),
-                  width: MediaQuery.of(context).size.width / 1.3,
-                  height: 50,
-                  child: RaisedButton(
-                    shape: new RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(50)),
-                    color: Color(0xff1f631b),
-                    onPressed: () {
-                      //Define as novas alterações para as var globais
-                      g.nome = _nome.text;
-                      g.email = _email.text;
-                      g.cpfcnpj = _cpfcnpj.text;
-                      g.telefone = _telefone.text;
-                      //validação
-                      db
-                          .criarUsuario(_email.text, _nome.text, _email.text,
-                              _cpfcnpj.text, _telefone.text, _photoUrl)
-                          .whenComplete(() {
-                        //print(value);
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => Principal()));
-                      });
-                    },
-                    child: Center(
-                      child: Text(
-                        'CONFIRMAR'.toUpperCase(),
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
+                  //Campo Email
+                  EnsureVisibleWhenFocused(
+                    focusNode: _focusEmail,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width / 1.1,
+                      height: 90,
+                      padding: EdgeInsets.only(
+                          top: 4, left: 16, right: 16, bottom: 4),
+                      //Email
+                      child: TextFormField(
+                        textInputAction: TextInputAction.next,
+                        onFieldSubmitted: (term) {
+                          _proximoCampo(context, _focusEmail, _focusCPFCNPJ);
+                        },
+                        onSaved: (value) => email = value,
+                        controller: _email,
+                        validator: (val) =>
+                            !val.contains('@') ? 'Endereço invalido.' : null,
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                            labelText: 'E-mail *',
+                            hintText: 'email@exemplo.com',
+                            icon: Icon(Icons.email)),
+                        focusNode: _focusEmail,
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 24.0),
-              ],
+                  //Fim campo Email
+
+                  //Campo CPF CNPJ
+                  EnsureVisibleWhenFocused(
+                    focusNode: _focusCPFCNPJ,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width / 1.1,
+                      height: 90,
+                      padding: EdgeInsets.only(
+                          top: 4, left: 16, right: 16, bottom: 4),
+                      //CPF/CNPJ
+                      child: TextFormField(
+                        textInputAction: TextInputAction.next,
+                        onFieldSubmitted: (term) {
+                          _proximoCampo(context, _focusCPFCNPJ, _focusTelefone);
+                        },
+                        keyboardType: TextInputType.number,
+                        onSaved: (value) => cpfcnpj = value,
+                        controller: _cpfcnpj,
+                        decoration: InputDecoration(
+                            labelText: 'CPF/CNPJ *', icon: Icon(Icons.dehaze)),
+                        focusNode: _focusCPFCNPJ,
+                      ),
+                    ),
+                  ),
+                  //Fim Campo CPF CNPJ
+
+                  //Campo telefone
+                  EnsureVisibleWhenFocused(
+                    focusNode: _focusTelefone,
+                    child: Container(
+                        width: MediaQuery.of(context).size.width / 1.1,
+                        height: 90,
+                        padding: EdgeInsets.only(
+                            top: 4, left: 16, right: 16, bottom: 4),
+                        child: TextFormField(
+                          keyboardType: TextInputType.phone,
+                          onSaved: (value) => telefone = value,
+                          controller: _telefone,
+                          decoration: InputDecoration(
+                              labelText: 'Telefone *', icon: Icon(Icons.phone)),
+                        )),
+                  ),
+                  //Fim campo telefone
+
+                  const SizedBox(height: 24.0),
+
+                  Container(
+                    margin: EdgeInsets.only(top: 16, bottom: 12),
+                    width: MediaQuery.of(context).size.width / 1.3,
+                    height: 50,
+                    child: RaisedButton(
+                      shape: new RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(50)),
+                      color: Color(0xff1f631b),
+                      onPressed: () {
+                        //Define as novas alterações para as var globais
+                        g.nome = _nome.text;
+                        g.email = _email.text;
+                        g.cpfcnpj = _cpfcnpj.text;
+                        g.telefone = _telefone.text;
+                        //validação
+                        db
+                            .criarUsuario(_email.text, _nome.text, _email.text,
+                                _cpfcnpj.text, _telefone.text, _photoUrl)
+                            .whenComplete(() {
+                          //print(value);
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => Principal()));
+                        });
+                      },
+                      child: Center(
+                        child: Text(
+                          'CONFIRMAR'.toUpperCase(),
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24.0),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    } else {
+      return ListarProdutosPrincipal();
+    }
   }
 }
 

@@ -91,7 +91,6 @@ class FirebaseFirestoreService {
   }
 
   Future<bool> updateProduto(ListaProdutoModel produto) async {
-    print('updateeeeeeeeeeed' + produto.id);
     final TransactionHandler updateTransaction = (Transaction tx) async {
       final DocumentSnapshot ds =
           await tx.get(produtoCollection.document(produto.id));
@@ -99,7 +98,7 @@ class FirebaseFirestoreService {
       await tx.update(ds.reference, {
         'estado': produto.estado,
         'image': produto.image,
-        'material' : produto.material,
+        'material': produto.material,
         'modificado': Timestamp.now(),
         'status': produto.status,
         'troca': produto.troca,

@@ -66,7 +66,7 @@ class PerfilState extends State<Perfil> {
           onPressed: () {
             Navigator.push(
                     context,
-                    PageTransition(type: PageTransitionType.rightToLeft, child: CadDados()));
+                    PageTransition(type: PageTransitionType.rightToLeft, child: CadDados(true)));
           },
           backgroundColor: Colors.green[400],
           label: Text('EDITAR DADOS'),

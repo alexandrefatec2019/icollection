@@ -3,6 +3,7 @@ import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:icollection/Login/auth.dart';
 import 'package:icollection/Usuario/Cadastro.dart';
 
+import 'package:icollection/VariaveisGlobais/UsuarioGlobal.dart' as g;
 
 import '../Principal.dart';
 
@@ -20,9 +21,13 @@ class LoginPage extends StatelessWidget {
                   text: 'Google Login',
                     darkMode: true,
                     onPressed: () async {
+                      print(g.dadosUser);
                       await auth.googleLogin().then((value) {
                         Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => CadDados()));
+                          //
+                          
+                            //Var g.dadosUser verifica se o usuario ja esta cadastrado ou nao no db
+                            MaterialPageRoute(builder: (context) => CadDados(g.dadosUser)));
                       });
                     }),
                 FacebookSignInButton(
