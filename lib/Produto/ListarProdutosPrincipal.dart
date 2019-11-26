@@ -200,12 +200,14 @@ Future<UsuarioModel> readDadosUsuario(DocumentReference doc) {
 Widget imagemProduto(List imgProduto, String id) {
   int n = imgProduto.length.toInt();
   return CarouselSlider(
+
       enlargeCenterPage: true,
       height: 400.0,
       items: imgProduto.skip(0).take(n).map((i) {
         return Builder(builder: (BuildContext context) {
           return Container(
               //TODO ver depois para deixar o tamanho maximo
+              margin: EdgeInsets.symmetric(horizontal: 5),
               height: MediaQuery.of(context).size.height / 2,
               child: AspectRatio(
                   aspectRatio: 500 / 500,
@@ -215,9 +217,6 @@ Widget imagemProduto(List imgProduto, String id) {
                           Navigator.push(
                               context,
                               PageTransition(type: PageTransitionType.rightToLeft, child: ProdutoDetalhe(id))
-                              // MaterialPageRoute(
-                              //   builder: (context, ) => ProdutoDetalhe(id),
-                              // )
                               );
                         },
                         child: Container(
