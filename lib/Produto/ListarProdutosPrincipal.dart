@@ -77,9 +77,7 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
                           )
                         ],
                       ),
-                      
                       imagemProduto(document.data['image'], document['id']),
-                                            
                       Padding(
                           padding:
                               EdgeInsets.only(left: 10, bottom: 5, right: 10),
@@ -126,11 +124,15 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
                                     disabledColor: Colors.grey,
                                     onPressed: () {
                                       var userRef = g.usuarioReferencia;
-                                      var prodRef = document.documentID;
+                                      var prodRef = document.reference;
+                                      var prodID = document.documentID;
                                       //checkUserLike(prodRef);
-                                      likebutton(userRef, prodRef);
+                                      likebutton(userRef, prodID, prodRef);
+                                      checkUserLike(document.documentID);
+
                                     },
-                                  )
+                                  ),
+                                  ikebutton(document.documentID)
                                 ],
                               ),
                             ],
@@ -152,36 +154,61 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
   }
 }
 
-//Verifica se o usuario já curtiu o produto
-checkUserLike(String produtoid) async {
-  DocumentReference result =
-      Firestore.instance.collection('Usuario').document(g.email);
-  return result.get().then((onValue) {
-    List<dynamic> l = [];
-    l.addAll(onValue.data['produtosLike']);
-    if (l.contains(produtoid)) {
-      //Returna true se o produto id ja foi curtido
-      return true;
-    } else {
-      print('nao tem');
-      return false;
-    }
-//print(l.map((f)=> f));
-  });
+Widget ikebutton(String idProduto) {
+  return FutureBuilder(
+      future: checkUserLike(idProduto), builder: (ctx, snapshot) {
+        print(snapshot.error);
+        return Text('oe'+ snapshot.data.toString());
+      });
 }
 
-Future<bool> likebutton(DocumentReference u, String idProduto) {
+//Verifica se o usuario já curtiu o produto
+//e returna bool
+checkUserLike(String idProduto) async {
+  QuerySnapshot verifica = await Firestore.instance
+      .collection('Usuario')
+      .where('produtosLike', arrayContains: idProduto)
+      .getDocuments();
+
+  bool a = verifica.documents.length == 1;
+  //print('cccccccccccccccccccccc' + a.toString());
+  return a;
+}
+
+Future likebutton(DocumentReference u, String idProduto, DocumentReference p) {
   final TransactionHandler transaction = (Transaction tx) async {
     DocumentSnapshot user = await tx.get(u);
+    DocumentSnapshot produto = await tx.get(p);
 
-    // await tx.update(user.reference, {
-    //   'like': (user['like'] ?? 0) + 1,
-    // });
+    //Verifica se o usuario ja curtiu o produto
+    QuerySnapshot verifica = await Firestore.instance
+        .collection('Usuario')
+        .where('produtosLike', arrayContains: idProduto)
+        .getDocuments();
 
-    List<String> users = [idProduto]; //userId
-    await tx.update(user.reference, {
-      'produtosLike': FieldValue.arrayUnion(users),
-    });
+    //Adiciona o id do produto na Lista do usuario
+    List<String> users = [idProduto];
+
+    if (verifica.documents.length == 0) {
+      //Adiciona o produto que o usuario curtiu na lista
+      //produtosLike no documento do usuario
+      await tx.update(user.reference, {
+        'produtosLike': FieldValue.arrayUnion(users),
+      });
+      //contabiliza +1 no Like do produto
+      await tx.update(produto.reference, {
+        'like': (produto.data['like'] ?? 0) + 1,
+      });
+    }
+    //Caso contrario remove da Lista de curtir, e -1 no like do produto
+    else {
+      await tx.update(produto.reference, {
+        'like': (produto.data['like'] ?? 0) - 1,
+      });
+      await tx.update(user.reference, {
+        'produtosLike': FieldValue.arrayRemove(users),
+      });
+    }
   };
   return Firestore.instance
       .runTransaction(transaction)
@@ -196,7 +223,6 @@ Future<bool> likebutton(DocumentReference u, String idProduto) {
 Future<UsuarioModel> readDadosUsuario(DocumentReference doc) {
   return doc.get().then((onValue) => UsuarioModel.map(onValue));
 }
-
 
 Widget imagemProduto(List imgProduto, String id) {
   int n = imgProduto.length.toInt();

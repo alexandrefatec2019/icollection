@@ -18,7 +18,7 @@ void main()  {
   
   final VerificaAuth _auth = VerificaAuth();
   
-
+  
   _auth.currentUser().then((_d) {
       
       if(_d != null){
