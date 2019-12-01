@@ -3,7 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
+// import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
 import 'package:icollection/Produto/produtoDATA.dart';
 import 'package:icollection/Produto/produto_detalhe.dart';
 import 'package:icollection/Usuario/UserProfileShow.dart';
