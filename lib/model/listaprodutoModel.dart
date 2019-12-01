@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ListaProdutoModel {
   String _id; //Codigo do usuario que postou o produto
+  String _categoria;
   String _nomeProduto; //Nome do produto anunciado
   String _descricao; //Descrição do produto anunciado
   String _material;
@@ -21,6 +22,7 @@ class ListaProdutoModel {
 
   ListaProdutoModel(
       this._id,
+      this._categoria,
       this._nomeProduto,
       this._descricao,
       this._material,
@@ -37,6 +39,7 @@ class ListaProdutoModel {
 
   ListaProdutoModel.map(dynamic o) {
     this._id = o['id'];
+    this._categoria = o['categoria'];
     this._nomeProduto = o['nomeproduto'];
     this._descricao = o['descricao'];
     this._material = o['material'];
@@ -53,6 +56,7 @@ class ListaProdutoModel {
   }
 
   String get id => _id ?? '';
+  String get categoria => _categoria ?? '';
   String get nomeproduto => _nomeProduto ?? '';
   String get descricao => _descricao ?? '';
   String get material => _material ?? ' ';
@@ -74,6 +78,7 @@ class ListaProdutoModel {
     }
 
     map['id'] = _id;
+    map['categoria'] = _categoria;
     map['nomeproduto'] = _nomeProduto;
     map['descricao'] = _descricao;
     map['material'] = _material;
@@ -92,6 +97,7 @@ class ListaProdutoModel {
 
   ListaProdutoModel.fromMap(Map<String, dynamic> o) {
     this._id = o['id'];
+    this._categoria = o['categoria'];
     this._nomeProduto = o['nomeproduto'];
     this._descricao = o['descricao'];
     this._material = o['material'];

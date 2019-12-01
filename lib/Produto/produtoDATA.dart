@@ -64,6 +64,7 @@ class FirebaseFirestoreService {
         final DocumentSnapshot ds = await tx.get(produtoCollection.document());
         final ListaProdutoModel produto = ListaProdutoModel(
             ds.documentID,
+            l.categoria,
             l.nomeproduto,
             l.descricao,
             l.material,
@@ -96,6 +97,7 @@ class FirebaseFirestoreService {
           await tx.get(produtoCollection.document(produto.id));
 
       await tx.update(ds.reference, {
+        'categoria' : produto.categoria,
         'estado': produto.estado,
         'image': produto.image,
         'material': produto.material,

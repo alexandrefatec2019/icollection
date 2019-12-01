@@ -41,7 +41,7 @@ class _NovoProdutoState extends State<NovoProduto> {
   bool troca = false;
   //alterei para string
   String estadoSelecionado; // ainda não inserido
-  String _categoriaSelecionada;
+  String categoriaSelecionada;
 
   List<DropdownMenuItem<int>> estadoList = [];
   // List<DropdownMenuItem<int>> categoriaList = [];
@@ -67,6 +67,7 @@ class _NovoProdutoState extends State<NovoProduto> {
     _material = new TextEditingController(text: widget.product?.material);
     //_estadoSelecionado =  TextEditingController(text: widget.product?.estado);
     estadoSelecionado = widget.product?.estado ?? '';
+    // categoriaSelecionada = widget.product?.categoria ?? '';
 
     widget.product?.image?.forEach((f) {
       img.add(f);
@@ -109,7 +110,7 @@ class _NovoProdutoState extends State<NovoProduto> {
 
   void _categorySelected(String newValueSelected) {
     setState(() {
-      this._categoriaSelecionada = newValueSelected;
+      this.categoriaSelecionada = newValueSelected;
     });
   }
 
@@ -136,35 +137,56 @@ class _NovoProdutoState extends State<NovoProduto> {
     List<Widget> formWidget = new List();
 
     //---------- CATEGORIA ----------
-    // formWidget.add(new StreamBuilder<QuerySnapshot>(
-    //   stream: Firestore.instance.collection('Produtos').snapshots(),
-    //   builder: (context, snapshot){
-    //     return Container(
-    //       child: Row(
-    //         children: <Widget>[
-    //           Expanded(
-    //             child: DropdownButton(
-    //               hint: new Text('Escolha a Categoria:'),
-    //               items: snapshot.data.documents.map((DocumentSnapshot document){
-    //                 return DropdownMenuItem<String>(
-    //                   value: document.data['title'],
-    //                   child: Text(document.data['title']),
-    //                 );
-    //               },
-    //               ).toList(),
-    //               // value: _categoriaSelecionada,
-    //               onChanged: (valorSelecionado) {
-    //                 _categorySelected(valorSelecionado);
-    //               },
-    //               isExpanded: true,
-    //             ),
-    //           )
-    //         ],
-    //       ),
+    // formWidget.add(DropdownButton<String>(
+    //   value: widget.product?.estado,
+    //   hint: Text(estadoSelecionado ?? 'Estado do Produto'),
+    //   items: <String>['Novo', 'Usado', 'Seminovo', 'Restaurado']
+    //       .map((String value) {
+    //     return new DropdownMenuItem<String>(
+    //       value: value,
+    //       child: new Text(value),
     //     );
+    //   }).toList(),
+    //   onChanged: (_) {
+    //     setState(() {
+    //       estadoSelecionado = _;
+    //     });
     //   },
-    // )
-    // );
+    //   isExpanded: true,
+    // ));
+
+
+    formWidget.add(new StreamBuilder<QuerySnapshot>(
+      stream: Firestore.instance.collection('Produtos').snapshots(),
+      builder: (context, snapshot){
+        return Container(
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: DropdownButton(
+                  hint: new Text(categoriaSelecionada ?? 'Selecione a Categoria'),
+                  items: snapshot.data.documents.map((DocumentSnapshot document){
+                    return DropdownMenuItem<String>(
+                      value: document.data['title'],
+                      child: Text(document.data['title']),
+                    );
+                  },
+                  ).toList(),
+                  // value: _categoriaSelecionada,
+                  onChanged: (_) {
+                    setState(() {
+                      categoriaSelecionada = _;
+                    });
+                  },
+                  isExpanded: true,
+                ),
+              )
+            ],
+          ),
+        );
+      },
+    )
+    );
 
     //---------- NOME DO PRODUTO ----------
     formWidget.add(
@@ -231,26 +253,6 @@ class _NovoProdutoState extends State<NovoProduto> {
       },
       isExpanded: true,
     ));
-    // formWidget.add(DropdownButton(
-    //   hint: new Text('Estado do Produto:'),
-    //   items: estadoList,
-    //   value: _estadoSelecionado,
-    //   onChanged: (value) {
-    //     setState(() {
-    //       if (value == 0) {
-    //         _estado = 'Novo';
-    //       } else if (value == 1) {
-    //         _estado = 'Usado';
-    //       } else if (value == 2) {
-    //         _estado = 'Seminovo';
-    //       } else if (value == 3) {
-    //         _estado = 'Restaurado';
-    //       }
-    //       _estadoSelecionado = value;
-    //     });
-    //   },
-    //   isExpanded: true,
-    // ));
 
     //---------- VALOR R$ ----------
     formWidget.add(new TextFormField(
@@ -379,6 +381,7 @@ class _NovoProdutoState extends State<NovoProduto> {
           if (widget.product?.id == null) {
             db.criarProduto(ListaProdutoModel(
                 uid,
+                categoriaSelecionada,
                 _nomeProduto.text,
                 _descricao.text,
                 _material.text,
@@ -395,6 +398,7 @@ class _NovoProdutoState extends State<NovoProduto> {
           }else{
               db.updateProduto(ListaProdutoModel(
                 widget.product.id,
+                categoriaSelecionada,
                 _nomeProduto.text,
                 _descricao.text,
                 _material.text,
