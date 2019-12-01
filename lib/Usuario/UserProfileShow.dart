@@ -20,28 +20,57 @@ class MostraPerfilUsuario extends StatelessWidget {
           //         alignment: FractionalOffset.topCenter,
           //         image: CachedNetworkImageProvider(urlproduto))),
           child: Column(children: <Widget>[
-            Stack(
+            Column(
               children: <Widget>[
-                //Avatar do usuario
-                Container(
-                    child: CircleAvatar(
-                      backgroundImage:
-                          CachedNetworkImageProvider(user.photourl),
-                      foregroundColor: Colors.white,
+                Stack(
+                  children: <Widget>[
+                    //Imagem do fundo (produto)
+                    Center(
+                        child: new AspectRatio(
+                            aspectRatio: 100 / 34,
+                            child: new Container(
+                                decoration: new BoxDecoration(
+                              image: DecorationImage(
+                                  fit: BoxFit.fitWidth,
+                                  alignment: FractionalOffset.center,
+                                  image:
+                                      CachedNetworkImageProvider(urlproduto)),
+                              shape: BoxShape.rectangle,
+                              color: Colors.orange,
+                            )))),
+
+                    //Avatar do usuario
+                    Center(
+                      child: Container(
+                        margin: EdgeInsets.only(top: 30),
+                        child: CircleAvatar(
+                          backgroundImage:
+                              CachedNetworkImageProvider(user.photourl),
+                          foregroundColor: Colors.white,
+                        ),
+                        width: 120.0,
+                        height: 120.0,
+                        padding: const EdgeInsets.all(5.0), // borde width
+                        decoration: new BoxDecoration(
+                          color: const Color(0xFFFFFFFF), // border color
+                          shape: BoxShape.circle,
+                        ),
+                      ),
                     ),
-                    width: 120.0,
-                    height: 120.0,
-                    padding: const EdgeInsets.all(4.0), // borde width
-                    decoration: new BoxDecoration(
-                      color: const Color(0xFFFFFFFF), // border color
-                      shape: BoxShape.circle,
-                    ),
-                    ),
-                //FIM Avatar do usuario
+
+                    //FIM Avatar do usuario
+                  ],
+                ),
+                Text(user.nome,
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: Colors.black,
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.w700,
+                    ))
               ],
             )
-          ])), //Container da imagem Avatar do usuario
-
+          ])),
       contentPadding: EdgeInsets.all(0.0),
     );
   }
