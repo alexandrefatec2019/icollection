@@ -74,18 +74,31 @@ class ListaProdutos extends StatelessWidget {
                                           document.documentID),
                                       Column(
                                         children: <Widget>[
-                                          Text(document.data['nomeproduto'],
-                                              textAlign: TextAlign.center,
+                                          Row(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Text(document.data['nomeproduto'],
+                                              textAlign: TextAlign.start,
                                               style: TextStyle(
-                                                fontSize: 14.0,
-                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16.0,
+                                                fontWeight: FontWeight.w200,
                                               )),
+                                            ],
+                                          ),
+                                          
                                           Text(document.data['descricao'],
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 fontSize: 14.0,
                                                 fontWeight: FontWeight.bold,
                                               )),
+                                          Text(document.data['valor'],
+                                              textAlign: TextAlign.start,
+                                              style: TextStyle(
+                                                fontSize: 14.0,
+                                                fontWeight: FontWeight.bold,
+                                              )),
+                                            
                                         ],
                                       )
                                     ],
