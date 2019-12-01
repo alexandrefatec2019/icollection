@@ -31,7 +31,7 @@ class _CadDadosState extends State<CadDados> {
   String email;
   String cpfcnpj;
   String telefone;
-  String _photoUrl = '';
+  String _photoUrl;
 
   File imagem;
   bool uploading = false;
@@ -62,8 +62,7 @@ class _CadDadosState extends State<CadDados> {
     var _imagem = await ImagePicker.pickImage(
         source: ImageSource.camera,
         imageQuality: 100,
-        maxHeight: 96,
-        maxWidth: 96);
+        maxHeight: 480, maxWidth: 640);
 
     //TODO ver se vem do auth ou do db
     var usuario = g.emailAuth;
@@ -104,7 +103,7 @@ class _CadDadosState extends State<CadDados> {
   void verifica() {
     print('\n\n\n\nCadastro - Verifica()\n\n\n\n');
     if (g.dadosUser = true) {
-      //print('Primeiro If');
+print('Primeiro If');
       setState(() {
         //uid = g.id;
         _nome = new TextEditingController(text: g.nome);
@@ -112,9 +111,10 @@ class _CadDadosState extends State<CadDados> {
         _cpfcnpj = new TextEditingController(text: g.cpfcnpj);
         _telefone = new TextEditingController(text: g.telefone);
         _photoUrl = (g.photourl);
+        print('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'+_photoUrl);
       });
     } else {
-      //print('Segundo If');
+      print('Segundo If');
       //esse email ja vem da autenticação(widget.user.email)
 
       setState(() {
@@ -123,12 +123,14 @@ class _CadDadosState extends State<CadDados> {
         cpfcnpj = ''; //_u.cpfcnpj;
         telefone = ''; //_u.telefone;
         _photoUrl = g.photoAuth ?? null; //.photourl;
+        
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    
     if (widget.authUser) {
       return new Scaffold(
         appBar: AppBar(
