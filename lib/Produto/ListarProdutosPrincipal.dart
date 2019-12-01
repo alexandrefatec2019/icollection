@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
 import 'package:icollection/Produto/produtoDATA.dart';
 import 'package:icollection/Produto/produto_detalhe.dart';
+import 'package:icollection/Usuario/UserProfileShow.dart';
 import 'package:icollection/model/listaprodutoModel.dart';
 import 'package:icollection/model/usuarioModel.dart';
 import 'package:page_transition/page_transition.dart';
@@ -74,7 +75,8 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
                                 ),
                               )),
                           SizedBox(
-                            child: botaoPerfil('usuario', context),
+                            
+                            child: botaoPerfil(snapshot.data, context, document.data['image']),
                           )
                         ],
                       ),
@@ -130,7 +132,6 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
                                       //checkUserLike(prodRef);
                                       likebutton(userRef, prodID, prodRef);
                                       checkUserLike(document.documentID);
-
                                     },
                                   ),
                                   ikebutton(document.documentID)
@@ -157,9 +158,10 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
 
 Widget ikebutton(String idProduto) {
   return FutureBuilder(
-      future: checkUserLike(idProduto), builder: (ctx, snapshot) {
+      future: checkUserLike(idProduto),
+      builder: (ctx, snapshot) {
         print(snapshot.error);
-        return Text('oe'+ snapshot.data.toString());
+        return Text('oe' + snapshot.data.toString());
       });
 }
 
@@ -264,7 +266,7 @@ Widget imagemProduto(List imgProduto, String id) {
       }).toList());
 }
 
-Widget botaoPerfil(String usuario, BuildContext context) {
+Widget botaoPerfil(UsuarioModel usuario, BuildContext context, List urlProduto) {
   return Container(
       //alignment: Alignment.centerRight,
       child: Padding(
@@ -274,7 +276,11 @@ Widget botaoPerfil(String usuario, BuildContext context) {
               iconSize: 30,
               tooltip: '',
               onPressed: () {
-                dialog.aboutDialog(context,' title',' content');
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return MostraPerfilUsuario(usuario, urlProduto[0]);
+                    });
               })));
 }
 
@@ -334,3 +340,19 @@ Widget avatar(String imagemUsuario) {
 //     },
 //   );
 // }
+class GradientDialogState extends State<ListarProdutosPrincipal> {
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      content: Container(
+        padding: const EdgeInsets.all(8.0),
+        decoration: new BoxDecoration(
+            ),
+        child: Text('oe'),
+
+      ),
+      contentPadding: EdgeInsets.all(0.0),
+    );
+  }
+}

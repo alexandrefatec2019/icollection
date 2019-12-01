@@ -63,14 +63,16 @@ class Autentica {
       assert(user.displayName != null);
       //assert(user.photoUrl != null);
 
+      
       //Define as variaveis globais na primeira autenticacao!!
       g.email = user.email;
       g.nome = user.displayName;
       g.photourl = user.photoUrl;
+      
        g.usuarioReferencia =
            Firestore.instance.collection('Usuario').document(user.email);
 
-      return UsuarioModel(
+    return UsuarioModel(
           user.email, user.displayName, user.email, '', '', user.photoUrl);
     } catch (e) {
       print('Deu erro na autenticacao exeption = '+e.toString());
