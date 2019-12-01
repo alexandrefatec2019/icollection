@@ -2,17 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:icollection/AppBar.dart';
 import 'package:icollection/Login/auth.dart';
-import 'package:icollection/main.dart';
 //Arquivo onde esta todos os items do menu Lateral
 import 'Login/Tela_Auth.dart';
 import 'MenuLateral.dart';
 import 'Produto/ListarProdutosPrincipal.dart';
 
-
 //Variaveis globais! (em teste)
 import 'VariaveisGlobais/UsuarioGlobal.dart' as g;
 import 'package:show_dialog/show_dialog.dart' as dialog;
-
 
 enum WidgetMarker { login, menu }
 
@@ -65,7 +62,9 @@ class _Principal extends State<Principal> {
     if (auth?.isEmailVerified != null) {
       setState(() {
         selectedWidgetMarker = WidgetMarker.menu;
-        print('xxxxxxxxxxxxxxxxxxxxxxxxxxxAAAAAAAAAAAAAAx\n\n\n\n' + auth.providerData[1].uid+'\n\n\n\n');
+        print('xxxxxxxxxxxxxxxxxxxxxxxxxxxAAAAAAAAAAAAAAx\n\n\n\n' +
+            auth.providerData[1].uid +
+            '\n\n\n\n');
         this._email = auth?.email.toString();
         this._imagemURL = auth?.photoUrl.toString();
         this._nomeUsuario = auth?.displayName.toString();
@@ -94,11 +93,8 @@ class _Principal extends State<Principal> {
             //Items que serão exibidos na AppBar
             IconButton(
               icon: new Icon(Icons.search),
-              onPressed: () {
-                //testando variavel global!
-                 dialog.aboutDialog(context, g.photourl, "content");
-
-              },
+              //testando variavel global!
+              onPressed: () {},
             ),
           ],
         ),

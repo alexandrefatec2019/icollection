@@ -36,10 +36,11 @@ dependencies:
   show_dialog: ^1.0.3
   cached_network_image: ^1.1.3
   badges: ^1.1.0 #notificacao no icone
-  like_button: ^0.1.9 #testee
+  like_button: ^0.1.9
   flutter_staggered_animations: "^0.1.2" #tesssssssssst
   #multi_image_picker: ^4.5.9 #teste imagem do produto
   page_transition: ^1.1.5
+  flutter_custom_dialog: ^1.0.14 #user profile
   
   
 dev_dependencies:
