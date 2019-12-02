@@ -33,6 +33,7 @@ class Vendas extends StatelessWidget {
 }
 
 class ListaProdutos extends StatelessWidget {
+  bool pressed = false;
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -64,51 +65,102 @@ class ListaProdutos extends StatelessWidget {
                         elevation: 5,
                         child: Row(
                           children: <Widget>[
-                            Container(
-                              padding: const EdgeInsets.all(4.0),
-                              child: new Column(
-                                children: <Widget>[
-                                  Row(
-                                    children: <Widget>[
-                                      imageProduto(document.data['image'],
+                            Flexible(
+                              flex: 1,
+                              child: imageProduto(document.data['image'],
                                           document.documentID),
-                                      Column(
-                                        children: <Widget>[
-                                          Row(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              Text(document.data['nomeproduto'],
-                                              textAlign: TextAlign.start,
+                            ),
+                            Flexible(
+                              flex: 1,
+                              child: Container(
+                                padding: EdgeInsets.all(8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Row(
+                                      children: <Widget>[
+                                        Text(document.data['nomeproduto'],
                                               style: TextStyle(
                                                 fontSize: 16.0,
-                                                fontWeight: FontWeight.w200,
-                                              )),
-                                            ],
-                                          ),
-                                          
-                                          Text(document.data['descricao'],
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontSize: 14.0,
-                                                fontWeight: FontWeight.bold,
-                                              )),
-                                          Text(document.data['valor'],
-                                              textAlign: TextAlign.start,
-                                              style: TextStyle(
-                                                fontSize: 14.0,
-                                                fontWeight: FontWeight.bold,
-                                              )),
-                                            
-                                        ],
-                                      )
-                                    ],
+                                                fontWeight: FontWeight.w300,
+                                              )
+                                            ),
+                                      ],  
+                                    ),
+                                    SizedBox(height: 8,),
+                                    Row(
+                                      children: <Widget>[
+                                        Text('Estado: '),
+                                        Text(document.data['estado'],
+                                        
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 14.0,
+                                            fontWeight: FontWeight.w200,
+                                          )
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 4,),
+                                    Row(
+                                      children: <Widget>[
+                                        Text('Troca: '),
+                                        document.data['troca'] == 'false' ?
+                                          Text('Não disponível', style: TextStyle(
+                                            fontSize: 14.0,
+                                            fontWeight: FontWeight.w200,
+                                          ))
+                                          : Text('Disponível', style: TextStyle(
+                                            fontSize: 14.0,
+                                            fontWeight: FontWeight.w200,
+                                          ))
+                                      ],
+                                    ),
+                                    SizedBox(height: 4,),
+                                    Row(
+                                      children: <Widget>[
+                                        Text('Valor: '),
+                                        Text('R\$'),
+                                        Text(document.data['valor'],
+                                          textAlign: TextAlign.justify,
+                                          style: TextStyle(
+                                            fontSize: 14.0,
+                                            fontWeight: FontWeight.bold,
+                                          )
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 8,),
+                                    Row(
+                                      
+                                      children: <Widget>[
+                                        Text('Vendido: '),
+                                        pressed == true ? Text('Sim') : Text('Não'),
+                                        Switch(
+                                          value: true,
+                                          onChanged: (value) {
+                                            value = false;
+                                            pressed = !pressed;
+                                            // setState(() {
+                                            //   value = false;
+                                            // });
+                                          },
+                                          activeTrackColor: Colors.lightBlueAccent, 
+                                          activeColor: Colors.blue,
+                                          inactiveTrackColor: Colors.grey,
+                                        )
+                                      ],
+                                    )
+                                  ],
                                   ),
-                                ],
                               ),
                             )
                           ],
-                        )));
-              }).toList(),
+                        )
+                    )
+                );
+              }
+              ).toList(),
             );
         }
       },
