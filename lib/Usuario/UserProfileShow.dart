@@ -11,6 +11,7 @@ class MostraPerfilUsuario extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       content: Container(
+
           //foregroundDecoration: ,
           height: MediaQuery.of(context).size.height / 2,
           //padding: const EdgeInsets.all(8.0),
@@ -26,10 +27,14 @@ class MostraPerfilUsuario extends StatelessWidget {
                   children: <Widget>[
                     //Imagem do fundo (produto)
                     Center(
-                        child: new AspectRatio(
+                        child: AspectRatio(
                             aspectRatio: 100 / 34,
-                            child: new Container(
-                                decoration: new BoxDecoration(
+                            child: Container(
+                                decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.white,
+                                width: 5.0,
+                              ),
                               image: DecorationImage(
                                   fit: BoxFit.fitWidth,
                                   alignment: FractionalOffset.center,
@@ -67,7 +72,8 @@ class MostraPerfilUsuario extends StatelessWidget {
                       color: Colors.black,
                       fontSize: 20.0,
                       fontWeight: FontWeight.w700,
-                    ))
+                    )),
+                    _faixa(user)
               ],
             )
           ])),
@@ -75,3 +81,50 @@ class MostraPerfilUsuario extends StatelessWidget {
     );
   }
 }
+
+ Widget _faixa(UsuarioModel user) {
+    return Container(
+      height: 60.0,
+      margin: EdgeInsets.only(top: 10.0, left: 4, right: 4),
+      decoration: BoxDecoration(
+        color: Colors.black12,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          _buildStatItem("Produtos", '12'),
+          _buildStatItem("Like", '21'),
+        //  _buildStatItem("Scores", '1'),
+        ],
+      ),
+    );
+  }
+
+Widget _buildStatItem(String label, String count) {
+    TextStyle _statLabelTextStyle = TextStyle(
+      fontFamily: 'Roboto',
+      color: Colors.black,
+      fontSize: 16.0,
+      fontWeight: FontWeight.w200,
+    );
+
+    TextStyle _statCountTextStyle = TextStyle(
+      color: Colors.black54,
+      fontSize: 24.0,
+      fontWeight: FontWeight.bold,
+    );
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text(
+          count,
+          style: _statCountTextStyle,
+        ),
+        Text(
+          label,
+          style: _statLabelTextStyle,
+        ),
+      ],
+    );
+  }
