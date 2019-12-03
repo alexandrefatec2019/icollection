@@ -42,12 +42,13 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) return Text('Loading...');
         return ListView(
-          children: snapshot.data.documents.map((DocumentSnapshot document) {
+          children:
+              snapshot.data.documents.map((DocumentSnapshot documentProduto) {
             return FutureBuilder(
               //passa a referencia do usuario e retorna dados do usuario que postou o produto
-              future: readDadosUsuario(document.data['usuario']),
-              builder: (ctx, snapshot) {
-                if (!snapshot.hasData)
+              future: readDadosUsuario(documentProduto.data['usuario']),
+              builder: (ctx, snapshotUsuario) {
+                if (!snapshotUsuario.hasData)
                   //aqui pode se carregar alguma animação para quando estiver carregando a lista
                   return Center(
                     child: null,
@@ -67,20 +68,20 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
                                   children: <Widget>[
                                     Row(
                                       children: <Widget>[
-                                        avatar(snapshot.data.photourl),
-                                        nomeUsuario(snapshot.data.nome),
+                                        avatar(snapshotUsuario.data.photourl),
+                                        nomeUsuario(snapshotUsuario.data.nome),
                                       ],
                                     )
                                   ],
                                 ),
                               )),
                           SizedBox(
-                            
-                            child: botaoPerfil(snapshot.data, context, document.data['image']),
+                            child: botaoPerfil(snapshotUsuario.data, context,
+                                documentProduto.data['image']),
                           )
                         ],
                       ),
-                      imagemProduto(document.data['image'], document['id']),
+                      imagemProduto(snapshotUsuario.data, documentProduto),
                       Padding(
                           padding:
                               EdgeInsets.only(left: 10, bottom: 5, right: 10),
@@ -90,13 +91,13 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  Text(document.data['nomeproduto'],
+                                  Text(documentProduto.data['nomeproduto'],
                                       style: TextStyle(
                                           fontWeight: FontWeight.w600,
                                           fontSize: 16)),
                                   Text(
                                     'R\$' +
-                                        document.data[
+                                        documentProduto.data[
                                             'valor'], //Text('R\$ ${produto.valor.toStringAsFixed(2)}') -- valor como double, 2 casas depois da virgula
                                     style: TextStyle(
                                         color: Colors.blue[300],
@@ -108,7 +109,7 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
                               Row(
                                 children: <Widget>[
                                   Text(
-                                    document.data['descricao'],
+                                    documentProduto.data['descricao'],
                                     style: TextStyle(
                                         fontWeight: FontWeight.w300,
                                         fontSize: 14),
@@ -127,14 +128,14 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
                                     disabledColor: Colors.grey,
                                     onPressed: () {
                                       var userRef = g.usuarioReferencia;
-                                      var prodRef = document.reference;
-                                      var prodID = document.documentID;
+                                      var prodRef = documentProduto.reference;
+                                      var prodID = documentProduto.documentID;
                                       //checkUserLike(prodRef);
                                       likebutton(userRef, prodID, prodRef);
-                                      checkUserLike(document.documentID);
+                                      checkUserLike(documentProduto.documentID);
                                     },
                                   ),
-                                  ikebutton(document.documentID)
+                                  ikebutton(documentProduto.documentID)
                                 ],
                               ),
                             ],
@@ -227,12 +228,13 @@ Future<UsuarioModel> readDadosUsuario(DocumentReference doc) {
   return doc.get().then((onValue) => UsuarioModel.map(onValue));
 }
 
-Widget imagemProduto(List imgProduto, String id) {
-  int n = imgProduto.length.toInt();
+Widget imagemProduto(UsuarioModel u, DocumentSnapshot p) {
+  ListaProdutoModel pro = ListaProdutoModel.map(p);
+  int n = pro.image.length.toInt();
   return CarouselSlider(
       enlargeCenterPage: true,
       height: 400.0,
-      items: imgProduto.skip(0).take(n).map((i) {
+      items: pro.image.skip(0).take(n).map((i) {
         return Builder(builder: (BuildContext context) {
           return Container(
               //TODO ver depois para deixar o tamanho maximo
@@ -246,7 +248,8 @@ Widget imagemProduto(List imgProduto, String id) {
                               context,
                               PageTransition(
                                   type: PageTransitionType.rightToLeft,
-                                  child: ProdutoDetalhe(id))
+                                  //Passa os dados do usuario e do produto
+                                  child: ProdutoDetalhe(u, pro))
                               // MaterialPageRoute(
                               //   builder: (context, ) => ProdutoDetalhe(id),
                               // )
@@ -266,7 +269,8 @@ Widget imagemProduto(List imgProduto, String id) {
       }).toList());
 }
 
-Widget botaoPerfil(UsuarioModel usuario, BuildContext context, List urlProduto) {
+Widget botaoPerfil(
+    UsuarioModel usuario, BuildContext context, List urlProduto) {
   return Container(
       //alignment: Alignment.centerRight,
       child: Padding(
@@ -341,16 +345,13 @@ Widget avatar(String imagemUsuario) {
 //   );
 // }
 class GradientDialogState extends State<ListarProdutosPrincipal> {
-
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       content: Container(
         padding: const EdgeInsets.all(8.0),
-        decoration: new BoxDecoration(
-            ),
+        decoration: new BoxDecoration(),
         child: Text('oe'),
-
       ),
       contentPadding: EdgeInsets.all(0.0),
     );

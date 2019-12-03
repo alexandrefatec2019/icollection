@@ -1,14 +1,18 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:icollection/Usuario/Cadastro.dart';
 import 'package:icollection/datas/produtodata.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:icollection/model/listaprodutoModel.dart';
+import 'package:icollection/model/usuarioModel.dart';
 
 class ProdutoDetalhe extends StatefulWidget {
   //recebe o id do produoto
-  final String id;
-  ProdutoDetalhe(this.id);
+  final UsuarioModel usuarioModel;
+  final ListaProdutoModel produtoModel;
+  ProdutoDetalhe(this.usuarioModel, this.produtoModel);
 
   @override
   _ProdutoDetalheState createState() => _ProdutoDetalheState(snapshot, produto);
@@ -28,7 +32,7 @@ class _ProdutoDetalheState extends State<ProdutoDetalhe>
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          'Funko Venom',
+          widget.produtoModel.nomeproduto,
           style: TextStyle(
             fontWeight: FontWeight.bold,
           ),
@@ -37,9 +41,7 @@ class _ProdutoDetalheState extends State<ProdutoDetalhe>
       ),
       body: _buildProdutoDetalhes(context),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-                
-        },
+        onPressed: () {},
         backgroundColor: Color.fromRGBO(255, 105, 105, 100),
         label: Text('TENHO INTERESSE'),
         icon: Icon(Icons.thumb_up),
@@ -79,38 +81,32 @@ class _ProdutoDetalheState extends State<ProdutoDetalhe>
       width: MediaQuery.of(context).size.width,
       child: Carousel(
         boxFit: BoxFit.contain,
-        images: [
-          new NetworkImage(
-              'https://cdn.shopify.com/s/files/1/1917/3817/products/t_fk32685_900x.jpg?v=1541017729'),
-          new NetworkImage(
-              'https://http2.mlstatic.com/funko-pop-marvel-venom-venom-363-D_NQ_NP_741023-MLB29295981920_012019-F.jpg'),
-          new NetworkImage(
-              'https://www.picclickimg.com/d/l400/pict/223325939595_/Funko-POP-Venom-363-Marvel-Eddie-Brock-Symbiote.jpg'),
-          new NetworkImage(
-              'https://static3.tcdn.com.br/img/img_prod/460977/estatua_gollum_e_smeagol_o_senhor_dos_aneis_the_lord_of_the_rings_premium_format_sideshow_34871_1_20180720182614.jpg'),
-        ],
+        images: widget.produtoModel.image.map((url) {
+          return Image(image: CachedNetworkImageProvider(url));
+        }).toList(),
         indicatorBgPadding: 2.5,
       ),
     );
   }
-  _buildRowPrecoLikeWidgets(){
+
+  _buildRowPrecoLikeWidgets() {
     return Container(
       child: Padding(
         padding: EdgeInsets.only(left: 5, right: 5),
         child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Text('R\$ 999', style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-              color: Colors.blue[300], 
-          ),
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(
+              'R\$ 999',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: Colors.blue[300],
+              ),
+            ),
+          ],
+          //TODO - Inserir botão like abaixo / Ja esta com espaçamento entre os elementos
         ),
-        ],
-        //TODO - Inserir botão like abaixo / Ja esta com espaçamento entre os elementos
-
-
-      ),
       ),
     );
   }
@@ -180,7 +176,7 @@ class _ProdutoDetalheState extends State<ProdutoDetalhe>
                         children: <Widget>[
                           Container(
                             child: Text(
-                              "Alexandre",
+                              widget.usuarioModel.nome,
                               style: TextStyle(
                                 color: Colors.grey[600],
                               ),
@@ -188,7 +184,7 @@ class _ProdutoDetalheState extends State<ProdutoDetalhe>
                           ),
                           Container(
                             child: Text(
-                              "(17)9.9999-9999",
+                              widget.usuarioModel.telefone,
                               style: TextStyle(
                                 color: Colors.grey[600],
                               ),
@@ -237,7 +233,7 @@ class _ProdutoDetalheState extends State<ProdutoDetalhe>
                           ),
                           Container(
                             child: Text(
-                              "gruposjrp@gmail.com",
+                              widget.usuarioModel.email,
                               style: TextStyle(
                                 color: Colors.grey[600],
                               ),
