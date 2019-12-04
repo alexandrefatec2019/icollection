@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:icollection/datas/produtodata.dart';
+import 'package:icollection/model/listaprodutoModel.dart';
 
 class ProdutoTile extends StatelessWidget {
   final String type;
-  final ProdutoData produto;
+  final ListaProdutoModel produto;
   ProdutoTile(this.type, this.produto);
 
   @override
@@ -18,7 +18,7 @@ class ProdutoTile extends StatelessWidget {
             AspectRatio(
               aspectRatio: 0.8,
               child: Image.network(
-                produto.imagens[0],
+                produto.image[0],
                 fit: BoxFit.cover,
               ),
             ),
@@ -27,7 +27,7 @@ class ProdutoTile extends StatelessWidget {
                 padding: EdgeInsets.all(8.0),
                 child: Column(
                   children: <Widget>[
-                    Text(produto.nome, style: TextStyle(
+                    Text(produto.nomeproduto, style: TextStyle(
                         fontWeight: FontWeight.w200
                       ),
                     ),
@@ -49,7 +49,7 @@ class ProdutoTile extends StatelessWidget {
             Flexible(
               flex: 1,
               child: Image.network(
-                produto.imagens[0],
+                produto.image[0],
                 fit: BoxFit.cover,
                 height: 250.0,
               ),
@@ -61,7 +61,7 @@ class ProdutoTile extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(produto.nome, style: TextStyle(
+                    Text(produto.nomeproduto, style: TextStyle(
                         fontWeight: FontWeight.w200
                       ),
                     ),

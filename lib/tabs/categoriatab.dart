@@ -10,7 +10,6 @@ class CategoriaTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<QuerySnapshot>(
-      //future: Firestore.instance.collection["Produtos"].getDocuments(),
       future: Firestore.instance.collection('Produtos').getDocuments(),
       builder: (context, snapshot){
         if(!snapshot.hasData){

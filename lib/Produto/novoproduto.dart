@@ -167,7 +167,7 @@ class _NovoProdutoState extends State<NovoProduto> {
                   hint: Text(categoriaSelecionada ?? 'Selecione a Categoria'),
                   items: snapshot.data.documents.map((DocumentSnapshot document){
                     return DropdownMenuItem<String>(
-                      value: document.data['title'],
+                      value: document.documentID,
                       child: Text(document.data['title']),
                     );
                   },

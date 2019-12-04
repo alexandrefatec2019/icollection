@@ -1,6 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:icollection/datas/produtodata.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:icollection/AppBar.dart';
+import 'package:icollection/Firestore/Leitura.dart';
+import 'package:icollection/Login/auth.dart';
+//Arquivo onde esta todos os items do menu Lateral
+import 'package:icollection/Login/Tela_Auth.dart';
+import 'package:icollection/MenuLateral.dart';
+import 'package:icollection/categoria.dart';
+// import 'package:icollection/datas/produtodata.dart';
+import 'package:icollection/Produto/produtoDATA.dart';
+import 'package:icollection/model/listaprodutoModel.dart';
 import 'package:icollection/tile/produto_tile.dart';
 
 class Produto extends StatelessWidget {
