@@ -89,7 +89,7 @@ class FirebaseFirestoreService {
     } catch (e) {
       return false;
     }
-  }
+  } 
 
   Future<bool> updateProduto(ListaProdutoModel produto) async {
     final TransactionHandler updateTransaction = (Transaction tx) async {

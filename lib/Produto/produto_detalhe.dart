@@ -151,7 +151,9 @@ class _ProdutoDetalheState extends State<ProdutoDetalhe>
 
   _buildRowPrecoLikeWidgets() {
     return Container(
-      child: Padding(
+      child: Column(
+        children: <Widget>[
+          Padding(
         padding: EdgeInsets.only(left: 5, right: 5),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -168,6 +170,20 @@ class _ProdutoDetalheState extends State<ProdutoDetalhe>
           //TODO - Inserir botão like abaixo / Ja esta com espaçamento entre os elementos
         ),
       ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(widget.produtoModel.descricao, 
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w400,
+                color: Colors.grey[700]
+              )
+          )
+        ],
+      )
+        ],
+      )
     );
   }
 
