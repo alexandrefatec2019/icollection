@@ -19,7 +19,7 @@ Autentica auth = Autentica();
 
 
 class ProdutoDetalhe extends StatefulWidget {
-  //recebe o id do produoto
+  //recebe o id do produto
   final UsuarioModel usuarioModel;
   final ListaProdutoModel produtoModel;
   ProdutoDetalhe(this.usuarioModel, this.produtoModel);
@@ -157,7 +157,7 @@ class _ProdutoDetalheState extends State<ProdutoDetalhe>
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Text(
-              'R\$ 999',
+              'R\$'+widget.produtoModel.valor,
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
@@ -183,7 +183,7 @@ class _ProdutoDetalheState extends State<ProdutoDetalhe>
             tabs: <Widget>[
               Tab(
                 child: Text(
-                  "PRODUTO",
+                  "ANUNCIANTE",
                   style: TextStyle(
                     color: Colors.black,
                   ),
@@ -263,14 +263,6 @@ class _ProdutoDetalheState extends State<ProdutoDetalhe>
                         children: <Widget>[
                           Container(
                             child: Text(
-                              "REGIÃO:",
-                              style: TextStyle(
-                                color: Colors.grey[700],
-                              ),
-                            ),
-                          ),
-                          Container(
-                            child: Text(
                               "EMAIL:",
                               style: TextStyle(
                                 color: Colors.grey[700],
@@ -283,14 +275,6 @@ class _ProdutoDetalheState extends State<ProdutoDetalhe>
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Container(
-                            child: Text(
-                              "São Paulo - SP",
-                              style: TextStyle(
-                                color: Colors.grey[600],
-                              ),
-                            ),
-                          ),
                           Container(
                             child: Text(
                               widget.usuarioModel.email,
@@ -314,7 +298,7 @@ class _ProdutoDetalheState extends State<ProdutoDetalhe>
                           //TODO ProdutoDetalhe - TAB DETALHE
                           Container(
                             child: Text(
-                              "CÓDIGO:",
+                              "CONDIÇÃO:",
                               style: TextStyle(
                                 color: Colors.grey[700],
                               ),
@@ -322,12 +306,12 @@ class _ProdutoDetalheState extends State<ProdutoDetalhe>
                           ),
                           Container(
                             child: Text(
-                              "CONDIÇÃO:",
+                              "CATEGORIA:",
                               style: TextStyle(
                                 color: Colors.grey[700],
                               ),
                             ),
-                          )
+                          ),
                         ],
                       ),
                       Row(
@@ -335,7 +319,7 @@ class _ProdutoDetalheState extends State<ProdutoDetalhe>
                         children: <Widget>[
                           Container(
                             child: Text(
-                              "0123456789",
+                              widget.produtoModel.estado,
                               style: TextStyle(
                                 color: Colors.grey[600],
                               ),
@@ -343,7 +327,7 @@ class _ProdutoDetalheState extends State<ProdutoDetalhe>
                           ),
                           Container(
                             child: Text(
-                              "Novo",
+                              widget.produtoModel.categoria,
                               style: TextStyle(
                                 color: Colors.grey[600],
                               ),
@@ -384,19 +368,24 @@ class _ProdutoDetalheState extends State<ProdutoDetalhe>
                         children: <Widget>[
                           Container(
                             child: Text(
-                              "Plástico (Vinil)",
+                              widget.produtoModel.material,
                               style: TextStyle(
                                 color: Colors.grey[600],
                               ),
                             ),
                           ),
                           Container(
-                            child: Text(
-                              "Indisponível",
-                              style: TextStyle(
+                            child: 
+                              widget.produtoModel.troca == 'false' ? 
+                              Text('Não disponível', style: TextStyle(
                                 color: Colors.grey[600],
+                                ),
+                              ) : 
+                              Text('Disponível', style: TextStyle(
+                                color: Colors.grey[600],
+                                ),
                               ),
-                            ),
+                              
                           )
                         ],
                       ),
