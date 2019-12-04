@@ -28,7 +28,7 @@ class _ListarProdutosPrincipalState extends State<ListarProdutosPrincipal> {
 
   @override
   initState() {
-    super.initState();
+    super.initState(); 
   }
 
   @override

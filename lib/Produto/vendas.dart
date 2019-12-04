@@ -33,7 +33,7 @@ class Vendas extends StatelessWidget {
 }
 
 class ListaProdutos extends StatelessWidget {
-  bool pressed = false;
+  bool pressed = false; 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(

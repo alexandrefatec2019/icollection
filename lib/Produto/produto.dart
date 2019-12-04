@@ -9,7 +9,9 @@ import 'package:icollection/Login/auth.dart';
 import 'package:icollection/Login/Tela_Auth.dart';
 import 'package:icollection/MenuLateral.dart';
 import 'package:icollection/categoria.dart';
-import 'package:icollection/datas/produtodata.dart';
+// import 'package:icollection/datas/produtodata.dart';
+import 'package:icollection/Produto/produtoDATA.dart';
+import 'package:icollection/model/listaprodutoModel.dart';
 import 'package:icollection/tile/produto_tile.dart';
 
 class Produto extends StatelessWidget {
@@ -40,9 +42,9 @@ class Produto extends StatelessWidget {
           ),
          ),
             //Carregar as info de acordo com a categoria (EM PROCESSO)
-        body: FutureBuilder<QuerySnapshot>(
+        body: StreamBuilder<QuerySnapshot>(
           //TODO - Linha para pegar Produtos do Firebase
-          future: Firestore.instance.collection("Produtos").document(snapshot.documentID).collection('itens').getDocuments(),
+          stream: Firestore.instance.collection('ProdutoLista').where('categoria', isEqualTo: snapshot.data['title']).snapshots(),
           builder: (context, snapshot){
             if(!snapshot.hasData){
               return Center(child: CircularProgressIndicator(),);
@@ -61,14 +63,14 @@ class Produto extends StatelessWidget {
                     ),
                     itemCount: snapshot.data.documents.length,
                     itemBuilder: (context, index){
-                      return ProdutoTile('grid', ProdutoData.fromDocument(snapshot.data.documents[index]));
+                      return ProdutoTile('grid', ListaProdutoModel.fromDocument(snapshot.data.documents[index])); //igual ao outro depois da virgula
                     },
                   ),
                   ListView.builder(
                   padding: EdgeInsets.all(4.0),
                   itemCount: snapshot.data.documents.length,
                   itemBuilder: (context, index){
-                      return ProdutoTile('list', ProdutoData.fromDocument(snapshot.data.documents[index]));
+                      return ProdutoTile('list', produtoCollection.snapshots()); //igual ao outro depois da virgula
                     },
                   ),
                 ]
