@@ -140,9 +140,7 @@ class ListaProdutos extends StatelessWidget {
                                           onChanged: (value) {
                                             value = false;
                                             pressed = !pressed;
-                                            // setState(() {
-                                            //   value = false;
-                                            // });
+                                            
                                           },
                                           activeTrackColor: Colors.lightBlueAccent, 
                                           activeColor: Colors.blue,

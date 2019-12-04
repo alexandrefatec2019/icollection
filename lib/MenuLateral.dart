@@ -96,10 +96,6 @@ class _Header extends State<MenuLateral> {
             endIndent: 17,
           ),
           _criarItemMenu(
-            icon: Icons.grade,
-            text: 'Produtos',
-          ),
-          _criarItemMenu(
               icon: Icons.collections_bookmark,
               text: 'Categorias',
               onTap: () {
@@ -108,14 +104,7 @@ class _Header extends State<MenuLateral> {
                   PageTransition(type: PageTransitionType.leftToRight, child: Categoria(snapshot))
                 );
               }),
-          _criarItemMenu(icon: Icons.search, text: 'Procurar'),
 
-          Divider(
-            color: Colors.white24,
-            indent: 17,
-            endIndent: 17,
-          ),
-          _criarItemMenu(icon: Icons.info, text: 'Sobre Nós'),
           Divider(
             color: Colors.white24,
             indent: 17,
