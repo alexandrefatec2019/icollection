@@ -1,11 +1,15 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:flare_splash_screen/flare_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:icollection/Principal.dart';
 import 'package:icollection/Usuario/Cadastro.dart';
+import 'package:page_transition/page_transition.dart';
 import 'Login/Tela_Auth.dart';
 import 'Usuario/UsuarioDATA.dart';
-//Variaveis globais! (em teste)
+//Variaveis globais! (em teste) 
 import 'VariaveisGlobais/UsuarioGlobal.dart' as g;
 
 void main()  {
@@ -66,10 +70,11 @@ class Icollection extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       //Rota padrao que o app vai inicializar (sem usar variavel)
-      initialRoute: '/',
-      routes: {
+      //initialRoute: '/',
+      home: new SplashScreen(),
+      routes: <String, WidgetBuilder>{
         //Tela principal onde vai listar os produtos anunciados
-        '/': (context) => Principal(),
+        '/Principal': (BuildContext context) => Principal(),
         //Tela de login ao clicar no botao menu
         '/Login': (context) => LoginPage(),
         '/CadastroUsuario': (context) => CadDados(false),
@@ -125,4 +130,36 @@ class VerificaAuth {
       return false;
     }
   }
+  
 }
+class SplashScreen extends StatefulWidget {
+  @override
+  _SplashScreenState createState() => new _SplashScreenState();
+}
+class _SplashScreenState extends State<SplashScreen> {
+  startTime() async {
+    var _duration = new Duration(seconds: 5);
+    return new Timer(_duration, navigationPage);
+  }
+  void navigationPage() {
+    Navigator.of(context).pushReplacementNamed('/Principal');
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    startTime();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      body: new Container(
+        color: Color(0xff1c2634),
+        child: new Center(
+          child: new Image.asset('images/logo_white.png', height: 313, width: 256,),
+      ),
+      )
+    );
+  }
+}// Color(0xff1c2634)
