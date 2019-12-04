@@ -67,7 +67,7 @@ class _NovoProdutoState extends State<NovoProduto> {
     _material = new TextEditingController(text: widget.product?.material);
     //_estadoSelecionado =  TextEditingController(text: widget.product?.estado);
     estadoSelecionado = widget.product?.estado ?? '';
-    // categoriaSelecionada = widget.product?.categoria ?? '';
+    categoriaSelecionada =  widget.product?.categoria;
 
     widget.product?.image?.forEach((f) {
       img.add(f);
@@ -156,7 +156,7 @@ class _NovoProdutoState extends State<NovoProduto> {
     // ));
 
 
-    formWidget.add(new StreamBuilder<QuerySnapshot>(
+    formWidget.add(StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance.collection('Produtos').snapshots(),
       builder: (context, snapshot){
         return Container(
@@ -164,7 +164,7 @@ class _NovoProdutoState extends State<NovoProduto> {
             children: <Widget>[
               Expanded(
                 child: DropdownButton(
-                  hint: new Text(categoriaSelecionada ?? 'Selecione a Categoria'),
+                  hint: Text(categoriaSelecionada ?? 'Selecione a Categoria'),
                   items: snapshot.data.documents.map((DocumentSnapshot document){
                     return DropdownMenuItem<String>(
                       value: document.data['title'],
@@ -237,20 +237,22 @@ class _NovoProdutoState extends State<NovoProduto> {
     formWidget.add(new Padding(padding: EdgeInsets.all(5)));
     //---------- ESTADO DO PRODUTO ----------
     formWidget.add(DropdownButton<String>(
-      value: widget.product?.estado,
+      
       hint: Text(estadoSelecionado ?? 'Estado do Produto'),
       items: <String>['Novo', 'Usado', 'Seminovo', 'Restaurado']
           .map((String value) {
-        return new DropdownMenuItem<String>(
-          value: value,
-          child: new Text(value),
+        return DropdownMenuItem<String>(
+          value: value ?? estadoSelecionado,
+          child: Text(value),
         );
       }).toList(),
       onChanged: (_) {
         setState(() {
           estadoSelecionado = _;
         });
+        
       },
+      //value: estadoSelecionado?? '0',
       isExpanded: true,
     ));
 
