@@ -170,15 +170,20 @@ class _ProdutoDetalheState extends State<ProdutoDetalhe>
           //TODO - Inserir botão like abaixo / Ja esta com espaçamento entre os elementos
         ),
       ),
-      Row(
+      Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text(widget.produtoModel.descricao, 
+          Padding(
+            padding: EdgeInsets.only(left: 5),
+          
+          child: Text(widget.produtoModel.descricao, 
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w400,
                 color: Colors.grey[700]
-              )
+              ), maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+          )
           )
         ],
       )
