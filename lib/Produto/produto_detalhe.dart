@@ -2,11 +2,24 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:icollection/Usuario/Cadastro.dart';
+import 'package:icollection/Usuario/MostrarTelaAuth.dart';
 import 'package:icollection/datas/produtodata.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:icollection/model/listaprodutoModel.dart';
 import 'package:icollection/model/usuarioModel.dart';
+
+import '../Login/Tela_Auth.dart';
+
+import 'package:icollection/VariaveisGlobais/UsuarioGlobal.dart' as g;
+
+import '../Login/auth.dart';
+import '../Principal.dart';
+
+
+Autentica auth = Autentica();
+
 
 class ProdutoDetalhe extends StatefulWidget {
   //recebe o id do produoto
@@ -41,11 +54,61 @@ class _ProdutoDetalheState extends State<ProdutoDetalhe>
       ),
       body: _buildProdutoDetalhes(context),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () {
+          _mostraMSG();
+        },
         backgroundColor: Color.fromRGBO(255, 105, 105, 100),
         label: Text('TENHO INTERESSE'),
         icon: Icon(Icons.thumb_up),
       ),
+    );
+  }
+
+  //Voce precisa esta autenticado
+  void _mostraMSG() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Autenticação necessária'),
+            content: setupAlertDialoadContainer(),
+          );
+        });
+  }
+
+  Widget setupAlertDialoadContainer() {
+    return Container(
+      height: 200.0, // Change as per your requirement
+      width: 200.0, // Change as per your requirement
+      child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                GoogleSignInButton(
+
+                  text: '  Google Login   ',
+                    darkMode: true,
+                    onPressed: () async {
+                      print(g.dadosUser);
+                      await auth.googleLogin().then((value) {
+                        Navigator.of(context).push(
+                          //
+                          
+                            //Var g.dadosUser verifica se o usuario ja esta cadastrado ou nao no db
+                            MaterialPageRoute(builder: (context) => CadDados(g.dadosUser)));
+                      });
+                    }),
+                FacebookSignInButton(
+                  
+                  text: 'Facebook Login',
+                  onPressed: () {
+                  auth.facebookLogin().whenComplete(() {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) => Principal()));
+                  });
+                }),
+              ],
+          )),
     );
   }
 

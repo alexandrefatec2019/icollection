@@ -18,7 +18,7 @@ class LoginPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 GoogleSignInButton(
-                  text: 'Google Login',
+                  text: '  Google Login   ',
                     darkMode: true,
                     onPressed: () async {
                       print(g.dadosUser);

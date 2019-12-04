@@ -25,6 +25,7 @@ class CategoriaTile extends StatelessWidget {
       trailing: Icon(Icons.keyboard_arrow_right),
       onTap: (){
         Navigator.of(context).push(
+          
           PageTransition(type: PageTransitionType.rightToLeft, child: Produto(snapshot))
         );
       },
