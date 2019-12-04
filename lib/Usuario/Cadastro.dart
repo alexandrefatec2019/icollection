@@ -25,7 +25,6 @@ class CadDados extends StatefulWidget {
 
 class _CadDadosState extends State<CadDados> {
   FirebaseFirestoreService db = new FirebaseFirestoreService();
-  //TODO verificar depois se é possivel diminuir o numero de vars
   String uid;
   String nome;
   String email;
@@ -40,7 +39,6 @@ class _CadDadosState extends State<CadDados> {
   TextEditingController _email;
   TextEditingController _cpfcnpj;
   TextEditingController _telefone;
-  //TextEditingController _photourl;
 
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
@@ -49,22 +47,12 @@ class _CadDadosState extends State<CadDados> {
   FocusNode _focusCPFCNPJ = new FocusNode();
   FocusNode _focusTelefone = new FocusNode();
 
-  // static final TextEditingController _nomeController =
-  //     new TextEditingController();
-  // static final TextEditingController _emailController =
-  //     new TextEditingController();
-  // static final TextEditingController _telefoneController =
-  //     new TextEditingController();
-
-  //Exatamente = do professor passou em sala
-  //Retornando a url da photo postada
   Future<String> tirarFoto() async {
     var _imagem = await ImagePicker.pickImage(
         source: ImageSource.camera,
         imageQuality: 100,
         maxHeight: 480, maxWidth: 640);
 
-    //TODO ver se vem do auth ou do db
     var usuario = g.emailAuth;
 
     setState(() {
@@ -105,7 +93,6 @@ class _CadDadosState extends State<CadDados> {
     if (g.dadosUser = true) {
 print('Primeiro If');
       setState(() {
-        //uid = g.id;
         _nome = new TextEditingController(text: g.nome);
         _email = new TextEditingController(text: g.email);
         _cpfcnpj = new TextEditingController(text: g.cpfcnpj);

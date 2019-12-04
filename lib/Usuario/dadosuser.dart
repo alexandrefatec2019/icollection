@@ -53,7 +53,6 @@ class DadosUserState extends State<DadosUser>{
               ),
       ),
       body: SingleChildScrollView(
-      // Container(
         child: Center(
           child: Column( 
           children: <Widget>[
@@ -168,6 +167,5 @@ class DadosUserState extends State<DadosUser>{
         ),
       )
       );
-      
   }
 }

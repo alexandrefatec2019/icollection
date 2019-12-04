@@ -13,7 +13,6 @@ class Produto extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          //title: Text('Produtos'),
           backgroundColor: Color(0xff1c2634),
           title: Text(snapshot.data[
               'title']), //- Pegar o titulo de acordo com a categoria escolhida
@@ -32,8 +31,6 @@ class Produto extends StatelessWidget {
         ),
         //Carregar as info de acordo com a categoria (EM PROCESSO)
         body: FutureBuilder<QuerySnapshot>(
-          //TODO - Linha para pegar Produtos do Firebase
-          
           future: Firestore.instance
               .collection("ProdutoLista")
               .where('categoria', isEqualTo: snapshot.documentID)
@@ -76,8 +73,6 @@ class Produto extends StatelessWidget {
             }
           },
         ),
-
-        //drawer: getCustomContainer(),
       ),
     );
   }

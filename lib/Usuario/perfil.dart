@@ -5,7 +5,6 @@ import 'package:icollection/Login/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:icollection/Principal.dart';
 import 'package:icollection/Usuario/Cadastro.dart';
-import 'package:icollection/Usuario/historico.dart';
 import 'package:icollection/model/usuarioModel.dart';
 import 'package:page_transition/page_transition.dart';
 

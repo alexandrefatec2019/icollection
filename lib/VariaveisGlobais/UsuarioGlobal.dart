@@ -7,7 +7,7 @@ String id; //Codigo do usuario
 //Dados do database
 String nome; //Nome
 String email; //email vindo do database
-String cpfcnpj; //CPU ou CNPJ
+String cpfcnpj; //CPF ou CNPJ
 String telefone; //Telefone
 String photourl; //Endereço da foto
 
@@ -20,6 +20,3 @@ DocumentReference usuarioReferencia;
 String nomeAuth;
 String emailAuth;
 String photoAuth;
-
- //String get id => id2 ?? '0';
-  

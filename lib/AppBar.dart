@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
-  // final Color backgroundColor = Color(0xff1c2634);
   final AppBar appBar;
   final List<Widget> widgets;
 

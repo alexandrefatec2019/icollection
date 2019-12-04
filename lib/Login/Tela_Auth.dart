@@ -23,9 +23,7 @@ class LoginPage extends StatelessWidget {
                     onPressed: () async {
                       print(g.dadosUser);
                       await auth.googleLogin().then((value) {
-                        Navigator.of(context).push(
-                          //
-                          
+                        Navigator.of(context).push(                          
                             //Var g.dadosUser verifica se o usuario ja esta cadastrado ou nao no db
                             MaterialPageRoute(builder: (context) => CadDados(g.dadosUser)));
                       });

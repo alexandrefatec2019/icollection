@@ -108,7 +108,6 @@ class FirebaseFirestoreService {
         'nomeproduto': produto.nomeproduto,
         'descricao': produto.descricao
       });
-      //await tx.update(ds.reference, produto.toMap());
       return {'updated': true};
     };
 

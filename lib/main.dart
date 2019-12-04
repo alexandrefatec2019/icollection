@@ -9,12 +9,10 @@ import 'package:icollection/Usuario/Cadastro.dart';
 import 'package:page_transition/page_transition.dart';
 import 'Login/Tela_Auth.dart';
 import 'Usuario/UsuarioDATA.dart';
-//Variaveis globais! (em teste) 
 import 'VariaveisGlobais/UsuarioGlobal.dart' as g;
 
 void main()  {
   final firestore = Firestore.instance;
-  //TODO reativar cache
    Firestore.instance.settings(
      persistenceEnabled: true,
      cacheSizeBytes: 1048576
@@ -46,16 +44,8 @@ void main()  {
         print('\n\n\n\n\n\n\nUsuario autenticado nao cadastrado no database');
       }
     });
-//////////////////////////////////////////////////////////////////
   }});
   
-
-  //Define a variavel referencia
-
-  // final bool isLogged = await _auth.isLogged();
-  // final Icollection icollection = Icollection(
-  //   initialRoute: isLogged ? '/' : '/Login',
-  // );
 
   runApp(Icollection());
 }
@@ -101,15 +91,8 @@ class VerificaAuth {
       }).then((x) => _ok = true);
       return _ok;
     } catch (e) {
-      //print('\n\n\n\n\n\n\n\n\n catch main = '+e.toString());
       return false;
     }
-
-    // nome = _u.nome;
-    // email = _u.email;
-    // cpfcnpj = _u.cpfcnpj;
-    // telefone = _u.telefone;
-    // _photoUrl = _u.photourl;
   }
 
    Future<String> currentUser() async {
@@ -162,4 +145,4 @@ class _SplashScreenState extends State<SplashScreen> {
       )
     );
   }
-}// Color(0xff1c2634)
+}

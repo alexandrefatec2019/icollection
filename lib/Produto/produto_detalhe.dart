@@ -9,11 +9,8 @@ import 'package:icollection/datas/produtodata.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:icollection/model/listaprodutoModel.dart';
 import 'package:icollection/model/usuarioModel.dart';
-
 import '../Login/Tela_Auth.dart';
-
 import 'package:icollection/VariaveisGlobais/UsuarioGlobal.dart' as g;
-
 import '../Login/auth.dart';
 import '../Principal.dart';
 

@@ -9,15 +9,10 @@ class Categoria extends StatelessWidget {
   Widget build(BuildContext context) {
     return PageView(
       children: <Widget>[
-        // Scaffold(
-        //   body: HomeTab(), 
-        //   //drawer: ,
-        // ),
         Scaffold(
           appBar: AppBar(
            title: Text('Categorias'),
            backgroundColor: Color(0xff1c2634),
-          // title: Text(snapshot.data["title"]),
           centerTitle: true,
           ),
           body: CategoriaTab(),

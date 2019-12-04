@@ -7,7 +7,7 @@ import 'Login/Tela_Auth.dart';
 import 'MenuLateral.dart';
 import 'Produto/ListarProdutosPrincipal.dart';
 
-//Variaveis globais! (em teste)
+//Variaveis globais
 import 'VariaveisGlobais/UsuarioGlobal.dart' as g;
 import 'package:show_dialog/show_dialog.dart' as dialog;
 
@@ -79,12 +79,9 @@ class _Principal extends State<Principal> {
 
   @override
   Widget build(BuildContext context) {
-    // Scaffold:
     var scaffold = Scaffold(
-
         //teclado nao sobrepor o campo
         //resizeToAvoidBottomPadding: true,
-
         //Lista todos os produtos nao importa se esta ou nao utenticado
         body: ListarProdutosPrincipal(), //ListagemGeralProdutos(),
         appBar: BaseAppBar(
@@ -106,7 +103,6 @@ class _Principal extends State<Principal> {
 
     return scaffold;
   }
-
   Widget getCustomContainer() {
     switch (selectedWidgetMarker) {
       case WidgetMarker.login:
@@ -116,14 +112,6 @@ class _Principal extends State<Principal> {
         //Nao precisa mais passar os dados para o menu pois pega das global
         return MenuLateral();
     }
-
     return MenuLateral();
   }
 }
-
-// Future<String> getCurrentUser() async {
-//   String _u = auth.googleUser().toString();
-
-//   print(_u);
-//   return auth.googleUser();
-// }

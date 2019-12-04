@@ -34,14 +34,14 @@ class MostraTelaAuth extends StatelessWidget {
  
 Widget setupAlertDialoadContainer() {
     return Container(
-      height: 300.0, // Change as per your requirement
-      width: 300.0, // Change as per your requirement
+      height: 300.0, 
+      width: 300.0, 
       child: ListView.builder(
         shrinkWrap: true,
         itemCount: 5,
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
-            title: Text('Gujarat, India'),
+            title: Text('Error'),
           );
         },
       ),

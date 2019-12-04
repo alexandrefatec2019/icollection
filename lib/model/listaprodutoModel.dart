@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-//import '../VariaveisGlobais/UsuarioGlobal.dart' as g;
 
 class ListaProdutoModel {
   String _id; //Codigo do usuario que postou o produto
@@ -9,7 +8,7 @@ class ListaProdutoModel {
   String _material;
   String _estado;
   String _valor;
-  //Ja defini o usuario atravez da variavel global
+  
   DocumentReference _usuario;
   bool _troca;
   bool _status;

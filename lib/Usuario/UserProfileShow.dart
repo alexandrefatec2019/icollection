@@ -12,14 +12,7 @@ class MostraPerfilUsuario extends StatelessWidget {
     return AlertDialog(
       content: Container(
 
-          //foregroundDecoration: ,
           height: MediaQuery.of(context).size.height / 2,
-          //padding: const EdgeInsets.all(8.0),
-          // decoration: BoxDecoration(
-          //     image: DecorationImage(
-          //         fit: BoxFit.fitWidth,
-          //         alignment: FractionalOffset.topCenter,
-          //         image: CachedNetworkImageProvider(urlproduto))),
           child: Column(children: <Widget>[
             Column(
               children: <Widget>[
@@ -55,9 +48,9 @@ class MostraPerfilUsuario extends StatelessWidget {
                         ),
                         width: 120.0,
                         height: 120.0,
-                        padding: const EdgeInsets.all(5.0), // borde width
+                        padding: const EdgeInsets.all(5.0),
                         decoration: new BoxDecoration(
-                          color: const Color(0xFFFFFFFF), // border color
+                          color: const Color(0xFFFFFFFF),
                           shape: BoxShape.circle,
                         ),
                       ),
@@ -94,7 +87,6 @@ class MostraPerfilUsuario extends StatelessWidget {
         children: <Widget>[
           _buildStatItem("Produtos", '12'),
           _buildStatItem("Like", '21'),
-        //  _buildStatItem("Scores", '1'),
         ],
       ),
     );

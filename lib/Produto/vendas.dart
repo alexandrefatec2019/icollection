@@ -16,7 +16,6 @@ class Vendas extends StatelessWidget {
         centerTitle: true,
       ),
       body: ListaProdutos(),
-      //TODO - Botão Novo anuncio
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           Navigator.push(

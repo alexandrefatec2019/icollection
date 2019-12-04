@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-//QuerySnapshot
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:icollection/tile/categoria_tile.dart';
 

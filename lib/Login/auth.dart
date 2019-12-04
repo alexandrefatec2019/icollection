@@ -87,17 +87,12 @@ class Autentica {
           await _facebookSignIn.logIn(['email', 'public_profile']);
       FacebookAccessToken myToken = facebookLoginResult.accessToken;
 
-      ///assuming sucess in FacebookLoginStatus.loggedIn
-      /// we use FacebookAuthProvider class to get a credential from accessToken
-      /// this will return an AuthCredential object that we will use to auth in firebase
       AuthCredential credential =
           FacebookAuthProvider.getCredential(accessToken: myToken.token);
 
-// this line do auth in firebase with your facebook credential.
       FirebaseUser firebaseUser =
           (await FirebaseAuth.instance.signInWithCredential(credential)).user;
 
-      //TODO talvez fazer retornoar todos os dados do user apos o login
       return true;
     } catch (e) {
       return false;

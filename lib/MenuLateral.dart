@@ -1,21 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:flutter/material.dart';
 import 'package:icollection/Usuario/perfil.dart';
 import 'package:icollection/categoria.dart';
 import 'package:page_transition/page_transition.dart';
-
 import 'Login/auth.dart';
 import 'Principal.dart';
-
-//Teste
 import 'Produto/vendas.dart';
 import 'VariaveisGlobais/UsuarioGlobal.dart' as g;
-import 'package:badges/badges.dart';
+//import 'package:badges/badges.dart';
 
 //Classe autenticação
-//TODO Pegar dados das var globais !!
 Autentica auth = Autentica();
 String _email;
 String _imagemURL;
@@ -25,13 +20,6 @@ String _telefone;
 //Carrega apenas Imagem e nome do usuario dentro do menu lateral
 //Apenas essa parte vai ter alteração no estado
 class MenuLateral extends StatefulWidget {
-  // final _email;
-  // final _imagemURL;
-  // final _nomeUsuario;
-  // final _telefone;
-
-  // MenuLateral(this._email, this._imagemURL, this._nomeUsuario, this._telefone);
-
   @override
   _Header createState() => new _Header();
 }
@@ -43,7 +31,6 @@ class _Header extends State<MenuLateral> {
   initState() {
     super.initState();
     _atualizaDados();
-    //print('==== '+widget.currentUser);
   }
 
   _atualizaDados() {
@@ -137,18 +124,12 @@ class _Header extends State<MenuLateral> {
           //ao clicar em sair chama a funçao logout do google e sai do app
           _criarItemMenu(
               icon: Icons.exit_to_app, text: 'Sair', onTap: auth.googleLogout),
-          // ListTile(
-          //   title: Text('0.0.1'),
-          //   onTap: () {},
-          // ),
         ],
       )
     ]));
   }
 }
-
 //Fim
-//teste de Imagem do usuario
 Widget _buildStack() => Stack(
       alignment: const Alignment(0.6, 0.6),
       children: [
@@ -189,7 +170,6 @@ Widget _criarCabecalhoMenu() {
       margin: EdgeInsets.zero,
       padding: EdgeInsets.only(bottom: 15),
       decoration: BoxDecoration(
-        //color: Color(0xff1c2634)
         image: DecorationImage(
           image: CachedNetworkImageProvider(g.photourl),
           fit: BoxFit.cover,
@@ -201,8 +181,6 @@ Widget _criarCabecalhoMenu() {
             ),
       ]));
 }
-
-//TODO falta criar referencias para quando clicar ir para outro lugar
 
 Widget _criarItemMenu({IconData icon, String text, GestureTapCallback onTap}) {
   return ListTile(

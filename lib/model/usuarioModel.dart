@@ -21,7 +21,6 @@ class UsuarioModel {
   UsuarioModel.map(dynamic obj) {
     this._id = obj['id'];
     this._nome = obj['nome'];
-    //this._sobrenome = obj['sobrenome'];
     this._email = obj['email'];
     this._cpfcnpj = obj['cpfcnpj'];
     this._telefone = obj['telefone'];
@@ -30,7 +29,6 @@ class UsuarioModel {
 
   String get id => _id;
   String get nome => _nome;
-  //String get sobrenome => _sobrenome;
   String get email => _email;
   String get cpfcnpj => _cpfcnpj;
   String get telefone => _telefone;
@@ -42,7 +40,6 @@ class UsuarioModel {
       map['id'] = _id;
     }
     map['nome'] = _nome;
-    //map['sobrenome'] = _sobrenome;
     map['email'] = _email;
     map['cpfcnpj'] = _cpfcnpj;
     map['telefone'] = _telefone;
@@ -54,7 +51,6 @@ class UsuarioModel {
   UsuarioModel.fromMap(Map<String, dynamic> map) {
     this._id = map['id'];
     this._nome = map['nome'];
-    //this._sobrenome = map['sobrenome'];
     this._email = map['email'];
     this._cpfcnpj = map['cpfcnpj'];
     this._telefone = map['telefone'];

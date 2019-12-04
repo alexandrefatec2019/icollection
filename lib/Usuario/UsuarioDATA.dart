@@ -31,8 +31,6 @@ class FirebaseFirestoreService {
     }
   }
 
-  //TODO passar o model em vez de variaveis
-
   Future<UsuarioModel> criarUsuario(String uid, String nome, String email,
       String cpfcnpj, String telefone, String photourl) async {
     final TransactionHandler createTransaction = (Transaction tx) async {
