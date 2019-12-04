@@ -1,16 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:icollection/AppBar.dart';
-import 'package:icollection/Firestore/Leitura.dart';
-import 'package:icollection/Login/auth.dart';
-//Arquivo onde esta todos os items do menu Lateral
-import 'package:icollection/Login/Tela_Auth.dart';
-import 'package:icollection/MenuLateral.dart';
-import 'package:icollection/categoria.dart';
-// import 'package:icollection/datas/produtodata.dart';
-import 'package:icollection/Produto/produtoDATA.dart';
 import 'package:icollection/model/listaprodutoModel.dart';
 import 'package:icollection/tile/produto_tile.dart';
 
@@ -47,7 +36,7 @@ class Produto extends StatelessWidget {
           
           future: Firestore.instance
               .collection("ProdutoLista")
-              .where('categoria', isEqualTo: snapshot.data['title'])
+              .where('categoria', isEqualTo: snapshot.documentID)
               .getDocuments(),
           builder: (context, snapshotProduto) {
             
@@ -70,8 +59,7 @@ class Produto extends StatelessWidget {
                       itemBuilder: (context, index) {
                         return ProdutoTile(
                             'grid',
-                            ProdutoData.fromDocument(
-                                snapshotProduto.data.documents[index]));
+                            ListaProdutoModel.fromMap(snapshotProduto.data.documents[index].data));
                       },
                     ),
                     ListView.builder(
@@ -80,8 +68,8 @@ class Produto extends StatelessWidget {
                       itemBuilder: (context, index) {
                         return ProdutoTile(
                             'list',
-                            ProdutoData.fromDocument(
-                                snapshotProduto.data.documents[index]));
+                            ListaProdutoModel.fromMap(
+                                snapshotProduto.data.documents[index].data));
                       },
                     ),
                   ]);
